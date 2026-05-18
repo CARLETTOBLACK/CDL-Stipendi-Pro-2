@@ -1281,116 +1281,208 @@ document.getElementById('btnApplicaRisultati').addEventListener('click',()=>{
 });
 
 /* ════════════════════ DOCUMENTI ════════════════════ */
-const DOC_TEMPLATE={
-  documento_identita:{label:'Documento identità',    section:'personali', hasExpiry:true,  hasFile:true},
-  permesso_soggiorno:{label:'Permesso di soggiorno', section:'personali', hasExpiry:true,  hasFile:true},
-  iban:              {label:'IBAN',                  section:'personali', hasExpiry:false, hasFile:true},
-  contratto_firmato: {label:'Contratto firmato',     section:'contratto', hasExpiry:false, hasFile:true},
-  unilav:            {label:'Unilav',                section:'contratto', hasExpiry:false, hasFile:true},
-  sicurezza_lavoro:  {label:'Sicurezza sul lavoro',  section:'formazione',hasExpiry:true,  hasFile:true},
-  haccp:             {label:'HACCP',                 section:'formazione',hasExpiry:true,  hasFile:true},
-  visita_medica:     {label:'Visita medica',         section:'formazione',hasExpiry:true,  hasFile:true},
+const DOC_KEYS = [
+  { key:'documento_identita', label:'Documento identità',    section:'Documenti personali', icon:'🪪', hasExpiry:true  },
+  { key:'permesso_soggiorno', label:'Permesso di soggiorno', section:'Documenti personali', icon:'📋', hasExpiry:true  },
+  { key:'iban',               label:'IBAN',                  section:'Documenti personali', icon:'🏦', hasExpiry:false },
+  { key:'contratto_firmato',  label:'Contratto firmato',     section:'Contratto & Unilav',  icon:'📝', hasExpiry:false },
+  { key:'unilav',             label:'Unilav',                section:'Contratto & Unilav',  icon:'📄', hasExpiry:false },
+  { key:'sicurezza_lavoro',   label:'Sicurezza sul lavoro',  section:'Formazione',          icon:'🦺', hasExpiry:true  },
+  { key:'haccp',              label:'HACCP',                 section:'Formazione',          icon:'🍽', hasExpiry:true  },
+  { key:'visita_medica',      label:'Visita medica',         section:'Formazione',          icon:'🏥', hasExpiry:true  },
+];
+
+let ddFilters = { stato:'', alert:'', search:'' };
+
+const expiryClass = d => {
+  if(!d) return '';
+  const diff = (new Date(d) - new Date()) / 86400000;
+  return diff < 0 ? 'expiry-expired' : diff < 30 ? 'expiry-warn' : 'expiry-ok';
 };
 
-let ddFilters={stato:'',alert:'',search:''};
+const expiryLabel = d => {
+  if(!d) return '';
+  const diff = Math.round((new Date(d) - new Date()) / 86400000);
+  if(diff < 0) return `scaduta ${Math.abs(diff)}gg fa`;
+  if(diff === 0) return 'scade oggi';
+  if(diff < 30) return `scade in ${diff}gg`;
+  return '';
+};
 
-const expiryClass=d=>{ if(!d) return ''; const diff=(new Date(d)-new Date())/86400000; return diff<0?'expiry-expired':diff<30?'expiry-warn':'expiry-ok'; };
-
-function calcolaBadges(docs){
-  let ok=0,warn=0,err=0,na=0;
-  Object.entries(DOC_TEMPLATE).forEach(([k,t])=>{
-    const d=(docs||{})[k]||{};
-    if(d.status==='na'){na++;return;}
-    if(!d.status||d.status==='missing'){err++;return;}
-    if(t.hasExpiry&&d.expiry){const c=expiryClass(d.expiry);if(c==='expiry-expired')err++;else if(c==='expiry-warn')warn++;else ok++;}
-    else ok++;
+function calcolaBadges(docs, dip) {
+  let ok=0, warn=0, err=0, na=0;
+  DOC_KEYS.forEach(({key, hasExpiry}) => {
+    const d = (docs||{})[key] || {};
+    if(d.status==='na') { na++; return; }
+    if(!d.status || d.status==='missing') { err++; return; }
+    if(hasExpiry && d.expiry) {
+      const c = expiryClass(d.expiry);
+      if(c==='expiry-expired') err++;
+      else if(c==='expiry-warn') warn++;
+      else ok++;
+    } else ok++;
   });
-  const p=[];
-  if(ok)  p.push(`<span class="badge-ok">✓ ${ok}</span>`);
-  if(warn)p.push(`<span class="badge-warn">⚠ ${warn}</span>`);
-  if(err) p.push(`<span class="badge-err">✕ ${err}</span>`);
-  if(na)  p.push(`<span class="badge-na">— ${na}</span>`);
-  return p.join('');
+  // contratto
+  if(dip?.tipo_contratto==='determinato' && dip?.scadenza_contratto) {
+    const c = expiryClass(dip.scadenza_contratto);
+    if(c==='expiry-expired') err++;
+    else if(c==='expiry-warn') warn++;
+  }
+  const p = [];
+  if(ok)   p.push(`<span class="badge-ok">✓ ${ok}</span>`);
+  if(warn) p.push(`<span class="badge-warn">⚠ ${warn}</span>`);
+  if(err)  p.push(`<span class="badge-err">✕ ${err}</span>`);
+  if(na)   p.push(`<span class="badge-na">— ${na}</span>`);
+  return p.join('') || '<span class="badge-na">Non configurato</span>';
 }
 
-function hasAlert(dip,tipo){
-  const docs=dip.documenti||{};
-  const contractAlert=dip.tipo_contratto==='determinato'&&dip.scadenza_contratto;
-  if(tipo==='expired'&&contractAlert&&expiryClass(dip.scadenza_contratto)==='expiry-expired') return true;
-  if(tipo==='expiring'&&contractAlert&&expiryClass(dip.scadenza_contratto)==='expiry-warn') return true;
-  return Object.entries(DOC_TEMPLATE).some(([k,t])=>{
-    const d=docs[k]||{};
-    if(tipo==='missing') return !d.status||d.status==='missing';
-    if(tipo==='expired')  return d.status==='ok'&&t.hasExpiry&&d.expiry&&expiryClass(d.expiry)==='expiry-expired';
-    if(tipo==='expiring') return d.status==='ok'&&t.hasExpiry&&d.expiry&&expiryClass(d.expiry)==='expiry-warn';
+function hasAlert(dip, tipo) {
+  const docs = dip.documenti || {};
+  if(tipo==='expired' && dip.tipo_contratto==='determinato' && dip.scadenza_contratto && expiryClass(dip.scadenza_contratto)==='expiry-expired') return true;
+  if(tipo==='expiring' && dip.tipo_contratto==='determinato' && dip.scadenza_contratto && expiryClass(dip.scadenza_contratto)==='expiry-warn') return true;
+  return DOC_KEYS.some(({key, hasExpiry}) => {
+    const d = docs[key] || {};
+    if(tipo==='missing')  return !d.status || d.status==='missing';
+    if(tipo==='expired')  return d.status==='ok' && hasExpiry && d.expiry && expiryClass(d.expiry)==='expiry-expired';
+    if(tipo==='expiring') return d.status==='ok' && hasExpiry && d.expiry && expiryClass(d.expiry)==='expiry-warn';
     return false;
   });
 }
 
-function renderDocModule(){
-  const list=document.getElementById('docList');
-  const empty=document.getElementById('emptyDoc');
-  let filtered=ST.dipendenti.filter(d=>d.stato!=='terminato');
-  if(ddFilters.stato)  filtered=filtered.filter(d=>d.stato===ddFilters.stato);
-  if(ddFilters.alert)  filtered=filtered.filter(d=>hasAlert(d,ddFilters.alert));
-  if(ddFilters.search){const q=ddFilters.search.toLowerCase();filtered=filtered.filter(d=>(d.nome||'').toLowerCase().includes(q));}
+function renderDocModule() {
+  const list  = document.getElementById('docList');
+  const empty = document.getElementById('emptyDoc');
+  let filtered = ST.dipendenti.filter(d => d.stato !== 'terminato');
+  if(ddFilters.stato)  filtered = filtered.filter(d => d.stato === ddFilters.stato);
+  if(ddFilters.alert)  filtered = filtered.filter(d => hasAlert(d, ddFilters.alert));
+  if(ddFilters.search) { const q = ddFilters.search.toLowerCase(); filtered = filtered.filter(d => (d.nome||'').toLowerCase().includes(q)); }
+
   // KPI
-  let ok2=0,warn2=0,err2=0;
-  filtered.forEach(d=>{
-    const docs=d.documenti||{};let hasErr=false,hasWarn=false,allOk=true;
-    Object.entries(DOC_TEMPLATE).forEach(([k,t])=>{const doc=docs[k]||{};if(doc.status==='na')return;if(!doc.status||doc.status==='missing'){hasErr=true;allOk=false;return;}if(t.hasExpiry&&doc.expiry){const c=expiryClass(doc.expiry);if(c==='expiry-expired'){hasErr=true;allOk=false;}else if(c==='expiry-warn'){hasWarn=true;allOk=false;}}});
-    if(d.tipo_contratto==='determinato'&&d.scadenza_contratto){const c=expiryClass(d.scadenza_contratto);if(c==='expiry-expired'){hasErr=true;allOk=false;}else if(c==='expiry-warn'){hasWarn=true;allOk=false;}}
-    if(hasErr)err2++;else if(hasWarn)warn2++;else if(allOk)ok2++;
+  let ok2=0, warn2=0, err2=0;
+  filtered.forEach(d => {
+    const docs = d.documenti||{}; let hasErr=false, hasWarn=false, allOk=true;
+    DOC_KEYS.forEach(({key,hasExpiry}) => {
+      const doc = docs[key]||{};
+      if(doc.status==='na') return;
+      if(!doc.status||doc.status==='missing') { hasErr=true; allOk=false; return; }
+      if(hasExpiry && doc.expiry) { const c=expiryClass(doc.expiry); if(c==='expiry-expired'){hasErr=true;allOk=false;} else if(c==='expiry-warn'){hasWarn=true;allOk=false;} }
+    });
+    if(d.tipo_contratto==='determinato'&&d.scadenza_contratto) {
+      const c=expiryClass(d.scadenza_contratto);
+      if(c==='expiry-expired'){hasErr=true;allOk=false;} else if(c==='expiry-warn'){hasWarn=true;allOk=false;}
+    }
+    if(hasErr) err2++; else if(hasWarn) warn2++; else if(allOk) ok2++;
   });
-  document.getElementById('kpiTot').textContent=filtered.length;
-  document.getElementById('kpiOk').textContent=ok2;
-  document.getElementById('kpiWarn').textContent=warn2;
-  document.getElementById('kpiErr').textContent=err2;
-  list.querySelectorAll('.emp-doc-card').forEach(el=>el.remove());
-  if(!filtered.length){empty.style.display='';return;}
-  empty.style.display='none';
-  filtered.forEach(dip=>list.appendChild(creaDocCard(dip)));
+  document.getElementById('kpiTot').textContent  = filtered.length;
+  document.getElementById('kpiOk').textContent   = ok2;
+  document.getElementById('kpiWarn').textContent = warn2;
+  document.getElementById('kpiErr').textContent  = err2;
+
+  list.querySelectorAll('.emp-doc-card').forEach(el => el.remove());
+  if(!filtered.length) { empty.style.display=''; return; }
+  empty.style.display = 'none';
+  filtered.forEach(dip => list.appendChild(creaDocCard(dip)));
 }
 
-function creaDocCard(dip){
-  const card=document.createElement('div');
-  card.className='emp-doc-card'; card.dataset.id=dip.id;
-  const docs=dip.documenti||{};
-  // Alerts
-  const alerts=[];
-  Object.entries(DOC_TEMPLATE).forEach(([k,t])=>{
-    const d=docs[k]||{};
-    if(!d.status||d.status==='missing') alerts.push({type:'red',msg:`❌ ${t.label} — mancante`});
-    else if(t.hasExpiry&&d.expiry){const c=expiryClass(d.expiry);if(c==='expiry-expired')alerts.push({type:'red',msg:`❌ ${t.label} — scaduta il ${d.expiry}`});else if(c==='expiry-warn')alerts.push({type:'yellow',msg:`⚠ ${t.label} — scade il ${d.expiry}`});}
-  });
-  if(dip.tipo_contratto==='determinato'&&dip.scadenza_contratto){const c=expiryClass(dip.scadenza_contratto);if(c==='expiry-expired')alerts.push({type:'red',msg:`❌ Contratto — SCADUTO il ${dip.scadenza_contratto}`});else if(c==='expiry-warn')alerts.push({type:'yellow',msg:`⚠ Contratto — scade il ${dip.scadenza_contratto}`});}
+/* ── Crea card dipendente documenti ── */
+function creaDocCard(dip) {
+  const card = document.createElement('div');
+  card.className = 'emp-doc-card';
+  card.dataset.id = dip.id;
+  const docs = dip.documenti || {};
 
-  card.innerHTML=`
+  // Alert banners
+  const alerts = [];
+  DOC_KEYS.forEach(({key, label, hasExpiry}) => {
+    const d = docs[key]||{};
+    if(!d.status || d.status==='missing') alerts.push({type:'red', msg:`❌ ${label} — mancante`});
+    else if(hasExpiry && d.expiry) {
+      const c = expiryClass(d.expiry);
+      if(c==='expiry-expired') alerts.push({type:'red', msg:`❌ ${label} — scaduta il ${d.expiry} (${expiryLabel(d.expiry)})`});
+      else if(c==='expiry-warn') alerts.push({type:'yellow', msg:`⚠ ${label} — scade il ${d.expiry} (${expiryLabel(d.expiry)})`});
+    }
+  });
+  if(dip.tipo_contratto==='determinato' && dip.scadenza_contratto) {
+    const c = expiryClass(dip.scadenza_contratto);
+    if(c==='expiry-expired') alerts.push({type:'red', msg:`❌ Contratto a termine — SCADUTO il ${dip.scadenza_contratto}`});
+    else if(c==='expiry-warn') alerts.push({type:'yellow', msg:`⚠ Contratto a termine — scade il ${dip.scadenza_contratto} (${expiryLabel(dip.scadenza_contratto)})`});
+  }
+
+  // Raggruppa DOC_KEYS per sezione
+  const sections = {};
+  DOC_KEYS.forEach(dk => {
+    if(!sections[dk.section]) sections[dk.section] = [];
+    sections[dk.section].push(dk);
+  });
+
+  const sectionsHtml = Object.entries(sections).map(([sTitle, keys]) => `
+    <div class="doc-section-card">
+      <div class="doc-section-title">${sTitle}</div>
+      ${keys.map(({key, label, icon, hasExpiry}) => {
+        const doc = docs[key]||{status:'missing'};
+        const files = doc.files||[];
+        const eCls = hasExpiry && doc.expiry ? expiryClass(doc.expiry) : '';
+        const eLabel = hasExpiry && doc.expiry ? expiryLabel(doc.expiry) : '';
+        return `
+        <div class="doc-field-row">
+          <span class="doc-field-label">${icon} ${label}</span>
+          <div class="doc-field-actions">
+            ${hasExpiry ? `
+              <div style="display:flex;flex-direction:column;gap:2px;align-items:flex-end">
+                <input type="date" class="expiry-input ${eCls}" value="${doc.expiry||''}" data-dip="${dip.id}" data-key="${key}" data-field="expiry" title="Scadenza"/>
+                ${eLabel ? `<span style="font-size:10px;color:${eCls==='expiry-expired'?'var(--red)':eCls==='expiry-warn'?'var(--yellow)':'var(--green)'}">${eLabel}</span>` : ''}
+              </div>` : ''}
+            <select class="expiry-input" data-dip="${dip.id}" data-key="${key}" data-field="status" style="min-width:110px">
+              <option value="missing" ${(!doc.status||doc.status==='missing')?'selected':''}>❌ Mancante</option>
+              <option value="ok"      ${doc.status==='ok'?'selected':''}>✅ Presente</option>
+              <option value="na"      ${doc.status==='na'?'selected':''}>— N/A</option>
+            </select>
+            <label class="btn btn-ghost btn-sm" style="cursor:pointer;padding:5px 8px;position:relative" title="Carica file">
+              📎
+              <input type="file" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%" multiple accept=".pdf,.jpg,.jpeg,.png" data-dip="${dip.id}" data-key="${key}" data-field="upload"/>
+            </label>
+          </div>
+        </div>
+        ${files.length ? `<div class="file-list">${files.map((f,fi) => `
+          <div class="file-item">
+            <span>${f.type==='pdf'?'📄':'🖼'}</span>
+            <a href="${f.url}" target="_blank" class="file-link">${esc(f.name)}</a>
+            <span class="file-size">${f.size ? Math.round(f.size/1024)+'KB' : ''}</span>
+            ${f.ai_data ? `<span style="font-size:10px;background:var(--green-dim);color:var(--green);padding:1px 6px;border-radius:99px;border:1px solid rgba(34,197,94,.2)">AI ✓</span>` : ''}
+            <button class="file-del" data-dip="${dip.id}" data-key="${key}" data-fi="${fi}" data-field="delfile">✕</button>
+          </div>`).join('')}</div>` : ''}`;
+      }).join('')}
+    </div>`).join('');
+
+  card.innerHTML = `
     <div class="emp-doc-head">
       <div class="emp-avatar">${esc(iniziali(dip.nome))}</div>
       <div class="emp-doc-info">
         <div class="emp-doc-name">${esc(dip.nome)}</div>
-        <div class="emp-doc-meta">${dip.mansione?`<span>💼 ${esc(dip.mansione)}</span>`:''}${dip.stato?`<span class="badge-${dip.stato==='attivo'?'ok':dip.stato==='sospeso'?'warn':'na'}">${dip.stato}</span>`:''}</div>
+        <div class="emp-doc-meta">
+          ${dip.mansione ? `<span>💼 ${esc(dip.mansione)}</span>` : ''}
+          <span class="badge-${dip.stato==='attivo'?'ok':dip.stato==='sospeso'?'warn':'na'}">${dip.stato||'attivo'}</span>
+          ${dip.tipo_contratto ? `<span style="font-size:10px;color:var(--text3)">${dip.tipo_contratto}</span>` : ''}
+        </div>
       </div>
-      <div class="emp-doc-badges">${calcolaBadges(docs)}</div>
-      <span class="chevron">▼</span>
+      <div class="emp-doc-badges">${calcolaBadges(docs, dip)}</div>
+      <button class="btn-icon" data-ed="${dip.id}" title="Modifica anagrafica" style="flex-shrink:0">✏️</button>
+      <span class="chevron" style="flex-shrink:0">▼</span>
     </div>
-    ${alerts.length?`<div style="padding:6px 14px;display:flex;flex-direction:column;gap:3px">${alerts.map(a=>`<div class="alert-banner ${a.type}">${a.msg}</div>`).join('')}</div>`:''}
-    <div class="emp-doc-body">
-      ${renderDocSection(dip,'personali','👤 Documenti personali')}
-      ${renderDocSection(dip,'formazione','🎓 Formazione & sicurezza')}
+    ${alerts.length ? `<div style="padding:6px 14px 8px;display:flex;flex-direction:column;gap:3px;border-bottom:1px solid var(--border)">${alerts.map(a=>`<div class="alert-banner ${a.type}">${a.msg}</div>`).join('')}</div>` : ''}
+    <div class="emp-doc-body" style="display:none">
+      ${sectionsHtml}
       <div class="contract-full">
-        <div class="doc-section-title">📄 Contratto & Unilav</div>
-        ${renderDocSectionRows(dip,'contratto')}
-        <div class="contract-grid" style="margin-top:12px">
+        <div class="doc-section-title">📋 Dati contratto</div>
+        <div class="contract-grid">
           <div class="field-group"><label>Tipo contratto</label>
             <select data-dip="${dip.id}" data-contract="tipo_contratto">
               <option value="">Non specificato</option>
-              <option value="indeterminato" ${dip.tipo_contratto==='indeterminato'?'selected':''}>Indeterminato</option>
-              <option value="determinato" ${dip.tipo_contratto==='determinato'?'selected':''}>Determinato</option>
-              <option value="apprendistato" ${dip.tipo_contratto==='apprendistato'?'selected':''}>Apprendistato</option>
-              <option value="part_time" ${dip.tipo_contratto==='part_time'?'selected':''}>Part-time</option>
-              <option value="stagionale" ${dip.tipo_contratto==='stagionale'?'selected':''}>Stagionale</option>
+              <option value="indeterminato"  ${dip.tipo_contratto==='indeterminato'?'selected':''}>Indeterminato</option>
+              <option value="determinato"    ${dip.tipo_contratto==='determinato'?'selected':''}>Determinato</option>
+              <option value="apprendistato"  ${dip.tipo_contratto==='apprendistato'?'selected':''}>Apprendistato</option>
+              <option value="part_time"      ${dip.tipo_contratto==='part_time'?'selected':''}>Part-time</option>
+              <option value="stagionale"     ${dip.tipo_contratto==='stagionale'?'selected':''}>Stagionale</option>
             </select>
           </div>
           <div class="field-group"><label>Scadenza contratto</label>
@@ -1403,111 +1495,234 @@ function creaDocCard(dip){
       </div>
     </div>`;
 
-  card.querySelector('.emp-doc-head').addEventListener('click',e=>{ if(e.target.closest('.btn-icon')) return; card.classList.toggle('open'); });
-  // Contract changes
-  card.querySelectorAll('[data-contract]').forEach(el=>{
-    el.addEventListener('change',async()=>{
-      dip[el.dataset.contract]=el.value;
-      if(el.type==='date') el.className=expiryClass(el.value);
+  /* ── Toggle apri/chiudi ── */
+  card.querySelector('.emp-doc-head').addEventListener('click', e => {
+    if(e.target.closest('[data-ed]')) return;
+    const body = card.querySelector('.emp-doc-body');
+    const isOpen = body.style.display !== 'none';
+    body.style.display = isOpen ? 'none' : 'grid';
+    card.querySelector('.chevron').style.transform = isOpen ? '' : 'rotate(180deg)';
+  });
+
+  card.querySelector('[data-ed]')?.addEventListener('click', e => {
+    e.stopPropagation(); editDipendente(dip.id);
+  });
+
+  /* ── Dati contratto ── */
+  card.querySelectorAll('[data-contract]').forEach(el => {
+    el.addEventListener('change', async () => {
+      dip[el.dataset.contract] = el.value || null;
+      if(el.type==='date') el.className = expiryClass(el.value);
       await salvaDip(dip);
-      const nc=creaDocCard(dip); if(card.classList.contains('open')) nc.classList.add('open'); card.replaceWith(nc);
+      sostituisciCard(card, dip);
     });
   });
-  attachDocEvents(card,dip);
+
+  /* ── Doc fields: status + expiry ── */
+  card.querySelectorAll('[data-field="status"],[data-field="expiry"]').forEach(el => {
+    el.addEventListener('change', async () => {
+      const key = el.dataset.key;
+      if(!dip.documenti) dip.documenti = {};
+      if(!dip.documenti[key]) dip.documenti[key] = {};
+      if(el.dataset.field==='status') dip.documenti[key].status = el.value;
+      if(el.dataset.field==='expiry') {
+        dip.documenti[key].expiry = el.value || null;
+        el.className = 'expiry-input ' + expiryClass(el.value);
+      }
+      await salvaDip(dip);
+      sostituisciCard(card, dip);
+    });
+  });
+
+  /* ── Upload file + AI ── */
+  card.querySelectorAll('[data-field="upload"]').forEach(inp => {
+    inp.addEventListener('change', async () => {
+      if(!inp.files.length) return;
+      const key = inp.dataset.key;
+      const dk = DOC_KEYS.find(d => d.key===key);
+      if(!dip.documenti) dip.documenti = {};
+      if(!dip.documenti[key]) dip.documenti[key] = { status:'ok', files:[] };
+      if(!dip.documenti[key].files) dip.documenti[key].files = [];
+
+      for(const file of inp.files) {
+        showToast(`Caricamento ${file.name}…`);
+        const res = await uploadFile(dip.id, key, file);
+        if(!res) continue;
+        const ext = file.name.split('.').pop().toLowerCase();
+        const fileObj = { ...res, type: ext==='pdf'?'pdf':'img' };
+
+        // AI: analizza il documento se è PDF o immagine
+        const AKEY = localStorage.getItem('cdl_anthropic_key')||'';
+        if(AKEY && (ext==='pdf'||['jpg','jpeg','png'].includes(ext))) {
+          showToast(`AI sta leggendo ${file.name}…`);
+          try {
+            const aiData = await analizzaDocumentoAI(file, dk, AKEY);
+            if(aiData) {
+              fileObj.ai_data = aiData;
+              // Applica automaticamente i dati estratti
+              if(aiData.expiry && dk.hasExpiry && !dip.documenti[key].expiry) {
+                dip.documenti[key].expiry = aiData.expiry;
+              }
+              if(aiData.status) dip.documenti[key].status = aiData.status;
+              showToast(`AI: dati estratti da ${file.name} ✓`, 'success');
+            }
+          } catch(e) {
+            console.warn('AI doc error:', e);
+          }
+        }
+
+        dip.documenti[key].files.push(fileObj);
+        if(dip.documenti[key].status==='missing') dip.documenti[key].status='ok';
+      }
+
+      await salvaDip(dip);
+      sostituisciCard(card, dip, true);
+    });
+  });
+
+  /* ── Elimina file ── */
+  card.querySelectorAll('[data-field="delfile"]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const key = btn.dataset.key; const fi = parseInt(btn.dataset.fi);
+      if(!dip.documenti?.[key]?.files) return;
+      const f = dip.documenti[key].files[fi];
+      if(f?.path) await deleteFile(f.path);
+      dip.documenti[key].files.splice(fi, 1);
+      if(!dip.documenti[key].files.length) dip.documenti[key].status = 'missing';
+      await salvaDip(dip);
+      sostituisciCard(card, dip, true);
+      showToast('File eliminato');
+    });
+  });
+
   return card;
 }
 
-function renderDocSection(dip,section,title){
-  return `<div class="doc-section-card"><div class="doc-section-title">${title}</div>${renderDocSectionRows(dip,section)}</div>`;
+/* ── Sostituisce la card mantenendo lo stato aperto/chiuso ── */
+function sostituisciCard(oldCard, dip, keepOpen=false) {
+  const wasOpen = oldCard.querySelector('.emp-doc-body')?.style.display !== 'none';
+  const nc = creaDocCard(dip);
+  if(wasOpen || keepOpen) {
+    const body = nc.querySelector('.emp-doc-body');
+    if(body) { body.style.display='grid'; nc.querySelector('.chevron').style.transform='rotate(180deg)'; }
+  }
+  oldCard.replaceWith(nc);
+  renderDocKpi();
 }
 
-function renderDocSectionRows(dip,section){
-  const docs=dip.documenti||{};
-  return Object.entries(DOC_TEMPLATE).filter(([,t])=>t.section===section).map(([key,tmpl])=>{
-    const doc=docs[key]||{status:'missing'}; const files=doc.files||[];
-    return `<div class="doc-field-row">
-      <span class="doc-field-label">${tmpl.label}</span>
-      <div class="doc-field-actions">
-        ${tmpl.hasExpiry?`<input type="date" class="expiry-input ${expiryClass(doc.expiry)}" value="${doc.expiry||''}" data-dip="${dip.id}" data-key="${key}" data-type="expiry"/>`:'' }
-        <select class="expiry-input" data-dip="${dip.id}" data-key="${key}" data-type="status">
-          <option value="missing" ${(!doc.status||doc.status==='missing')?'selected':''}>❌ Mancante</option>
-          <option value="ok" ${doc.status==='ok'?'selected':''}>✅ Presente</option>
-          <option value="na" ${doc.status==='na'?'selected':''}>— N/A</option>
-        </select>
-        ${tmpl.hasFile?`<label class="btn btn-ghost btn-sm" style="cursor:pointer;padding:4px 8px">📎<input type="file" style="display:none" multiple accept=".pdf,.jpg,.jpeg,.png" data-dip="${dip.id}" data-key="${key}" data-type="upload"/></label>`:''}
-      </div>
-    </div>
-    ${files.length?`<div class="file-list">${files.map((f,fi)=>`<div class="file-item"><span>${f.type==='pdf'?'📄':'🖼'}</span><a href="${f.url}" target="_blank" class="file-link">${esc(f.name)}</a><span class="file-size">${f.size?Math.round(f.size/1024)+'KB':''}</span><button class="file-del" data-dip="${dip.id}" data-key="${key}" data-fi="${fi}" data-type="delfile">✕</button></div>`).join('')}</div>`:''}`;
-  }).join('');
+function renderDocKpi() {
+  let ok2=0,warn2=0,err2=0;
+  const filtered = getDocFiltered();
+  filtered.forEach(d => {
+    const docs=d.documenti||{}; let hasErr=false,hasWarn=false,allOk=true;
+    DOC_KEYS.forEach(({key,hasExpiry})=>{ const doc=docs[key]||{}; if(doc.status==='na')return; if(!doc.status||doc.status==='missing'){hasErr=true;allOk=false;return;} if(hasExpiry&&doc.expiry){const c=expiryClass(doc.expiry);if(c==='expiry-expired'){hasErr=true;allOk=false;}else if(c==='expiry-warn'){hasWarn=true;allOk=false;}} });
+    if(d.tipo_contratto==='determinato'&&d.scadenza_contratto){const c=expiryClass(d.scadenza_contratto);if(c==='expiry-expired'){hasErr=true;allOk=false;}else if(c==='expiry-warn'){hasWarn=true;allOk=false;}}
+    if(hasErr)err2++;else if(hasWarn)warn2++;else if(allOk)ok2++;
+  });
+  document.getElementById('kpiTot').textContent  = filtered.length;
+  document.getElementById('kpiOk').textContent   = ok2;
+  document.getElementById('kpiWarn').textContent = warn2;
+  document.getElementById('kpiErr').textContent  = err2;
 }
 
-function attachDocEvents(card,dip){
-  card.querySelectorAll('[data-type="status"],[data-type="expiry"]').forEach(el=>{
-    el.addEventListener('change',async()=>{
-      const key=el.dataset.key;
-      if(!dip.documenti) dip.documenti={};
-      if(!dip.documenti[key]) dip.documenti[key]={};
-      if(el.dataset.type==='status') dip.documenti[key].status=el.value;
-      if(el.dataset.type==='expiry'){ dip.documenti[key].expiry=el.value; el.className='expiry-input '+expiryClass(el.value); }
-      await salvaDip(dip);
-      const nc=creaDocCard(dip); if(card.classList.contains('open')) nc.classList.add('open'); card.replaceWith(nc);
-    });
-  });
-  card.querySelectorAll('[data-type="upload"]').forEach(inp=>{
-    inp.addEventListener('change',async()=>{
-      if(!inp.files.length) return;
-      const key=inp.dataset.key;
-      if(!dip.documenti) dip.documenti={};
-      if(!dip.documenti[key]) dip.documenti[key]={status:'ok',files:[]};
-      if(!dip.documenti[key].files) dip.documenti[key].files=[];
-      showToast('Upload in corso…');
-      for(const file of inp.files){
-        const res=await uploadFile(dip.id,key,file);
-        if(res){const ext=file.name.split('.').pop().toLowerCase();dip.documenti[key].files.push({...res,type:ext==='pdf'?'pdf':'img'});if(dip.documenti[key].status==='missing')dip.documenti[key].status='ok';}
-      }
-      await salvaDip(dip); showToast('File caricato ✓','success');
-      const nc=creaDocCard(dip); nc.classList.add('open'); card.replaceWith(nc);
-    });
-  });
-  card.querySelectorAll('[data-type="delfile"]').forEach(btn=>{
-    btn.addEventListener('click',async()=>{
-      const key=btn.dataset.key; const fi=parseInt(btn.dataset.fi);
-      if(!dip.documenti?.[key]?.files) return;
-      const f=dip.documenti[key].files[fi]; if(f?.path) await deleteFile(f.path);
-      dip.documenti[key].files.splice(fi,1);
-      if(!dip.documenti[key].files.length) dip.documenti[key].status='missing';
-      await salvaDip(dip); showToast('File eliminato');
-      const nc=creaDocCard(dip); nc.classList.add('open'); card.replaceWith(nc);
-    });
-  });
+function getDocFiltered() {
+  let f = ST.dipendenti.filter(d=>d.stato!=='terminato');
+  if(ddFilters.stato)  f = f.filter(d=>d.stato===ddFilters.stato);
+  if(ddFilters.alert)  f = f.filter(d=>hasAlert(d,ddFilters.alert));
+  if(ddFilters.search) { const q=ddFilters.search.toLowerCase(); f=f.filter(d=>(d.nome||'').toLowerCase().includes(q)); }
+  return f;
 }
 
-async function salvaDip(dip){
-  const{error}=await supa.from('dipendenti').update({
-    documenti:dip.documenti,
-    tipo_contratto:dip.tipo_contratto||null,
-    scadenza_contratto:dip.scadenza_contratto||null,
-    data_assunzione:dip.data_assunzione||null,
-    stato:dip.stato||'attivo',
-    mansione:dip.mansione||null,
-  }).eq('id',dip.id).eq('user_id',currentUser.id);
-  if(error){console.error(error);showToast('Errore salvataggio','error');return false;}
+/* ════════ AI ANALISI DOCUMENTO ════════ */
+async function analizzaDocumentoAI(file, dk, apiKey) {
+  const ext = file.name.split('.').pop().toLowerCase();
+  const isPdf = ext === 'pdf';
+  const isImg = ['jpg','jpeg','png'].includes(ext);
+  if(!isPdf && !isImg) return null;
+
+  // Converti in base64
+  const b64 = await new Promise((res,rej) => {
+    const r = new FileReader();
+    r.onload = () => res(r.result.split(',')[1]);
+    r.onerror = () => rej(new Error('Errore lettura'));
+    r.readAsDataURL(file);
+  });
+
+  const mediaType = isPdf ? 'application/pdf' : (ext==='png'?'image/png':'image/jpeg');
+
+  const prompt = `Analizza questo documento italiano "${dk.label}".
+Estrai le seguenti informazioni se presenti:
+- tipo_documento: che tipo di documento è (es. "carta identità", "permesso soggiorno", "certificato HACCP", "visita medica", "contratto di lavoro", "unilav", ecc.)
+- nome_intestatario: nome della persona a cui è intestato il documento
+- data_scadenza: data di scadenza nel formato YYYY-MM-DD (null se non c'è o non scade)
+- data_rilascio: data di rilascio nel formato YYYY-MM-DD (null se non presente)
+- ente_rilascio: chi ha rilasciato il documento (null se non presente)
+- note: qualsiasi informazione utile aggiuntiva (null se nessuna)
+
+Rispondi SOLO con JSON valido, nessun testo extra, nessun backtick:
+{"tipo_documento":"...","nome_intestatario":"...","data_scadenza":"YYYY-MM-DD","data_rilascio":"YYYY-MM-DD","ente_rilascio":"...","note":"..."}
+
+Se un campo non è determinabile usa null.`;
+
+  const content_part = isPdf
+    ? { type:'document', source:{ type:'base64', media_type:mediaType, data:b64 } }
+    : { type:'image',    source:{ type:'base64', media_type:mediaType, data:b64 } };
+
+  const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true',
+    },
+    body: JSON.stringify({
+      model: 'claude-opus-4-5',
+      max_tokens: 512,
+      messages: [{ role:'user', content:[ content_part, { type:'text', text:prompt } ] }]
+    })
+  });
+
+  if(!resp.ok) return null;
+  const data = await resp.json();
+  const raw = data.content.map(c=>c.text||'').join('');
+  try {
+    const parsed = JSON.parse(raw.replace(/```json|```/g,'').trim());
+    // Rinomina data_scadenza → expiry per compatibilità interna
+    return { ...parsed, expiry: parsed.data_scadenza || null };
+  } catch(e) { return null; }
+}
+
+/* ── Storage ── */
+async function salvaDip(dip) {
+  const { error } = await supa.from('dipendenti').update({
+    documenti:         dip.documenti         || {},
+    tipo_contratto:    dip.tipo_contratto    || null,
+    scadenza_contratto:dip.scadenza_contratto|| null,
+    data_assunzione:   dip.data_assunzione   || null,
+    stato:             dip.stato             || 'attivo',
+    mansione:          dip.mansione          || null,
+  }).eq('id', dip.id).eq('user_id', currentUser.id);
+  if(error) { console.error(error); showToast('Errore salvataggio', 'error'); return false; }
   return true;
 }
 
-async function uploadFile(dipId,key,file){
-  const path=`${currentUser.id}/${dipId}/${key}/${Date.now()}_${file.name}`;
-  const{error}=await supa.storage.from(BUCKET).upload(path,file,{upsert:true});
-  if(error){showToast('Errore upload','error');return null;}
-  const{data}=supa.storage.from(BUCKET).getPublicUrl(path);
-  return{name:file.name,url:data.publicUrl,path,size:file.size};
+async function uploadFile(dipId, key, file) {
+  const path = `${currentUser.id}/${dipId}/${key}/${Date.now()}_${file.name}`;
+  const { error } = await supa.storage.from(BUCKET).upload(path, file, { upsert:true });
+  if(error) { showToast('Errore upload: '+error.message, 'error'); return null; }
+  const { data } = supa.storage.from(BUCKET).getPublicUrl(path);
+  return { name:file.name, url:data.publicUrl, path, size:file.size };
 }
-async function deleteFile(path){ await supa.storage.from(BUCKET).remove([path]); }
 
-// Filtri documenti
-document.getElementById('docFiltroStato').addEventListener('change',e=>{ddFilters.stato=e.target.value;renderDocModule();});
-document.getElementById('docFiltroAlert').addEventListener('change',e=>{ddFilters.alert=e.target.value;renderDocModule();});
-document.getElementById('docSearch').addEventListener('input',e=>{ddFilters.search=e.target.value;renderDocModule();});
+async function deleteFile(path) {
+  await supa.storage.from(BUCKET).remove([path]);
+}
+
+/* ── Filtri ── */
+document.getElementById('docFiltroStato').addEventListener('change', e => { ddFilters.stato=e.target.value; renderDocModule(); });
+document.getElementById('docFiltroAlert').addEventListener('change', e => { ddFilters.alert=e.target.value; renderDocModule(); });
+document.getElementById('docSearch').addEventListener('input',       e => { ddFilters.search=e.target.value; renderDocModule(); });
 
 </script>
 </body>
