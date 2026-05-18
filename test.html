@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8"/>
+<title>Test Supabase</title>
+<style>
+  body { font-family: monospace; background: #111; color: #eee; padding: 30px; font-size: 14px; }
+  .ok  { color: #22c55e; }
+  .err { color: #ef4444; }
+  .info{ color: #eab308; }
+  button { background: #f0630a; color: #fff; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; margin: 6px 4px; }
+  input  { background: #222; border: 1px solid #444; color: #eee; padding: 8px 12px; border-radius: 6px; width: 280px; font-size: 13px; }
+  #log   { margin-top: 20px; line-height: 2; }
+  .step  { margin: 4px 0; padding: 6px 10px; border-radius: 4px; background: #1a1a1a; }
+</style>
+</head>
+<body>
+
+<h2>🔧 CDL StipendiPro — Test connessione Supabase</h2>
+
+<div>
+  <input type="email" id="email" placeholder="tua email" value="carlo@settanta.eu"/>
+  <input type="password" id="pass" placeholder="password"/>
+</div>
+<br/>
+<button onclick="testConnessione()">1. Test connessione</button>
+<button onclick="testLogin()">2. Test login</button>
+<button onclick="testQuery()">3. Test query aziende</button>
+<button onclick="testInsert()">4. Test inserimento</button>
+<button id="btnClean" onclick="testClean()" style="background:#555">5. Pulisci test</button>
+
+<div id="log"></div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+const SUPA_URL  = 'https://soycftwgbksddmyvpolz.supabase.co';
+const SUPA_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNveWNmdHdnYmtzZGRteXZwb2x6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyMjI5MjQsImV4cCI6MjA5Mzc5ODkyNH0.evw_RrmCqIZxxK4ZRjB9iUttS1rBYGaW06-ZHuiqnl8';
+const supa = createClient(SUPA_URL, SUPA_ANON);
+
+const log = (msg, tipo='info') => {
+  const d = document.getElementById('log');
+  d.innerHTML += `<div class="step ${tipo}">${new Date().toLocaleTimeString()} — ${msg}</div>`;
+};
+
+window.testConnessione = async () => {
+  log('⏳ Test connessione a Supabase…');
+  try {
+    const resp = await fetch(SUPA_URL + '/rest/v1/', {
+      headers: { 'apikey': SUPA_ANON }
+    });
+    log(`✅ Supabase raggiungibile — status: ${resp.status}`, 'ok');
+  } catch(e) {
+    log('❌ Supabase NON raggiungibile: ' + e.message, 'err');
+  }
+};
+
+window.testLogin = async () => {
+  const email = document.getElementById('email').value.trim();
+  const pass  = document.getElementById('pass').value;
+  if (!email || !pass) { log('⚠ Inserisci email e password', 'err'); return; }
+  log(`⏳ Login con ${email}…`);
+  const { data, error } = await supa.auth.signInWithPassword({ email, password: pass });
+  if (error) {
+    log('❌ Login fallito: ' + error.message, 'err');
+  } else {
+    log(`✅ Login OK — user id: ${data.user.id}`, 'ok');
+    log(`✅ Token: ${data.session.access_token.slice(0,40)}…`, 'ok');
+  }
+};
+
+window.testQuery = async () => {
+  log('⏳ Query tabella aziende…');
+  const { data, error, status, statusText } = await supa.from('aziende').select('*');
+  if (error) {
+    log(`❌ Query fallita (${status} ${statusText}): ${error.message}`, 'err');
+    log('Dettaglio: ' + JSON.stringify(error), 'err');
+  } else {
+    log(`✅ Query OK — trovate ${data.length} aziende`, 'ok');
+    if (data.length > 0) log('Prima azienda: ' + JSON.stringify(data[0]), 'ok');
+  }
+};
+
+window.testInsert = async () => {
+  log('⏳ Inserimento azienda di test…');
+  const { data: userData } = await supa.auth.getUser();
+  if (!userData?.user) { log('❌ Non sei loggato — fai prima il Test Login', 'err'); return; }
+  const { data, error } = await supa.from('aziende').insert({
+    nome: 'TEST AZIENDA ' + Date.now(),
+    user_id: userData.user.id
+  }).select().single();
+  if (error) {
+    log(`❌ Insert fallito: ${error.message}`, 'err');
+    log('Dettaglio: ' + JSON.stringify(error), 'err');
+  } else {
+    log(`✅ Insert OK — id: ${data.id}`, 'ok');
+    window._testAzId = data.id;
+  }
+};
+
+window.testClean = async () => {
+  if (!window._testAzId) { log('Nessun dato di test da pulire', 'info'); return; }
+  await supa.from('aziende').delete().eq('id', window._testAzId);
+  log('✅ Dato di test eliminato', 'ok');
+};
+
+log('Pagina caricata. Clicca i bottoni in ordine.', 'info');
+</script>
+</body>
+</html>
