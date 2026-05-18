@@ -877,27 +877,37 @@ const ST = {
 /* ════════════════════════════ INIT ══ */
 async function init() {
   syncStatus('syncing','Caricamento…');
-  const lastAz   = localStorage.getItem('sp_lastAzienda')||'';
-  const lastMese = localStorage.getItem('sp_lastMese') || meseNow();
-  ST.meseSel = lastMese;
-  document.getElementById('selMese').value = lastMese;
-  await loadAziende();
-  if (lastAz && ST.aziende.find(a=>a.id===lastAz)) {
-    document.getElementById('selAzienda').value = lastAz;
-    await cambiaAzienda(lastAz);
-  } else {
-    syncStatus('offline','Nessuna azienda');
-    renderStipendi();
+  try {
+    const lastAz   = localStorage.getItem('sp_lastAzienda')||'';
+    const lastMese = localStorage.getItem('sp_lastMese') || meseNow();
+    ST.meseSel = lastMese;
+    document.getElementById('selMese').value = lastMese;
+    await loadAziende();
+    if (lastAz && ST.aziende.find(a=>a.id===lastAz)) {
+      document.getElementById('selAzienda').value = lastAz;
+      await cambiaAzienda(lastAz);
+    } else {
+      renderStipendi();
+    }
+    await loadDipDoc();
+    renderDocModule();
+    renderAziende();
+    syncStatus('synced','Sincronizzato ✓');
+  } catch(err) {
+    console.error('Init error:', err);
+    syncStatus('error','Errore connessione');
+    showToast('Errore: ' + err.message, 'error');
   }
-  await loadDipDoc();
-  renderDocModule();
-  renderAziende();
 }
 
 /* ════════════════════════════ AZIENDE ══ */
 async function loadAziende() {
   const { data, error } = await supa.from('aziende').select('*').eq('user_id', currentUser.id).order('nome');
-  if (error) { console.error(error); syncStatus('error','Errore caricamento aziende'); return; }
+  if (error) {
+    console.error('loadAziende error:', error);
+    showToast('Errore DB: ' + (error.message||JSON.stringify(error)), 'error');
+    throw error;
+  }
   ST.aziende = data || [];
   populateAziendaSelect();
   populateAziendaFilterDoc();
