@@ -798,28 +798,39 @@ const btnLogout = id => document.getElementById(id).addEventListener('click', as
 });
 btnLogout('btnLogout'); btnLogout('btnLogout2');
 
-/* Mostra login subito — viene nascosto solo se c'è sessione valida */
+/* ── Auth: controlla sessione esistente + ascolta cambiamenti ── */
 document.getElementById('loginOverlay').style.display = 'flex';
-document.getElementById('loginSubtitle').textContent = 'Accedi al tuo account';
 
-supa.auth.onAuthStateChange(async (event, session) => {
+async function avviaApp(user) {
+  currentUser = user;
+  document.getElementById('loginOverlay').classList.add('hide');
+  setTimeout(() => { document.getElementById('loginOverlay').style.display='none'; }, 500);
+  document.getElementById('appShell').classList.add('visible');
+  const em = user.email || '';
+  document.getElementById('userEmail').textContent = em.length > 22 ? em.slice(0,19)+'…' : em;
+  document.getElementById('userAvatar').textContent = iniziali(em.split('@')[0]);
+  document.getElementById('settingsEmail').textContent = em;
+  document.getElementById('supaEndpoint').textContent = SUPA_URL;
+  await init();
+}
+
+/* 1. Controlla subito se c'è già una sessione salvata */
+supa.auth.getSession().then(({ data: { session } }) => {
   if (session?.user) {
-    currentUser = session.user;
-    document.getElementById('loginOverlay').classList.add('hide');
-    setTimeout(() => { document.getElementById('loginOverlay').style.display='none'; }, 500);
-    document.getElementById('appShell').classList.add('visible');
-    const em = session.user.email || '';
-    document.getElementById('userEmail').textContent = em.length > 22 ? em.slice(0,19)+'…' : em;
-    document.getElementById('userAvatar').textContent = iniziali(em.split('@')[0]);
-    document.getElementById('settingsEmail').textContent = em;
-    document.getElementById('supaEndpoint').textContent = SUPA_URL;
-    await init();
-  } else {
-    /* Nessuna sessione — assicurati che il login sia visibile */
+    avviaApp(session.user);
+  }
+  /* se non c'è sessione il login è già visibile */
+});
+
+/* 2. Ascolta cambiamenti futuri (login/logout) */
+supa.auth.onAuthStateChange(async (event, session) => {
+  if (event === 'SIGNED_IN' && session?.user) {
+    avviaApp(session.user);
+  } else if (event === 'SIGNED_OUT') {
+    currentUser = null;
     document.getElementById('loginOverlay').classList.remove('hide');
     document.getElementById('loginOverlay').style.display = 'flex';
     document.getElementById('appShell').classList.remove('visible');
-    currentUser = null;
   }
 });
 
