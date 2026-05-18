@@ -4,1725 +4,1609 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>CDL StipendiPro</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
+/* ── RESET ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0f1117;--bg2:#161921;--bg3:#1e2230;--bg4:#252a3a;
-  --border:#2d3347;--border2:#3a4060;
-  --text:#e8eaf0;--text2:#9aa3c0;--text3:#5c6480;
-  --accent:#f0630a;--accent2:#ff8040;
-  --green:#22c55e;--green-dim:rgba(34,197,94,.12);
-  --yellow:#eab308;--yellow-dim:rgba(234,179,8,.1);
-  --red:#ef4444;--red-dim:rgba(239,68,68,.12);
-  --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif;
-  --r:6px;--r2:10px;--shadow:0 4px 24px rgba(0,0,0,.5);
+  --bg:       #0e1117;
+  --surface:  #1a1f2e;
+  --surface2: #222840;
+  --surface3: #2a3050;
+  --border:   #2f3555;
+  --border2:  #3d4575;
+  --text:     #e2e8f0;
+  --text2:    #94a3b8;
+  --text3:    #4a5580;
+  --accent:   #f97316;
+  --accent2:  #fb923c;
+  --green:    #22c55e;  --green-bg: rgba(34,197,94,.1);   --green-border: rgba(34,197,94,.25);
+  --yellow:   #eab308;  --yellow-bg:rgba(234,179,8,.1);   --yellow-border:rgba(234,179,8,.25);
+  --red:      #ef4444;  --red-bg:   rgba(239,68,68,.1);   --red-border:   rgba(239,68,68,.25);
+  --blue:     #3b82f6;  --blue-bg:  rgba(59,130,246,.1);
+  --mono: 'JetBrains Mono',monospace;
+  --sans: 'Inter',sans-serif;
+  --radius: 8px;
+  --radius-lg: 12px;
 }
 html,body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow:hidden}
-::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px}
 
-/* BASE */
-input,select,textarea{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-family:var(--sans);font-size:14px;padding:8px 12px;outline:none;transition:border-color .15s,box-shadow .15s;width:100%}
-input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(240,99,10,.15)}
-input::placeholder,textarea::placeholder{color:var(--text3)}
-input[type="number"]{font-family:var(--mono)}
-select option{background:var(--bg3)}
-textarea{resize:vertical;min-height:60px}
-.btn{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border-radius:var(--r);border:1px solid transparent;font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;white-space:nowrap}
-.btn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
-.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}.btn-primary:hover{background:var(--accent2)}
-.btn-ghost{background:transparent;color:var(--text2);border-color:var(--border)}.btn-ghost:hover{background:var(--bg3);color:var(--text);border-color:var(--border2)}
-.btn-danger{background:transparent;color:var(--red);border-color:rgba(239,68,68,.3)}.btn-danger:hover{background:var(--red-dim)}
+/* ── TYPOGRAPHY ── */
+h1{font-size:20px;font-weight:700}
+h2{font-size:16px;font-weight:600}
+h3{font-size:13px;font-weight:600}
+
+/* ── FORMS ── */
+input,select,textarea{
+  background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);
+  color:var(--text);font-family:var(--sans);font-size:13px;padding:8px 12px;
+  outline:none;transition:border-color .15s,box-shadow .15s;width:100%
+}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(249,115,22,.15)}
+input::placeholder{color:var(--text3)}
+input[type=number]{font-family:var(--mono)}
+select option{background:var(--surface2)}
+textarea{resize:vertical;min-height:72px}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 14px;border-radius:var(--radius);border:1px solid transparent;font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;white-space:nowrap;text-decoration:none}
+.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:var(--accent2)}
+.btn-ghost{background:transparent;color:var(--text2);border-color:var(--border)}.btn-ghost:hover{background:var(--surface2);color:var(--text);border-color:var(--border2)}
+.btn-danger{background:transparent;color:var(--red);border-color:var(--red-border)}.btn-danger:hover{background:var(--red-bg)}
 .btn-sm{padding:5px 10px;font-size:12px}
-.btn-icon{width:28px;height:28px;background:transparent;border:none;border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:14px;transition:all .12s}
-.btn-icon:hover{background:var(--bg4);color:var(--text)}.btn-icon.del:hover{background:var(--red-dim);color:var(--red)}
-.field-group{display:flex;flex-direction:column;gap:5px}
-.field-group label{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3)}
+.btn-xs{padding:3px 8px;font-size:11px}
+.btn-icon{width:28px;height:28px;padding:0;background:transparent;border:none;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;color:var(--text3);font-size:13px;transition:all .12s}
+.btn-icon:hover{background:var(--surface3);color:var(--text)}
+.btn-icon.danger:hover{background:var(--red-bg);color:var(--red)}
+
+/* ── LABELS / BADGES ── */
+.label{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;border:1px solid transparent}
+.label-green{background:var(--green-bg);color:var(--green);border-color:var(--green-border)}
+.label-yellow{background:var(--yellow-bg);color:var(--yellow);border-color:var(--yellow-border)}
+.label-red{background:var(--red-bg);color:var(--red);border-color:var(--red-border)}
+.label-blue{background:var(--blue-bg);color:var(--blue);border:1px solid rgba(59,130,246,.25)}
+.label-gray{background:var(--surface3);color:var(--text2);border-color:var(--border)}
+.label-accent{background:rgba(249,115,22,.12);color:var(--accent);border-color:rgba(249,115,22,.3)}
+
+/* ── LAYOUT UTILS ── */
+.flex{display:flex}.flex-col{display:flex;flex-direction:column}
+.items-center{align-items:center}.items-start{align-items:flex-start}
+.justify-between{justify-content:space-between}.justify-end{justify-content:flex-end}
+.gap-2{gap:8px}.gap-3{gap:12px}.gap-4{gap:16px}
+.flex-1{flex:1}.shrink-0{flex-shrink:0}
+.min-w-0{min-width:0}.w-full{width:100%}
+.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-size:11px;font-weight:500;color:var(--text3);letter-spacing:.04em;text-transform:uppercase}
 
-/* LOGIN */
-#loginOverlay{position:fixed;inset:0;z-index:99999;background:linear-gradient(135deg,#0f1117 0%,#1a1f2e 50%,#0f1117 100%);display:flex;align-items:center;justify-content:center;transition:opacity .5s,transform .5s}
-#loginOverlay.hide{opacity:0;transform:scale(1.04);pointer-events:none}
-.login-box{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:40px 36px;width:100%;max-width:380px;box-shadow:0 32px 80px rgba(0,0,0,.6);display:flex;flex-direction:column;align-items:center;gap:24px;animation:loginIn .5s cubic-bezier(.34,1.56,.64,1)}
-@keyframes loginIn{from{opacity:0;transform:translateY(24px) scale(.96)}to{opacity:1;transform:none}}
-.login-logo{width:64px;height:64px;border-radius:16px;background:var(--accent);color:#fff;font-family:var(--mono);font-size:24px;font-weight:600;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(240,99,10,.4)}
-.login-title{text-align:center}.login-title h1{font-size:22px;font-weight:700;margin-bottom:4px}.login-title p{font-size:13px;color:var(--text3)}
-.login-fields{width:100%;display:flex;flex-direction:column;gap:12px}
-.login-input-wrap{display:flex;align-items:center;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:0 14px;transition:border-color .15s,box-shadow .15s}
-.login-input-wrap:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(240,99,10,.18)}
-.login-input-wrap input{flex:1;background:transparent;border:none;outline:none;box-shadow:none!important;color:var(--text);font-size:14px;padding:12px 0;width:100%}
-.btn-eye{background:transparent;border:none;color:var(--text3);cursor:pointer;font-size:16px;padding:4px}
-.btn-login{width:100%;padding:14px;background:var(--accent);color:#fff;border:none;border-radius:var(--r2);font-family:var(--sans);font-size:15px;font-weight:700;cursor:pointer;transition:background .15s,transform .12s}
-.btn-login:hover{background:var(--accent2)}.btn-login:active{transform:scale(.97)}.btn-login:disabled{opacity:.5;cursor:not-allowed}
-.login-error{font-size:13px;color:var(--red);text-align:center;background:var(--red-dim);border:1px solid rgba(239,68,68,.25);border-radius:var(--r);padding:8px 16px;width:100%;display:none}
-.login-error.show{display:block;animation:shake .3s ease}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-.login-register-link{font-size:12px;color:var(--text3);text-align:center}
-.login-register-link a{color:var(--accent);cursor:pointer;text-decoration:none}
+/* ── CARD ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg)}
+.card:hover{border-color:var(--border2)}
+.card-header{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.card-body{padding:16px}
+.divider{height:1px;background:var(--border);margin:12px 0}
 
-/* SYNC */
-.sync-bar{display:flex;align-items:center;gap:8px;padding:5px 14px;border-radius:99px;font-size:11px;font-weight:500;transition:all .3s;flex-shrink:0}
-.sync-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.sync-bar.synced{background:var(--green-dim);color:var(--green);border:1px solid rgba(34,197,94,.25)}.sync-bar.synced .sync-dot{background:var(--green);box-shadow:0 0 6px var(--green)}
-.sync-bar.syncing{background:var(--yellow-dim);color:var(--yellow);border:1px solid rgba(234,179,8,.25)}.sync-bar.syncing .sync-dot{background:var(--yellow);animation:pulse 1s infinite}
-.sync-bar.error{background:var(--red-dim);color:var(--red);border:1px solid rgba(239,68,68,.25)}.sync-bar.error .sync-dot{background:var(--red)}
-.sync-bar.offline{background:var(--bg4);color:var(--text3);border:1px solid var(--border)}.sync-bar.offline .sync-dot{background:var(--text3)}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+/* ── LOGIN ── */
+#loginOverlay{
+  position:fixed;inset:0;z-index:9999;
+  background:radial-gradient(ellipse at 20% 50%, rgba(249,115,22,.06) 0%, transparent 60%),
+             radial-gradient(ellipse at 80% 20%, rgba(59,130,246,.04) 0%, transparent 50%),
+             var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity .4s,transform .4s
+}
+#loginOverlay.hide{opacity:0;transform:scale(1.03);pointer-events:none}
+.login-card{
+  background:var(--surface);border:1px solid var(--border2);border-radius:20px;
+  padding:40px 36px;width:100%;max-width:400px;
+  box-shadow:0 25px 60px rgba(0,0,0,.5),0 0 0 1px rgba(249,115,22,.08);
+  display:flex;flex-direction:column;gap:24px;
+  animation:fadeUp .5s cubic-bezier(.34,1.56,.64,1)
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
+.login-logo{
+  width:56px;height:56px;background:var(--accent);border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:20px;font-weight:700;color:#fff;
+  box-shadow:0 8px 20px rgba(249,115,22,.35)
+}
+.login-title h1{font-size:22px;margin-bottom:4px}
+.login-title p{font-size:13px;color:var(--text3)}
+.input-group{display:flex;align-items:center;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);transition:border-color .15s,box-shadow .15s}
+.input-group:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(249,115,22,.15)}
+.input-group input{background:transparent;border:none;box-shadow:none!important;flex:1;padding:11px 14px}
+.input-group input:focus{box-shadow:none!important}
+.btn-eye{background:none;border:none;color:var(--text3);cursor:pointer;padding:0 12px;font-size:15px}
+.btn-login{width:100%;padding:13px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);font-family:var(--sans);font-size:14px;font-weight:600;cursor:pointer;transition:background .15s,transform .1s;letter-spacing:.01em}
+.btn-login:hover{background:var(--accent2)}.btn-login:active{transform:scale(.98)}.btn-login:disabled{opacity:.5;cursor:not-allowed}
+.login-error{font-size:12px;color:var(--red);background:var(--red-bg);border:1px solid var(--red-border);border-radius:var(--radius);padding:8px 12px;display:none}
+.login-error.show{display:block;animation:shake .3s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.login-footer{font-size:12px;color:var(--text3);text-align:center}
+.login-footer a{color:var(--accent);cursor:pointer}
 
-/* APP SHELL */
-#appShell{display:none;flex-direction:column;height:100vh;overflow:hidden}
-#appShell.visible{display:flex}
+/* ── APP SHELL ── */
+#app{display:none;flex-direction:column;height:100vh}
+#app.show{display:flex}
 
-/* HEADER */
-.app-header{display:flex;align-items:center;gap:14px;padding:10px 20px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;z-index:50}
-.header-brand{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.brand-icon{width:36px;height:36px;background:var(--accent);color:#fff;font-family:var(--mono);font-weight:600;font-size:16px;border-radius:var(--r);display:flex;align-items:center;justify-content:center}
-.brand-name{font-weight:700;font-size:15px}.brand-sub{font-size:11px;color:var(--text3)}
-.header-sep{width:1px;height:30px;background:var(--border);flex-shrink:0}
-/* breadcrumb */
-.breadcrumb{display:flex;align-items:center;gap:8px;flex:1;font-size:13px;color:var(--text3);min-width:0}
-.bc-home{cursor:pointer;color:var(--text2);font-weight:500;white-space:nowrap;transition:color .15s}.bc-home:hover{color:var(--accent)}
-.bc-sep{color:var(--border2);flex-shrink:0}
-.bc-az{color:var(--accent);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.header-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.user-chip{display:flex;align-items:center;gap:8px;padding:5px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:99px;font-size:12px;color:var(--text2)}
-.user-avatar{width:22px;height:22px;background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;font-family:var(--mono)}
+/* ── TOPBAR ── */
+.topbar{
+  height:52px;background:var(--surface);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 20px;gap:14px;flex-shrink:0;z-index:50
+}
+.topbar-brand{display:flex;align-items:center;gap:9px;flex-shrink:0}
+.topbar-logo{width:30px;height:30px;background:var(--accent);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;font-weight:700;color:#fff}
+.topbar-name{font-weight:700;font-size:14px}
+.topbar-sep{width:1px;height:24px;background:var(--border);flex-shrink:0}
+.breadcrumb{display:flex;align-items:center;gap:6px;flex:1;font-size:13px;min-width:0}
+.bc-home{color:var(--text2);cursor:pointer;font-weight:500;transition:color .15s;white-space:nowrap}.bc-home:hover{color:var(--accent)}
+.bc-chevron{color:var(--border2);font-size:11px}
+.bc-current{color:var(--accent);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.sync-pill{display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:99px;font-size:11px;font-weight:500;border:1px solid transparent;transition:all .3s}
+.sync-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.sync-pill.ok{background:var(--green-bg);color:var(--green);border-color:var(--green-border)}.sync-pill.ok .sync-dot{background:var(--green);box-shadow:0 0 5px var(--green)}
+.sync-pill.loading{background:var(--yellow-bg);color:var(--yellow);border-color:var(--yellow-border)}.sync-pill.loading .sync-dot{background:var(--yellow);animation:blink 1s infinite}
+.sync-pill.error{background:var(--red-bg);color:var(--red);border-color:var(--red-border)}.sync-pill.error .sync-dot{background:var(--red)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.user-pill{display:flex;align-items:center;gap:7px;padding:4px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:99px;font-size:12px;color:var(--text2)}
+.user-av{width:20px;height:20px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;font-family:var(--mono)}
 
-/* ══════════════════════════════════ SCREEN SYSTEM ══ */
-.screen{display:none;flex:1;overflow:hidden;flex-direction:column}
+/* ── SCREENS ── */
+.screen{display:none;flex:1;overflow:hidden;flex-direction:column;min-height:0}
 .screen.active{display:flex}
 
-/* ══════════════════════════════════ SCREEN: HOME (AZIENDE) ══ */
-.home-toolbar{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid var(--border);background:var(--bg2);flex-shrink:0}
-.home-toolbar h2{font-size:16px;font-weight:600}
-.home-toolbar p{font-size:12px;color:var(--text3);margin-top:2px}
-.aziende-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;padding:24px;overflow-y:auto;flex:1;align-content:start}
-.az-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:18px;cursor:pointer;transition:border-color .2s,transform .15s,box-shadow .2s;position:relative}
-.az-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 32px rgba(240,99,10,.12)}
-.az-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
-.az-icon{width:40px;height:40px;background:var(--bg4);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.az-card-actions{display:flex;gap:4px;opacity:0;transition:opacity .15s}
-.az-card:hover .az-card-actions{opacity:1}
-.az-name{font-size:15px;font-weight:700;margin-bottom:4px;line-height:1.3}
-.az-sede{font-size:12px;color:var(--text3);line-height:1.5}
-.az-footer{display:flex;gap:16px;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
-.az-stat{display:flex;flex-direction:column;gap:2px}
-.az-stat-label{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--text3)}
-.az-stat-val{font-family:var(--mono);font-size:14px;font-weight:600}
-.az-alert-dot{width:8px;height:8px;border-radius:50%;background:var(--red);position:absolute;top:14px;right:14px;box-shadow:0 0 6px var(--red)}
-.az-card-new{border:2px dashed var(--border2);background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--text3);font-size:13px;min-height:140px}
-.az-card-new:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
-.az-card-new-icon{font-size:28px;opacity:.4}
+/* ════════════════════════════════ HOME SCREEN ══ */
+.home-bar{padding:20px 24px 16px;display:flex;align-items:flex-end;justify-content:space-between;flex-shrink:0}
+.home-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;padding:0 24px 24px;overflow-y:auto;flex:1;align-content:start}
 
-/* ══════════════════════════════════ SCREEN: AZIENDA (DETTAGLIO) ══ */
-/* Sotto-nav */
-.az-nav{display:flex;gap:2px;padding:0 20px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0}
-.az-tab{padding:11px 20px;font-size:13px;font-weight:500;color:var(--text3);border:none;background:transparent;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;font-family:var(--sans)}
-.az-tab:hover{color:var(--text2)}.az-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
-.az-content{flex:1;overflow:hidden;display:flex;flex-direction:column}
+/* Azienda card */
+.az-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
+  padding:20px;cursor:pointer;transition:border-color .2s,transform .15s,box-shadow .2s;
+  position:relative;overflow:hidden
+}
+.az-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);opacity:0;transition:opacity .2s}
+.az-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.az-card:hover::before{opacity:1}
+.az-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
+.az-icon{width:38px;height:38px;background:var(--surface3);border:1px solid var(--border2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px}
+.az-actions{display:flex;gap:3px;opacity:0;transition:opacity .15s}
+.az-card:hover .az-actions{opacity:1}
+.az-name{font-size:15px;font-weight:700;margin-bottom:3px;line-height:1.3}
+.az-meta{font-size:12px;color:var(--text3)}
+.az-stats{display:flex;gap:16px;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
+.az-stat label{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);display:block;margin-bottom:2px}
+.az-stat span{font-family:var(--mono);font-size:13px;font-weight:600}
+.az-new{border:2px dashed var(--border2);background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--text3);font-size:13px;min-height:140px}
+.az-new:hover{border-color:var(--accent);color:var(--accent)}
+.az-new-icon{font-size:24px;opacity:.5}
 
-/* ── STIPENDI ── */
-.stipendi-wrap{flex:1;display:flex;overflow:hidden}
-.stip-sidebar{width:240px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0}
-.sb-head{padding:12px 14px 8px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-.sb-head h3{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text2)}
-.sb-count{background:var(--bg4);color:var(--text2);font-family:var(--mono);font-size:11px;padding:2px 7px;border-radius:99px;border:1px solid var(--border)}
+/* ════════════════════════════════ AZIENDA SCREEN ══ */
+.az-tabs{display:flex;gap:2px;padding:0 20px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0}
+.az-tab{padding:11px 18px;font-size:13px;font-weight:500;color:var(--text3);background:transparent;border:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;font-family:var(--sans)}
+.az-tab:hover{color:var(--text2)}.az-tab.on{color:var(--accent);border-bottom-color:var(--accent)}
+.az-pane{flex:1;display:none;flex-direction:column;overflow:hidden;min-height:0}.az-pane.on{display:flex}
+
+/* ════════════ STIPENDI PANE ════════════ */
+.stip-layout{flex:1;display:flex;overflow:hidden}
+
+/* Sidebar */
+.stip-sidebar{
+  width:230px;background:var(--surface);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;overflow:hidden;flex-shrink:0
+}
+.sb-top{padding:12px;border-bottom:1px solid var(--border)}
+.sb-top .btn{width:100%}
 .sb-mese{padding:10px 12px;border-bottom:1px solid var(--border)}
-.sb-mese label{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:5px}
-.sb-mese input{padding:6px 10px;font-size:12px;font-family:var(--mono)}
-.sb-list{list-style:none;overflow-y:auto;flex:1;padding:4px 8px}
-.sb-item{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:var(--r);cursor:default;transition:background .12s;margin-bottom:2px;border:1px solid transparent}
-.sb-item:hover{background:var(--bg3)}
-.sb-item input[type="checkbox"]{width:14px;height:14px;flex-shrink:0;accent-color:var(--accent);cursor:pointer}
-.sb-item-info{flex:1;min-width:0}
-.sb-item-name{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sb-item-role{font-size:10px;color:var(--text3)}
-.sb-item-act{display:flex;gap:2px;opacity:0;transition:opacity .12s;flex-shrink:0}
-.sb-item:hover .sb-item-act{opacity:1}
-.stip-main{flex:1;display:flex;flex-direction:column;overflow:hidden}
-.stip-toolbar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--border);background:var(--bg2);flex-shrink:0;gap:8px;flex-wrap:wrap}
-.stip-toolbar-left{display:flex;align-items:baseline;gap:10px}
-.stip-month-label{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text3)}
-.stip-month-val{font-family:var(--mono);font-size:14px;font-weight:600;color:var(--accent)}
-.stip-toolbar-right{display:flex;gap:8px;flex-wrap:wrap}
-.totali-bar{display:flex;align-items:center;padding:8px 16px;background:var(--bg3);border-bottom:1px solid var(--border);flex-shrink:0;gap:0;flex-wrap:wrap}
-.tot-item{display:flex;flex-direction:column;gap:2px;padding:0 18px;border-right:1px solid var(--border)}
-.tot-item:first-child{padding-left:0}.tot-item:last-child{border-right:none}
-.tot-label{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--text3)}
-.tot-val{font-family:var(--mono);font-size:14px;font-weight:600}
-.cards-area{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:12px}
-/* emp card */
-.emp-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;transition:border-color .2s}
-.emp-card:hover{border-color:var(--border2)}
-.card-head{display:flex;align-items:center;padding:9px 14px;background:var(--bg3);border-bottom:1px solid var(--border);gap:10px}
-.card-num{font-family:var(--mono);font-size:10px;color:var(--text3);background:var(--bg4);padding:2px 7px;border-radius:99px;border:1px solid var(--border);flex-shrink:0}
-.card-name{font-weight:600;font-size:14px;flex:1}
-.card-role{font-size:11px;color:var(--text3)}
-.diff-badge{font-family:var(--mono);font-size:12px;font-weight:600;padding:3px 10px;border-radius:99px;border:1px solid transparent;flex-shrink:0}
-.diff-pos{background:var(--green-dim);color:var(--green);border-color:rgba(34,197,94,.25)}
-.diff-neg{background:var(--red-dim);color:var(--red);border-color:rgba(239,68,68,.25)}
-.diff-zero{background:var(--bg4);color:var(--text2);border-color:var(--border)}
-.card-body{display:grid;grid-template-columns:1fr 1fr 1fr}
-.card-sec{padding:12px 14px;border-right:1px solid var(--border)}.card-sec:last-child{border-right:none}
-.sec-title{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
-.calc-field{background:var(--bg4);border:1px solid var(--border);border-radius:var(--r);padding:7px 10px;font-family:var(--mono);font-size:14px;font-weight:600;color:var(--text);text-align:right;width:100%;margin-bottom:4px}
-.calc-field.positive{color:var(--green);border-color:rgba(34,197,94,.3);background:var(--green-dim)}
-.calc-field.negative{color:var(--red);border-color:rgba(239,68,68,.3);background:var(--red-dim)}
-.calc-label{font-size:10px;color:var(--text3);margin-bottom:5px}
-.bonus-list{display:flex;flex-direction:column;gap:5px;margin-bottom:6px}
-.bonus-row{display:flex;align-items:center;gap:5px}
-.bonus-row input{flex:1;font-family:var(--mono);font-size:12px;padding:5px 8px}
-.btn-rm{width:22px;height:22px;flex-shrink:0;background:transparent;border:1px solid rgba(239,68,68,.3);border-radius:4px;color:var(--red);cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center}
-.btn-rm:hover{background:var(--red-dim)}
-.btn-add-bonus{width:100%;background:transparent;border:1px dashed var(--border2);border-radius:var(--r);color:var(--text3);font-size:11px;padding:4px;cursor:pointer;transition:all .12s;font-family:var(--sans);display:flex;align-items:center;justify-content:center;gap:4px}
-.btn-add-bonus:hover{border-color:var(--accent);color:var(--accent);background:rgba(240,99,10,.05)}
-.bonus-total{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-top:5px;padding-top:5px;border-top:1px solid var(--border)}
-.bonus-total strong{font-family:var(--mono);font-size:12px;color:var(--text)}
-/* storico */
-.storico-panel{border-top:1px solid var(--border);padding:10px 12px;max-height:240px;overflow-y:auto;flex-shrink:0}
+.sb-mese label{font-size:10px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:5px}
+.sb-mese input{font-size:12px;font-family:var(--mono);padding:6px 10px}
+.sb-dip-list{overflow-y:auto;flex:1;padding:6px}
+.sb-dip{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:var(--radius);border:1px solid transparent;cursor:default;transition:background .12s;margin-bottom:1px}
+.sb-dip:hover{background:var(--surface2)}
+.sb-dip input[type=checkbox]{accent-color:var(--accent);width:14px;height:14px;flex-shrink:0;cursor:pointer}
+.sb-dip-info{flex:1;min-width:0}
+.sb-dip-name{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-dip-role{font-size:10px;color:var(--text3)}
+.sb-dip-act{display:flex;gap:2px;opacity:0;transition:opacity .12s}
+.sb-dip:hover .sb-dip-act{opacity:1}
+
+/* Storico panel */
+.storico-wrap{border-top:1px solid var(--border);padding:10px 12px;max-height:220px;overflow-y:auto;flex-shrink:0}
 .storico-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .storico-head h4{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--accent)}
-.storico-nome{font-weight:600;font-size:11px;color:var(--text2);margin-bottom:6px}
-.storico-entry{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:7px 10px;margin-bottom:5px}
-.storico-mese{font-family:var(--mono);font-size:10px;color:var(--accent);font-weight:600;margin-bottom:3px}
+.storico-entry{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;margin-bottom:5px}
+.storico-month{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent);margin-bottom:4px}
 .storico-row{display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:1px}
 .storico-row span:last-child{font-family:var(--mono);color:var(--text)}
 
-/* ── DOCUMENTI ── */
-.doc-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden}
-.doc-toolbar{display:flex;align-items:center;gap:8px;padding:10px 16px;border-bottom:1px solid var(--border);background:var(--bg2);flex-shrink:0;flex-wrap:wrap}
-.doc-filters{display:flex;gap:8px;flex:1;flex-wrap:wrap}
-.doc-filter-sel,.doc-search{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:12px;padding:6px 10px;outline:none;transition:border-color .15s;width:auto}
-.doc-filter-sel:focus,.doc-search:focus{border-color:var(--accent)}
-.doc-filter-sel{min-width:130px}.doc-search{min-width:160px}
-.doc-kpi{display:flex;gap:6px;padding:8px 16px;background:var(--bg3);border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap}
-.kpi-chip{display:flex;align-items:center;gap:6px;padding:4px 12px;border-radius:99px;font-size:11px;font-weight:600;border:1px solid transparent}
-.kpi-chip.ok{background:var(--green-dim);color:var(--green);border-color:rgba(34,197,94,.25)}
-.kpi-chip.warn{background:var(--yellow-dim);color:var(--yellow);border-color:rgba(234,179,8,.25)}
-.kpi-chip.err{background:var(--red-dim);color:var(--red);border-color:rgba(239,68,68,.25)}
-.kpi-chip.neutral{background:var(--bg4);color:var(--text2);border-color:var(--border)}
-.kpi-num{font-family:var(--mono);font-size:13px}
-.doc-list{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
-/* emp doc card */
-.emp-doc-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
-.emp-doc-head{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;background:var(--bg3);border-bottom:1px solid transparent;transition:border-color .15s}
-.emp-doc-card.open .emp-doc-head{border-bottom-color:var(--border)}
-.emp-avatar{width:32px;height:32px;border-radius:8px;background:var(--accent);color:#fff;font-family:var(--mono);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.emp-doc-info{flex:1;min-width:0}
-.emp-doc-name{font-size:13px;font-weight:600}
-.emp-doc-meta{font-size:11px;color:var(--text3);display:flex;gap:8px;margin-top:2px}
-.emp-doc-badges{display:flex;gap:4px;flex-wrap:wrap}
-.badge-ok{background:var(--green-dim);color:var(--green);border:1px solid rgba(34,197,94,.2);font-size:10px;padding:2px 7px;border-radius:99px;font-weight:600}
-.badge-warn{background:var(--yellow-dim);color:var(--yellow);border:1px solid rgba(234,179,8,.2);font-size:10px;padding:2px 7px;border-radius:99px;font-weight:600}
-.badge-err{background:var(--red-dim);color:var(--red);border:1px solid rgba(239,68,68,.2);font-size:10px;padding:2px 7px;border-radius:99px;font-weight:600}
-.badge-na{background:var(--bg4);color:var(--text3);border:1px solid var(--border);font-size:10px;padding:2px 7px;border-radius:99px;font-weight:600}
-.chevron{color:var(--text3);transition:transform .2s;font-size:11px;flex-shrink:0}
-.emp-doc-card.open .chevron{transform:rotate(180deg)}
-.emp-doc-body{display:none;padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.emp-doc-card:not(.open) .emp-doc-body{display:none}
-.emp-doc-card.open .emp-doc-body{display:grid}
-.doc-section-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:12px}
-.doc-section-title{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
-.doc-field-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border)}
-.doc-field-row:last-of-type{border-bottom:none}
-.doc-field-label{font-size:12px;color:var(--text2);flex:1;min-width:0}
-.doc-field-actions{display:flex;align-items:center;gap:5px;flex-shrink:0}
-.doc-field-actions input[type="date"]{width:125px;padding:4px 7px;font-size:11px}
-.doc-field-actions select{width:auto;padding:4px 7px;font-size:11px;min-width:105px}
-.expiry-ok{border-color:rgba(34,197,94,.4)!important;color:var(--green)!important}
-.expiry-warn{border-color:rgba(234,179,8,.4)!important;color:var(--yellow)!important}
-.expiry-expired{border-color:rgba(239,68,68,.4)!important;color:var(--red)!important}
-.file-list{padding:4px 0 2px 6px}
-.file-item{display:flex;align-items:center;gap:5px;padding:2px 0}
-.file-link{font-size:11px;color:var(--text2);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;text-decoration:none}.file-link:hover{color:var(--accent)}
-.file-size{font-size:10px;color:var(--text3);font-family:var(--mono)}
-.file-del{background:transparent;border:none;color:var(--text3);cursor:pointer;font-size:11px;padding:1px 4px;border-radius:3px}.file-del:hover{color:var(--red)}
-.contract-full{grid-column:1/-1;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:12px}
-.contract-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:8px}
-.contract-grid .field-group input,.contract-grid .field-group select{padding:6px 8px;font-size:12px}
-.alert-banner{display:flex;align-items:center;gap:8px;padding:7px 14px;border-radius:var(--r);font-size:12px;font-weight:500;margin-bottom:3px}
-.alert-banner.red{background:var(--red-dim);color:var(--red);border:1px solid rgba(239,68,68,.25)}
-.alert-banner.yellow{background:var(--yellow-dim);color:var(--yellow);border:1px solid rgba(234,179,8,.25)}
+/* Main stipendi */
+.stip-main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.stip-toolbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px;border-bottom:1px solid var(--border);background:var(--surface);
+  flex-shrink:0;gap:8px;flex-wrap:wrap
+}
+.stip-month{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--accent)}
+.stip-actions{display:flex;gap:6px;flex-wrap:wrap}
 
-/* SETTINGS */
-.settings-wrap{flex:1;overflow-y:auto;padding:24px}
-.settings-section{max-width:560px;margin-bottom:24px}
-.settings-section h3{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
-.settings-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:16px;display:flex;flex-direction:column;gap:12px}
-.info-box{font-size:12px;color:var(--text3);line-height:1.6;background:var(--bg3);padding:10px 14px;border-radius:var(--r);border:1px solid var(--border)}
+/* Summary bar */
+.summary-bar{
+  display:flex;padding:0;background:var(--surface2);
+  border-bottom:1px solid var(--border);flex-shrink:0
+}
+.summary-item{flex:1;padding:10px 16px;border-right:1px solid var(--border)}
+.summary-item:last-child{border-right:none}
+.summary-label{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);margin-bottom:3px}
+.summary-value{font-family:var(--mono);font-size:15px;font-weight:600}
+
+/* Employee cards */
+.cards-scroll{flex:1;overflow-y:auto;padding:14px}
+.emp-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
+  margin-bottom:12px;overflow:hidden;transition:border-color .2s
+}
+.emp-card:hover{border-color:var(--border2)}
+.emp-card-header{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;background:var(--surface2);border-bottom:1px solid var(--border)
+}
+.emp-num{font-family:var(--mono);font-size:10px;background:var(--surface3);color:var(--text3);padding:2px 7px;border-radius:99px;border:1px solid var(--border);flex-shrink:0}
+.emp-name{font-weight:600;font-size:14px;flex:1}
+.emp-role{font-size:11px;color:var(--text3)}
+.diff-pill{font-family:var(--mono);font-size:12px;font-weight:600;padding:3px 10px;border-radius:99px;border:1px solid transparent;flex-shrink:0}
+.diff-pos{background:var(--green-bg);color:var(--green);border-color:var(--green-border)}
+.diff-neg{background:var(--red-bg);color:var(--red);border-color:var(--red-border)}
+.diff-zero{background:var(--surface3);color:var(--text2);border-color:var(--border)}
+.emp-card-grid{display:grid;grid-template-columns:1fr 1fr 1fr}
+.emp-col{padding:12px 14px;border-right:1px solid var(--border)}
+.emp-col:last-child{border-right:none}
+.col-label{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
+.calc-box{
+  background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);
+  padding:7px 10px;font-family:var(--mono);font-size:14px;font-weight:600;
+  color:var(--text);text-align:right;width:100%;margin-bottom:4px
+}
+.calc-box.pos{color:var(--green);border-color:var(--green-border);background:var(--green-bg)}
+.calc-box.neg{color:var(--red);border-color:var(--red-border);background:var(--red-bg)}
+.input-label{font-size:10px;color:var(--text3);margin-bottom:5px}
+.bonus-list{display:flex;flex-direction:column;gap:4px;margin-bottom:6px}
+.bonus-row{display:flex;gap:5px;align-items:center}
+.bonus-row input{flex:1;font-family:var(--mono);font-size:12px;padding:5px 8px}
+.btn-rm-bonus{width:22px;height:22px;flex-shrink:0;background:transparent;border:1px solid var(--red-border);border-radius:5px;color:var(--red);cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;transition:background .12s}
+.btn-rm-bonus:hover{background:var(--red-bg)}
+.btn-add-bonus{
+  width:100%;background:transparent;border:1px dashed var(--border2);
+  border-radius:var(--radius);color:var(--text3);font-size:11px;padding:4px;
+  cursor:pointer;transition:all .12s;font-family:var(--sans);
+  display:flex;align-items:center;justify-content:center;gap:4px
+}
+.btn-add-bonus:hover{border-color:var(--accent);color:var(--accent);background:rgba(249,115,22,.05)}
+.bonus-total{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-top:5px;padding-top:5px;border-top:1px solid var(--border)}
+.bonus-total strong{font-family:var(--mono);font-size:12px;color:var(--text)}
+
+/* ════════════ DOCUMENTI PANE ════════════ */
+/* doc pane layout fix */
+#pane-documenti{min-height:0;overflow:hidden}
+.doc-toolbar{
+  display:flex;align-items:center;gap:8px;padding:10px 16px;
+  border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0;flex-wrap:wrap
+}
+.doc-search{width:180px;font-size:12px;padding:6px 10px}
+.doc-select{font-size:12px;padding:6px 10px;width:auto;min-width:130px}
+.kpi-bar{display:flex;gap:6px;padding:8px 16px;background:var(--surface2);border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap}
+.kpi{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:99px;font-size:11px;font-weight:600;border:1px solid transparent}
+.kpi.total{background:var(--surface3);color:var(--text2);border-color:var(--border)}
+.kpi.ok{background:var(--green-bg);color:var(--green);border-color:var(--green-border)}
+.kpi.warn{background:var(--yellow-bg);color:var(--yellow);border-color:var(--yellow-border)}
+.kpi.crit{background:var(--red-bg);color:var(--red);border-color:var(--red-border)}
+.kpi-num{font-family:var(--mono);font-size:12px}
+.doc-list{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;min-height:0}
+
+/* Doc employee card */
+.doc-emp-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);transition:border-color .2s}
+.doc-emp-card:hover{border-color:var(--border2)}
+.doc-emp-header{
+  display:flex;align-items:center;gap:10px;padding:12px 14px;
+  cursor:pointer;user-select:none;background:var(--surface2);
+  border-bottom:1px solid transparent;transition:border-color .15s
+}
+.doc-emp-card.open .doc-emp-header{border-bottom-color:var(--border)}
+.emp-av{
+  width:34px;height:34px;border-radius:9px;background:var(--accent);
+  color:#fff;font-family:var(--mono);font-size:13px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0
+}
+.doc-emp-info{flex:1;min-width:0}
+.doc-emp-name{font-size:13px;font-weight:600}
+.doc-emp-meta{font-size:11px;color:var(--text3);display:flex;gap:8px;margin-top:2px;flex-wrap:wrap}
+.doc-badges{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+.chevron{font-size:11px;color:var(--text3);transition:transform .2s;flex-shrink:0}
+.doc-emp-card.open .chevron{transform:rotate(180deg)}
+
+/* Alerts strip */
+.alerts-strip{padding:6px 14px;display:flex;flex-direction:column;gap:3px;border-bottom:1px solid var(--border)}
+.alert-row{display:flex;align-items:center;gap:8px;padding:5px 10px;border-radius:6px;font-size:12px;font-weight:500}
+.alert-row.crit{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
+.alert-row.warn{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-border)}
+
+/* Doc body */
+.doc-emp-body{display:none;padding:14px;grid-template-columns:1fr 1fr;gap:12px}
+.doc-emp-card.open .doc-emp-body{display:grid}
+.doc-emp-card.open{overflow:visible}
+.doc-section{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px}
+.doc-section-title{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.doc-section.full{grid-column:1/-1}
+.doc-row{display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)}
+.doc-row:last-of-type{border-bottom:none;padding-bottom:0}
+.doc-row-label{font-size:12px;color:var(--text2);flex:1;padding-top:2px}
+.doc-row-controls{display:flex;align-items:center;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
+.exp-date{width:130px;font-size:11px;padding:5px 8px}
+.exp-date.ok{border-color:var(--green-border)!important;color:var(--green)!important}
+.exp-date.warn{border-color:var(--yellow-border)!important;color:var(--yellow)!important}
+.exp-date.crit{border-color:var(--red-border)!important;color:var(--red)!important}
+.doc-status-sel{font-size:11px;padding:5px 8px;width:auto;min-width:105px}
+.exp-info{font-size:10px;margin-top:2px;text-align:right}
+.upload-btn{position:relative;overflow:hidden;cursor:pointer}
+.upload-btn input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.file-list{margin-top:4px;display:flex;flex-direction:column;gap:2px}
+.file-item{display:flex;align-items:center;gap:6px;padding:3px 6px;background:var(--surface3);border-radius:5px;font-size:11px}
+.file-name{flex:1;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;text-decoration:none}.file-name:hover{color:var(--accent)}
+.file-size{color:var(--text3);font-family:var(--mono);font-size:10px}
+.ai-badge{font-size:9px;background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);padding:1px 5px;border-radius:99px;font-weight:600}
+.file-del{background:none;border:none;color:var(--text3);cursor:pointer;padding:1px 4px;border-radius:3px;font-size:11px}.file-del:hover{color:var(--red)}
+
+/* Contract grid */
+.contract-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+.contract-grid input,.contract-grid select{font-size:12px;padding:6px 8px}
+
+/* ════════════ SETTINGS SCREEN ════════════ */
+.settings-scroll{flex:1;overflow-y:auto;padding:24px}
+.settings-max{max-width:520px;display:flex;flex-direction:column;gap:20px}
+.settings-section h3{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.info-box{font-size:12px;color:var(--text3);line-height:1.7;background:var(--surface2);padding:10px 12px;border-radius:var(--radius);border:1px solid var(--border)}
 .info-box strong{color:var(--text2)}
 
-/* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px}
-.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r2);width:100%;max-width:480px;box-shadow:var(--shadow);animation:modalIn .18s ease;max-height:90vh;display:flex;flex-direction:column}
+/* ════════════ MODAL ════════════ */
+.modal-wrap{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(4px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px}
+.modal{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-lg);width:100%;max-width:460px;box-shadow:0 20px 50px rgba(0,0,0,.5);animation:modalIn .18s ease;max-height:90vh;display:flex;flex-direction:column}
 .modal-wide{max-width:860px}
 @keyframes modalIn{from{opacity:0;transform:scale(.96) translateY(8px)}to{opacity:1;transform:none}}
-.modal-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);flex-shrink:0}
-.modal-head h3{font-size:15px;font-weight:600}
-.modal-close{background:transparent;border:none;color:var(--text3);cursor:pointer;font-size:16px;padding:4px 8px;border-radius:4px}.modal-close:hover{background:var(--bg3);color:var(--text)}
-.modal-body{padding:18px;display:flex;flex-direction:column;gap:13px;overflow-y:auto;flex:1}
-.modal-foot{padding:12px 18px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;flex-shrink:0}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border)}
+.modal-head h3{font-size:14px;font-weight:600}
+.modal-x{background:none;border:none;color:var(--text3);cursor:pointer;font-size:16px;padding:4px 8px;border-radius:5px}.modal-x:hover{background:var(--surface2);color:var(--text)}
+.modal-body{padding:18px;display:flex;flex-direction:column;gap:12px;overflow-y:auto;flex:1}
+.modal-foot{padding:12px 18px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px}
 
-/* REPORT */
-.report-preview{overflow-y:auto;flex:1;padding:16px;background:var(--bg)}
-.report-a4{background:#fff;color:#1a1a1a;padding:28px 32px;max-width:820px;margin:0 auto;font-family:'IBM Plex Sans',sans-serif;font-size:12px;border-radius:4px}
-.report-az-name{font-size:18px;font-weight:700;margin-bottom:4px}
+/* ════════════ REPORT ════════════ */
+.report-wrap{overflow-y:auto;flex:1;padding:16px;background:var(--bg)}
+.report-page{background:#fff;color:#1a1a1a;padding:28px 32px;max-width:820px;margin:0 auto;font-size:12px;border-radius:4px}
+.report-page h2{font-size:18px;font-weight:700;margin-bottom:4px;color:#111}
 .report-meta{font-size:11px;color:#666;margin-bottom:10px;display:flex;gap:16px}
-.report-mese-badge{display:inline-block;background:#f0630a;color:#fff;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;padding:3px 12px;border-radius:99px}
-.report-table{width:100%;border-collapse:collapse;margin-top:16px;font-size:11px}
-.report-table th{background:#f5f5f5;padding:7px 10px;text-align:right;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:#444;border-bottom:2px solid #ddd}
+.report-month{display:inline-block;background:#f97316;color:#fff;font-size:11px;font-weight:600;padding:3px 12px;border-radius:99px;margin-bottom:16px}
+.report-table{width:100%;border-collapse:collapse;font-size:11px}
+.report-table th{background:#f5f5f5;padding:7px 10px;text-align:right;font-weight:700;font-size:10px;text-transform:uppercase;color:#555;border-bottom:2px solid #ddd}
 .report-table th:first-child{text-align:left}
-.report-table td{padding:7px 10px;text-align:right;border-bottom:1px solid #eee;font-family:'IBM Plex Mono',monospace}
-.report-table td:first-child{text-align:left;font-family:'IBM Plex Sans',sans-serif;font-weight:500}
-.report-table tfoot td{font-weight:700;border-top:2px solid #ddd;background:#f9f9f9}
-.report-td-pos{color:#16a34a;font-weight:700}.report-td-neg{color:#dc2626;font-weight:700}
-.report-footer{margin-top:20px;padding-top:12px;border-top:1px solid #ddd;display:flex;justify-content:space-between;font-size:10px;color:#888}
+.report-table td{padding:7px 10px;text-align:right;border-bottom:1px solid #eee;font-family:'JetBrains Mono',monospace}
+.report-table td:first-child{text-align:left;font-family:'Inter',sans-serif;font-weight:500}
+.report-table tfoot td{font-weight:700;border-top:2px solid #ccc;background:#f9f9f9}
+.td-pos{color:#16a34a;font-weight:700}.td-neg{color:#dc2626;font-weight:700}
+.report-footer{margin-top:20px;padding-top:10px;border-top:1px solid #ddd;display:flex;justify-content:space-between;font-size:10px;color:#999}
 
-/* PDF IMPORT */
-.pdf-drop{border:2px dashed var(--border2);border-radius:var(--r2);padding:24px;text-align:center;cursor:pointer;transition:all .2s;position:relative}
-.pdf-drop:hover,.pdf-drop.drag-over{border-color:var(--accent);background:rgba(240,99,10,.04)}
+/* ════════════ PDF MODAL ════════════ */
+.pdf-drop{border:2px dashed var(--border2);border-radius:var(--radius-lg);padding:24px;text-align:center;cursor:pointer;transition:all .2s;position:relative}
+.pdf-drop:hover,.pdf-drop.over{border-color:var(--accent);background:rgba(249,115,22,.04)}
 .pdf-drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.pdf-file-sel{display:flex;align-items:center;gap:10px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:10px 14px}
-.pdf-file-name{flex:1;font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ai-status{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:var(--r);font-size:13px}
-.ai-status.loading{background:var(--yellow-dim);color:var(--yellow);border:1px solid rgba(234,179,8,.25)}
-.ai-status.success{background:var(--green-dim);color:var(--green);border:1px solid rgba(34,197,94,.25)}
-.ai-status.error{background:var(--red-dim);color:var(--red);border:1px solid rgba(239,68,68,.25)}
-.ai-spinner{width:14px;height:14px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+.pdf-file-bar{display:flex;align-items:center;gap:10px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px}
+.ai-status{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:var(--radius);font-size:13px}
+.ai-status.loading{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-border)}
+.ai-status.ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.ai-status.error{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
+.ai-spin{width:13px;height:13px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
 @keyframes spin{to{transform:rotate(360deg)}}
-.ai-result-row{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);margin-bottom:5px}
+.ai-result{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:4px;flex-direction:column}
+.ai-result-row{display:flex;align-items:center;gap:8px;width:100%}
 .ai-result-info{flex:1;min-width:0}
 .ai-result-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ai-result-detail{font-size:11px;color:var(--text3)}
+.ai-result-sub{font-size:11px;color:var(--text3)}
 .ai-result-amount{font-family:var(--mono);font-size:14px;font-weight:600;flex-shrink:0}
+.ai-bonus-row{display:flex;justify-content:space-between;font-size:12px;padding-left:24px}
 
-/* EMPTY STATE */
-.empty-state{text-align:center;padding:60px 20px;color:var(--text3);margin:auto}
-.empty-icon{font-size:40px;margin-bottom:12px;opacity:.3}
-.empty-state p{font-size:13px;line-height:1.8}
-
-/* TOAST */
-.toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:10px 18px;background:var(--bg4);color:var(--text);border:1px solid var(--border);border-radius:var(--r2);font-size:13px;font-weight:500;opacity:0;transform:translateY(8px);transition:all .25s;pointer-events:none;box-shadow:var(--shadow)}
+/* ════════════ TOAST ════════════ */
+.toast{position:fixed;bottom:20px;right:20px;z-index:9999;padding:10px 16px;background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:var(--radius-lg);font-size:13px;font-weight:500;opacity:0;transform:translateY(6px);transition:all .22s;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.3)}
 .toast.show{opacity:1;transform:translateY(0)}
-.toast.success{background:var(--green-dim);color:var(--green);border-color:rgba(34,197,94,.3)}
-.toast.error{background:var(--red-dim);color:var(--red);border-color:rgba(239,68,68,.3)}
+.toast.ok{background:var(--green-bg);color:var(--green);border-color:var(--green-border)}
+.toast.err{background:var(--red-bg);color:var(--red);border-color:var(--red-border)}
+
+/* ════════════ EMPTY ════════════ */
+.empty{text-align:center;padding:60px 20px;color:var(--text3);flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.empty-icon{font-size:36px;margin-bottom:12px;opacity:.25}
+.empty p{font-size:13px;line-height:1.8}
 </style>
 </head>
 <body>
 
 <!-- LOGIN -->
 <div id="loginOverlay">
-  <div class="login-box">
-    <div class="login-logo">SP</div>
-    <div class="login-title"><h1>CDL StipendiPro</h1><p id="loginSubtitle">Accedi al tuo account</p></div>
-    <div class="login-fields">
-      <div class="field-group"><label>Email</label>
-        <div class="login-input-wrap"><input type="email" id="loginEmail" placeholder="email@esempio.it" autocomplete="email"/></div>
+  <div class="login-card">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="login-logo">SP</div>
+      <div class="login-title"><h1>CDL StipendiPro</h1><p>Gestione stipendi e documenti</p></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="field"><label>Email</label>
+        <div class="input-group"><input type="email" id="loginEmail" placeholder="email@esempio.it" autocomplete="email"/></div>
       </div>
-      <div class="field-group"><label>Password</label>
-        <div class="login-input-wrap">
+      <div class="field"><label>Password</label>
+        <div class="input-group">
           <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password"/>
           <button class="btn-eye" id="btnEye">👁</button>
         </div>
       </div>
-      <div class="login-error" id="loginError">Credenziali non valide.</div>
+      <div class="login-error" id="loginError"></div>
       <button class="btn-login" id="btnLogin">Accedi</button>
-      <div class="login-register-link">Non hai un account? <a id="toggleRegister">Registrati</a></div>
+      <div class="login-footer">Non hai un account? <a id="toggleReg">Registrati</a></div>
     </div>
   </div>
 </div>
 
 <!-- APP -->
-<div id="appShell">
-
-  <!-- HEADER -->
-  <header class="app-header">
-    <div class="header-brand">
-      <div class="brand-icon">SP</div>
-      <div><div class="brand-name">CDL StipendiPro</div><div class="brand-sub">by Carlo De Luca</div></div>
+<div id="app">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-brand">
+      <div class="topbar-logo">SP</div>
+      <span class="topbar-name">CDL StipendiPro</span>
     </div>
-    <div class="header-sep"></div>
+    <div class="topbar-sep"></div>
     <div class="breadcrumb">
-      <span class="bc-home" id="bcHome">🏠 Le mie aziende</span>
-      <span class="bc-sep" id="bcSep" style="display:none">›</span>
-      <span class="bc-az" id="bcAz" style="display:none"></span>
+      <span class="bc-home" id="bcHome">🏠 Aziende</span>
+      <span class="bc-chevron" id="bcChev" style="display:none">›</span>
+      <span class="bc-current" id="bcCurrent" style="display:none"></span>
     </div>
-    <div class="header-right">
-      <div class="sync-bar synced" id="syncBar"><div class="sync-dot"></div><span id="syncLabel">Pronto</span></div>
-      <div class="user-chip"><div class="user-avatar" id="userAvatar">?</div><span id="userEmail">—</span></div>
+    <div class="topbar-right">
+      <div class="sync-pill ok" id="syncPill"><div class="sync-dot"></div><span id="syncLabel">Pronto</span></div>
+      <div class="user-pill"><div class="user-av" id="userAv">?</div><span id="userEmail">—</span></div>
       <button class="btn btn-ghost btn-sm" id="btnSettings">⚙</button>
       <button class="btn btn-ghost btn-sm" id="btnLogout">Esci</button>
     </div>
-  </header>
+  </div>
 
   <!-- SCREEN: HOME -->
   <div class="screen active" id="screen-home">
-    <div class="home-toolbar">
-      <div><h2>Le mie aziende</h2><p>Clicca su un'azienda per gestire stipendi e documenti</p></div>
-      <button class="btn btn-primary btn-sm" id="btnNuovaAz">
-        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Nuova azienda
-      </button>
+    <div class="home-bar">
+      <div><h2>Le mie aziende</h2><p style="font-size:12px;color:var(--text3);margin-top:2px">Clicca su un'azienda per gestire stipendi e documenti</p></div>
+      <button class="btn btn-primary btn-sm" id="btnNewAz">+ Nuova azienda</button>
     </div>
-    <div class="aziende-grid" id="aziendeGrid"></div>
+    <div class="home-grid" id="homeGrid"></div>
   </div>
 
   <!-- SCREEN: AZIENDA -->
   <div class="screen" id="screen-az">
-    <nav class="az-nav">
-      <button class="az-tab active" data-aztab="stipendi">💰 Stipendi</button>
-      <button class="az-tab" data-aztab="documenti">📋 Documenti</button>
-    </nav>
-    <div class="az-content">
-
-      <!-- TAB: STIPENDI -->
-      <div class="az-tab-content active" id="aztab-stipendi">
-        <div class="stipendi-wrap">
-          <!-- Sidebar -->
-          <aside class="stip-sidebar">
-            <div class="sb-head"><h3>Dipendenti</h3><span class="sb-count" id="sbCount">0</span></div>
-            <div class="sb-mese">
-              <label>Mese di riferimento</label>
-              <input type="month" id="selMese"/>
-            </div>
-            <div style="padding:8px 12px;border-bottom:1px solid var(--border)">
-              <button class="btn btn-primary btn-sm" style="width:100%;justify-content:center" id="btnAddDip">
-                <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Aggiungi dipendente
-              </button>
-            </div>
-            <ul class="sb-list" id="sbList"></ul>
-            <div class="storico-panel" id="storicoPanel" style="display:none">
-              <div class="storico-head">
-                <h4>Storico</h4>
-                <button class="btn-icon del" id="btnCloseStorico" style="width:20px;height:20px;font-size:10px">✕</button>
-              </div>
-              <div id="storicoContent"></div>
-            </div>
-          </aside>
-          <!-- Main -->
-          <div class="stip-main">
-            <div class="stip-toolbar">
-              <div class="stip-toolbar-left">
-                <span class="stip-month-label">Mese</span>
-                <span class="stip-month-val" id="toolbarMonth">—</span>
-              </div>
-              <div class="stip-toolbar-right">
-                <button class="btn btn-ghost btn-sm" id="btnDuplicaMese">
-                  <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Duplica mese
-                </button>
-                <button class="btn btn-ghost btn-sm" id="btnImportPDF">
-                  <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Importa PDF
-                </button>
-                <button class="btn btn-ghost btn-sm" id="btnReport">
-                  <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Report
-                </button>
-                <button class="btn btn-primary btn-sm" id="btnSalvaMese">
-                  <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Salva
-                </button>
-              </div>
-            </div>
-            <div class="totali-bar">
-              <div class="tot-item"><div class="tot-label">Attivi</div><div class="tot-val" id="totAttivi">0</div></div>
-              <div class="tot-item"><div class="tot-label">Lordo totale</div><div class="tot-val" id="totLordo">€ 0,00</div></div>
-              <div class="tot-item"><div class="tot-label">Buste paga</div><div class="tot-val" id="totBuste">€ 0,00</div></div>
-              <div class="tot-item"><div class="tot-label">Differenza</div><div class="tot-val" id="totDiff">€ 0,00</div></div>
-            </div>
-            <div class="cards-area" id="cardsArea">
-              <div class="empty-state" id="emptyStip"><div class="empty-icon">💰</div><p>Spunta un dipendente dalla lista<br>per iniziare ad inserire i dati.</p></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- TAB: DOCUMENTI -->
-      <div class="az-tab-content" id="aztab-documenti" style="display:none;flex:1;flex-direction:column;overflow:hidden">
-        <div class="doc-wrap">
-          <div class="doc-toolbar">
-            <div class="doc-filters">
-              <select class="doc-filter-sel" id="docFiltroStato">
-                <option value="">Tutti gli stati</option>
-                <option value="attivo">Attivi</option>
-                <option value="sospeso">Sospesi</option>
-                <option value="terminato">Terminati</option>
-              </select>
-              <select class="doc-filter-sel" id="docFiltroAlert">
-                <option value="">Tutti</option>
-                <option value="missing">Doc. mancanti</option>
-                <option value="expiring">In scadenza</option>
-                <option value="expired">Scaduti</option>
-              </select>
-              <input type="text" class="doc-search" id="docSearch" placeholder="Cerca dipendente…"/>
-            </div>
-          </div>
-          <div class="doc-kpi" id="docKpi">
-            <div class="kpi-chip neutral"><span class="kpi-num" id="kpiTot">0</span> totali</div>
-            <div class="kpi-chip ok"><span class="kpi-num" id="kpiOk">0</span> completi</div>
-            <div class="kpi-chip warn"><span class="kpi-num" id="kpiWarn">0</span> in scadenza</div>
-            <div class="kpi-chip err"><span class="kpi-num" id="kpiErr">0</span> critici</div>
-          </div>
-          <div class="doc-list" id="docList">
-            <div class="empty-state" id="emptyDoc"><div class="empty-icon">📋</div><p>Nessun dipendente.<br>Aggiungili dalla tab Stipendi.</p></div>
-          </div>
-        </div>
-      </div>
-
+    <div class="az-tabs">
+      <button class="az-tab on"  data-tab="stipendi">💰 Stipendi</button>
+      <button class="az-tab"     data-tab="documenti">📋 Documenti</button>
     </div>
+
+    <!-- PANE: STIPENDI -->
+    <div class="az-pane on" id="pane-stipendi">
+      <div class="stip-layout">
+        <!-- Sidebar -->
+        <div class="stip-sidebar">
+          <div class="sb-top">
+            <button class="btn btn-primary btn-sm" id="btnAddDip">+ Aggiungi dipendente</button>
+          </div>
+          <div class="sb-mese">
+            <label>Mese di riferimento</label>
+            <input type="month" id="selMese"/>
+          </div>
+          <ul class="sb-dip-list" id="sbList" style="list-style:none"></ul>
+          <!-- Storico -->
+          <div class="storico-wrap" id="storicoWrap" style="display:none">
+            <div class="storico-head">
+              <h4>Storico</h4>
+              <button class="btn-icon danger" id="btnChiudiStorico" style="font-size:11px;width:18px;height:18px">✕</button>
+            </div>
+            <div id="storicoBody"></div>
+          </div>
+        </div>
+        <!-- Main -->
+        <div class="stip-main">
+          <div class="stip-toolbar">
+            <div class="flex items-center gap-2">
+              <span style="font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--text3)">Mese</span>
+              <span class="stip-month" id="stipMonth">—</span>
+            </div>
+            <div class="stip-actions">
+              <button class="btn btn-ghost btn-sm" id="btnDuplica">📋 Duplica mese</button>
+              <button class="btn btn-ghost btn-sm" id="btnImportPdf">📄 Importa PDF</button>
+              <button class="btn btn-ghost btn-sm" id="btnReport">📊 Report</button>
+              <button class="btn btn-primary btn-sm" id="btnSalva">💾 Salva</button>
+            </div>
+          </div>
+          <div class="summary-bar">
+            <div class="summary-item"><div class="summary-label">Attivi</div><div class="summary-value" id="sumAttivi">0</div></div>
+            <div class="summary-item"><div class="summary-label">Lordo totale</div><div class="summary-value" id="sumLordo">€ 0,00</div></div>
+            <div class="summary-item"><div class="summary-label">Buste paga</div><div class="summary-value" id="sumBuste">€ 0,00</div></div>
+            <div class="summary-item"><div class="summary-label">Differenza</div><div class="summary-value" id="sumDiff">€ 0,00</div></div>
+          </div>
+          <div class="cards-scroll" id="cardsScroll">
+            <div class="empty" id="emptyStip"><div class="empty-icon">💰</div><p>Spunta un dipendente dalla lista<br>per inserire i dati mensili.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANE: DOCUMENTI -->
+    <div class="az-pane" id="pane-documenti">
+      <!-- toolbar -->
+      <div class="doc-toolbar">
+        <div style="flex:1;display:flex;gap:8px;flex-wrap:wrap">
+          <select class="doc-select" id="docFiltroStato">
+            <option value="">Tutti gli stati</option>
+            <option value="attivo">Attivi</option>
+            <option value="sospeso">Sospesi</option>
+            <option value="terminato">Terminati</option>
+          </select>
+          <select class="doc-select" id="docFiltroAlert">
+            <option value="">Tutti</option>
+            <option value="missing">Documenti mancanti</option>
+            <option value="expiring">In scadenza (30gg)</option>
+            <option value="expired">Scaduti</option>
+          </select>
+          <input type="text" class="doc-search" id="docSearch" placeholder="Cerca dipendente…"/>
+        </div>
+        <div class="kpi-bar" style="padding:0;background:transparent;border:none;flex-shrink:0;flex-wrap:wrap">
+          <div class="kpi total"><span class="kpi-num" id="kpiTot">0</span> totali</div>
+          <div class="kpi ok"><span class="kpi-num" id="kpiOk">0</span> ok</div>
+          <div class="kpi warn"><span class="kpi-num" id="kpiWarn">0</span> scadenza</div>
+          <div class="kpi crit"><span class="kpi-num" id="kpiCrit">0</span> critici</div>
+        </div>
+      </div>
+      <!-- two-col layout -->
+      <div style="flex:1;display:flex;overflow:hidden;min-height:0">
+        <!-- LEFT: dipendenti list -->
+        <div style="width:280px;flex-shrink:0;border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden">
+          <div style="padding:10px 12px;border-bottom:1px solid var(--border);font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3)">Dipendenti</div>
+          <div id="docDipList" style="overflow-y:auto;flex:1;padding:6px"></div>
+        </div>
+        <!-- RIGHT: detail panel -->
+        <div style="flex:1;overflow-y:auto;min-width:0" id="docDetailPanel">
+          <div class="empty" style="height:100%">
+            <div class="empty-icon">👆</div>
+            <p>Seleziona un dipendente<br>per vedere i documenti.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
   </div>
 
   <!-- SCREEN: SETTINGS -->
   <div class="screen" id="screen-settings">
-    <div class="settings-wrap">
-      <div class="settings-section">
-        <h3>API Keys</h3>
-        <div class="settings-card">
-          <div class="info-box">Le chiavi vengono salvate <strong>solo nel tuo browser</strong>. Non vengono mai trasmesse a server CDL.</div>
-          <div class="field-group">
-            <label>Anthropic API Key (per PDF buste paga)</label>
-            <input type="password" id="cfgAnthropicKey" placeholder="sk-ant-api03-…" style="font-family:monospace;font-size:12px"/>
-            <div style="font-size:11px;color:var(--text3);margin-top:4px">Necessaria per il modulo Importa PDF · <a href="https://console.anthropic.com/api-keys" target="_blank" style="color:var(--accent)">Ottieni chiave →</a></div>
-          </div>
-          <button class="btn btn-primary btn-sm" id="btnSaveApiKey">💾 Salva chiave</button>
-        </div>
-      </div>
-      <div class="settings-section">
-        <h3>Account</h3>
-        <div class="settings-card">
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
-            <div><div style="font-size:13px;color:var(--text2)" id="settingsEmail">—</div><div style="font-size:11px;color:var(--text3)">Account attivo</div></div>
-            <button class="btn btn-danger btn-sm" id="btnLogout2">Esci</button>
+    <div class="settings-scroll">
+      <div class="settings-max">
+        <div class="settings-section">
+          <h3>API Anthropic</h3>
+          <div class="card card-body" style="display:flex;flex-direction:column;gap:12px">
+            <div class="info-box">La chiave viene salvata <strong>solo nel tuo browser</strong>. Serve per il modulo AI (importa PDF buste paga + lettura automatica documenti).</div>
+            <div class="field"><label>Anthropic API Key</label><input type="password" id="cfgKey" placeholder="sk-ant-api03-…" style="font-family:monospace;font-size:12px"/></div>
+            <div><button class="btn btn-primary btn-sm" id="btnSaveKey">Salva chiave</button></div>
           </div>
         </div>
-      </div>
-      <div class="settings-section">
-        <h3>Supabase</h3>
-        <div class="settings-card">
-          <div class="info-box">Endpoint: <strong id="supaEndpoint">—</strong><br>Tutti i dati sono sincronizzati in tempo reale con Supabase.</div>
+        <div class="settings-section">
+          <h3>Account</h3>
+          <div class="card card-body" style="display:flex;align-items:center;justify-content:space-between">
+            <div><div style="font-size:13px" id="settEmail">—</div><div style="font-size:11px;color:var(--text3);margin-top:2px">Account attivo</div></div>
+            <button class="btn btn-danger btn-sm" id="btnLogout2">Disconnetti</button>
+          </div>
+        </div>
+        <div class="settings-section">
+          <h3>Database</h3>
+          <div class="card card-body"><div class="info-box">Endpoint Supabase: <strong id="settEndpoint">—</strong><br>Tutti i dati sono sincronizzati in cloud.</div></div>
         </div>
       </div>
     </div>
   </div>
-
-</div><!-- /appShell -->
+</div>
 
 <!-- MODALS -->
 
-<!-- Modal: Aggiungi/Modifica Dipendente -->
-<div class="modal-overlay" id="modalDip" style="display:none">
+<!-- Modal Azienda -->
+<div class="modal-wrap" id="mAzienda" style="display:none">
   <div class="modal">
-    <div class="modal-head"><h3 id="modalDipTitle">Aggiungi dipendente</h3><button class="modal-close" onclick="closeModal('modalDip')">✕</button></div>
+    <div class="modal-head"><h3 id="mAzTitle">Nuova azienda</h3><button class="modal-x" onclick="closeM('mAzienda')">✕</button></div>
     <div class="modal-body">
-      <div class="field-group"><label>Nome e cognome *</label><input type="text" id="dipNome" placeholder="Es. Mario Rossi"/></div>
+      <div class="field"><label>Nome azienda *</label><input type="text" id="azNome" placeholder="Es. Excelsior Napoli S.r.l."/></div>
+      <div class="field"><label>Sede / Indirizzo</label><input type="text" id="azSede" placeholder="Es. Via Roma 1, Napoli"/></div>
       <div class="grid-2">
-        <div class="field-group"><label>Mansione</label><input type="text" id="dipMansione" placeholder="Es. Barista"/></div>
-        <div class="field-group"><label>Stato</label>
+        <div class="field"><label>Partita IVA</label><input type="text" id="azPiva" placeholder="12345678901"/></div>
+        <div class="field"><label>Referente</label><input type="text" id="azRef" placeholder="Mario Rossi"/></div>
+      </div>
+      <div class="field"><label>Note</label><textarea id="azNote" placeholder="Note opzionali…"></textarea></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeM('mAzienda')">Annulla</button>
+      <button class="btn btn-primary" id="btnSaveAz">Salva</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Dipendente -->
+<div class="modal-wrap" id="mDip" style="display:none">
+  <div class="modal">
+    <div class="modal-head"><h3 id="mDipTitle">Aggiungi dipendente</h3><button class="modal-x" onclick="closeM('mDip')">✕</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Nome e cognome *</label><input type="text" id="dipNome" placeholder="Mario Rossi"/></div>
+      <div class="grid-2">
+        <div class="field"><label>Mansione</label><input type="text" id="dipMansione" placeholder="Barista, Cameriere…"/></div>
+        <div class="field"><label>Stato</label>
           <select id="dipStato"><option value="attivo">Attivo</option><option value="sospeso">Sospeso</option><option value="terminato">Terminato</option></select>
         </div>
       </div>
       <div class="grid-2">
-        <div class="field-group"><label>Data assunzione</label><input type="date" id="dipAssunzione"/></div>
-        <div class="field-group"><label>Note</label><input type="text" id="dipNote" placeholder="Note…"/></div>
+        <div class="field"><label>Data assunzione</label><input type="date" id="dipAssunzione"/></div>
+        <div class="field"><label>Note</label><input type="text" id="dipNote" placeholder="Note…"/></div>
       </div>
     </div>
     <div class="modal-foot">
-      <button class="btn btn-ghost" onclick="closeModal('modalDip')">Annulla</button>
-      <button class="btn btn-primary" id="btnConfirmDip">Aggiungi</button>
+      <button class="btn btn-ghost" onclick="closeM('mDip')">Annulla</button>
+      <button class="btn btn-primary" id="btnSaveDip">Salva</button>
     </div>
   </div>
 </div>
 
-<!-- Modal: Nuova/Modifica Azienda -->
-<div class="modal-overlay" id="modalAzienda" style="display:none">
-  <div class="modal">
-    <div class="modal-head"><h3 id="modalAzTitle">Nuova azienda</h3><button class="modal-close" onclick="closeModal('modalAzienda')">✕</button></div>
-    <div class="modal-body">
-      <div class="field-group"><label>Nome azienda *</label><input type="text" id="azNome" placeholder="Es. Excelsior Napoli S.r.l."/></div>
-      <div class="field-group"><label>Sede / Indirizzo</label><input type="text" id="azSede" placeholder="Es. Via Roma 1 – Napoli"/></div>
-      <div class="grid-2">
-        <div class="field-group"><label>P. IVA</label><input type="text" id="azPiva" placeholder="Es. 12345678901"/></div>
-        <div class="field-group"><label>Referente</label><input type="text" id="azRef" placeholder="Es. Mario Rossi"/></div>
-      </div>
-      <div class="field-group"><label>Note</label><textarea id="azNote" placeholder="Note opzionali…"></textarea></div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn btn-ghost" onclick="closeModal('modalAzienda')">Annulla</button>
-      <button class="btn btn-primary" id="btnConfirmAz">Salva</button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal: Report -->
-<div class="modal-overlay" id="modalReport" style="display:none">
+<!-- Modal Report -->
+<div class="modal-wrap" id="mReport" style="display:none">
   <div class="modal modal-wide" style="height:88vh">
     <div class="modal-head">
       <h3>Report mensile</h3>
       <div style="display:flex;gap:8px;align-items:center">
-        <button class="btn btn-primary btn-sm" id="btnStampa">🖨 Stampa / PDF</button>
-        <button class="modal-close" onclick="closeModal('modalReport')">✕</button>
+        <button class="btn btn-primary btn-sm" id="btnPrint">🖨 Stampa</button>
+        <button class="modal-x" onclick="closeM('mReport')">✕</button>
       </div>
     </div>
-    <div class="report-preview"><div id="reportContent" class="report-a4"></div></div>
+    <div class="report-wrap"><div id="reportContent" class="report-page"></div></div>
   </div>
 </div>
 
-<!-- Modal: PDF Import -->
-<div class="modal-overlay" id="modalPDF" style="display:none">
+<!-- Modal PDF -->
+<div class="modal-wrap" id="mPdf" style="display:none">
   <div class="modal" style="max-width:560px">
-    <div class="modal-head"><h3>📄 Importa PDF buste paga</h3><button class="modal-close" onclick="closeModal('modalPDF')">✕</button></div>
+    <div class="modal-head"><h3>📄 Importa PDF buste paga</h3><button class="modal-x" onclick="closeM('mPdf')">✕</button></div>
     <div class="modal-body">
-      <div class="info-box">Carica il PDF del consulente. L'AI leggerà tutte le buste paga e compilerà automaticamente i campi per ogni dipendente trovato.</div>
+      <div class="info-box">Carica il PDF del consulente. L'AI legge le buste paga e compila automaticamente <strong>busta paga effettiva</strong> e <strong>bonus</strong> per ogni dipendente trovato.</div>
       <div class="pdf-drop" id="pdfDrop">
-        <input type="file" id="pdfFileInput" accept=".pdf"/>
-        <div style="font-size:28px;margin-bottom:8px">📂</div>
-        <div style="font-size:13px;font-weight:500;color:var(--text2)">Trascina il PDF qui oppure clicca</div>
+        <input type="file" id="pdfInput" accept=".pdf"/>
+        <div style="font-size:26px;margin-bottom:8px">📂</div>
+        <div style="font-size:13px;font-weight:500;color:var(--text2)">Trascina il PDF qui o clicca per selezionare</div>
         <div style="font-size:11px;color:var(--text3);margin-top:4px">Solo file .pdf</div>
       </div>
-      <div id="pdfFileInfo" style="display:none">
-        <div class="pdf-file-sel">
-          <span style="font-size:20px">📄</span>
-          <span class="pdf-file-name" id="pdfFileName">—</span>
-          <button style="background:transparent;border:none;color:var(--text3);cursor:pointer;font-size:14px;padding:2px 6px" id="pdfFileClear">✕</button>
+      <div id="pdfFileSel" style="display:none">
+        <div class="pdf-file-bar">
+          <span style="font-size:18px">📄</span>
+          <span style="flex:1;font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="pdfFileName"></span>
+          <button style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px" id="pdfClear">✕</button>
         </div>
       </div>
-      <div id="aiStatusBox" style="display:none"></div>
-      <div id="aiResultsBox" style="display:none">
-        <div style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:8px">Risultati abbinamento</div>
-        <div id="aiResultsList"></div>
+      <div id="pdfAiStatus" style="display:none"></div>
+      <div id="pdfResults" style="display:none">
+        <div style="font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:8px">Risultati abbinamento</div>
+        <div id="pdfResultsList"></div>
       </div>
     </div>
     <div class="modal-foot">
-      <button class="btn btn-ghost" onclick="closeModal('modalPDF')">Chiudi</button>
-      <button class="btn btn-ghost btn-sm" id="btnAnalizzaPDF" style="display:none">🔍 Analizza e compila</button>
-      <button class="btn btn-primary" id="btnApplicaRisultati" style="display:none">✓ Applica risultati</button>
+      <button class="btn btn-ghost" onclick="closeM('mPdf')">Chiudi</button>
+      <button class="btn btn-ghost btn-sm" id="btnAnalizza" style="display:none">🔍 Analizza</button>
+      <button class="btn btn-primary" id="btnApplica" style="display:none">✓ Applica</button>
     </div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
-<!-- ═══════════════════════════ SCRIPT ═══════════════════════════ -->
+<!-- ═══════════════════════ SCRIPT ═══════════════════════ -->
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
 const SUPA_URL  = 'https://soycftwgbksddmyvpolz.supabase.co';
-const SUPA_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNveWNmdHdnYmtzZGRteXZwb2x6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyMjI5MjQsImV4cCI6MjA5Mzc5ODkyNH0.evw_RrmCqIZxxK4ZRjB9iUttS1rBYGaW06-ZHuiqnl8';
-const supa = createClient(SUPA_URL, SUPA_ANON);
-const BUCKET = 'documenti-dipendenti';
+const SUPA_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNveWNmdHdnYmtzZGRteXZwb2x6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyMjI5MjQsImV4cCI6MjA5Mzc5ODkyNH0.evw_RrmCqIZxxK4ZRjB9iUttS1rBYGaW06-ZHuiqnl8';
+const BUCKET    = 'documenti-dipendenti';
+const supa      = createClient(SUPA_URL, SUPA_KEY);
 
-/* ── utils ── */
-const esc    = s => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-const euro   = n => (parseFloat(n)||0).toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2});
-const uid    = () => crypto.randomUUID();
-const meseNow= () => new Date().toISOString().slice(0,7);
-const iniziali=n => (n||'').split(' ').map(p=>p[0]||'').join('').slice(0,2).toUpperCase();
-const formatMese = m => { if(!m)return'—'; const[y,mo]=m.split('-'); return new Date(+y,+mo-1,1).toLocaleDateString('it-IT',{month:'long',year:'numeric'}); };
+/* ── Utilities ── */
+const $ = id => document.getElementById(id);
+const esc = s => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const euro = n => (parseFloat(n)||0).toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2});
+const uid = () => crypto.randomUUID();
+const nowMonth = () => new Date().toISOString().slice(0,7);
+const initials = n => (n||'').split(' ').map(p=>p[0]||'').join('').slice(0,2).toUpperCase();
+const fmtMonth = m => { if(!m)return'—'; const[y,mo]=m.split('-'); return new Date(+y,+mo-1,1).toLocaleDateString('it-IT',{month:'long',year:'numeric'}); };
 
-function showToast(msg,type=''){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.className=`toast show${type?' '+type:''}`;
-  clearTimeout(t._t); t._t=setTimeout(()=>{t.className='toast';},3200);
+function toast(msg, type='') {
+  const t=$('toast'); t.textContent=msg; t.className=`toast show${type?' '+type:''}`;
+  clearTimeout(t._t); t._t=setTimeout(()=>t.className='toast',3200);
 }
-window.closeModal = id => document.getElementById(id).style.display='none';
-function openModal(id){ document.getElementById(id).style.display='flex'; }
-document.querySelectorAll('.modal-overlay').forEach(el=>{
-  el.addEventListener('click',e=>{ if(e.target===el) el.style.display='none'; });
-});
-function syncStatus(s,t){ const b=document.getElementById('syncBar'); b.className=`sync-bar ${s}`; document.getElementById('syncLabel').textContent=t; }
+window.closeM = id => $(id).style.display='none';
+const openM = id => $(id).style.display='flex';
+document.querySelectorAll('.modal-wrap').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)el.style.display='none';}));
 
-/* ════════════════════ STATO ════════════════════ */
-let currentUser = null;
-const ST = {
-  aziende: [],
-  currentAz: null,       // azienda aperta
-  dipendenti: [],        // dipendenti dell'azienda corrente (unico anagrafico)
-  datiMese: {},          // { dip_id: { attivo, lordo_base, bonus_malus, busta_paga } }
-  meseSel: meseNow(),
-  saveTimer: null,
-  editAzId: null,
-  editDipId: null,
+function sync(state,label){
+  const p=$('syncPill'); p.className=`sync-pill ${state}`; $('syncLabel').textContent=label;
+}
+
+/* ── State ── */
+let ME = null;
+const S = {
+  aziende:    [],
+  currentAz:  null,
+  dipendenti: [],
+  datiMese:   {},
+  meseSel:    nowMonth(),
+  saveTimer:  null,
+  editAzId:   null,
+  editDipId:  null,
 };
 
-/* ════════════════════ SCREENS ════════════════════ */
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById('screen-'+id).classList.add('active');
-}
-
-/* ════════════════════ AUTH ════════════════════ */
+/* ═══════════════════ AUTH ═══════════════════ */
 document.getElementById('loginOverlay').style.display='flex';
 
-async function avviaApp(user){
-  currentUser=user;
-  document.getElementById('loginOverlay').classList.add('hide');
-  setTimeout(()=>document.getElementById('loginOverlay').style.display='none',500);
-  document.getElementById('appShell').classList.add('visible');
-  const em=user.email||'';
-  document.getElementById('userEmail').textContent=em.length>22?em.slice(0,19)+'…':em;
-  document.getElementById('userAvatar').textContent=iniziali(em.split('@')[0]);
-  document.getElementById('settingsEmail').textContent=em;
-  document.getElementById('supaEndpoint').textContent=SUPA_URL;
-  document.getElementById('cfgAnthropicKey').value=localStorage.getItem('cdl_anthropic_key')||'';
-  await init();
+async function startApp(user) {
+  ME = user;
+  $('loginOverlay').classList.add('hide');
+  setTimeout(()=>$('loginOverlay').style.display='none',450);
+  $('app').classList.add('show');
+  const em = user.email||'';
+  $('userEmail').textContent = em.length>22 ? em.slice(0,19)+'…' : em;
+  $('userAv').textContent    = initials(em.split('@')[0]);
+  $('settEmail').textContent = em;
+  $('settEndpoint').textContent = SUPA_URL;
+  $('cfgKey').value = localStorage.getItem('cdl_anthropic_key')||'';
+  await boot();
 }
 
-supa.auth.getSession().then(({data:{session}})=>{ if(session?.user) avviaApp(session.user); });
-supa.auth.onAuthStateChange(async(event,session)=>{
-  if(event==='SIGNED_IN'&&session?.user) avviaApp(session.user);
-  else if(event==='SIGNED_OUT'){ currentUser=null; document.getElementById('loginOverlay').style.display='flex'; document.getElementById('loginOverlay').classList.remove('hide'); document.getElementById('appShell').classList.remove('visible'); }
+supa.auth.getSession().then(({data:{session}})=>{ if(session?.user) startApp(session.user); });
+supa.auth.onAuthStateChange((ev,session)=>{
+  if(ev==='SIGNED_IN'&&session?.user) startApp(session.user);
+  else if(ev==='SIGNED_OUT'){ ME=null; $('loginOverlay').style.display='flex'; $('loginOverlay').classList.remove('hide'); $('app').classList.remove('show'); }
 });
 
 let isReg=false;
-document.getElementById('btnEye').addEventListener('click',()=>{ const i=document.getElementById('loginPassword'); i.type=i.type==='password'?'text':'password'; });
-document.getElementById('toggleRegister').addEventListener('click',()=>{
+$('btnEye').onclick = () => { const i=$('loginPassword'); i.type=i.type==='password'?'text':'password'; };
+$('toggleReg').onclick = () => {
   isReg=!isReg;
-  document.getElementById('loginSubtitle').textContent=isReg?'Crea il tuo account':'Accedi al tuo account';
-  document.getElementById('btnLogin').textContent=isReg?'Registrati':'Accedi';
-  document.getElementById('toggleRegister').textContent=isReg?'Accedi':'Registrati';
-  document.querySelector('.login-register-link').firstChild.textContent=isReg?'Hai già un account? ':'Non hai un account? ';
-  document.getElementById('loginError').classList.remove('show');
-});
-document.getElementById('loginPassword').addEventListener('keydown',e=>{ if(e.key==='Enter') document.getElementById('btnLogin').click(); });
-document.getElementById('loginEmail').addEventListener('keydown',e=>{ if(e.key==='Enter') document.getElementById('loginPassword').focus(); });
-document.getElementById('btnLogin').addEventListener('click',async()=>{
-  const email=document.getElementById('loginEmail').value.trim();
-  const pass=document.getElementById('loginPassword').value;
-  const btn=document.getElementById('btnLogin');
-  const errEl=document.getElementById('loginError');
-  errEl.classList.remove('show');
+  $('loginOverlay').querySelector('.login-title p').textContent = isReg?'Crea il tuo account':'Gestione stipendi e documenti';
+  $('btnLogin').textContent = isReg?'Registrati':'Accedi';
+  $('toggleReg').textContent = isReg?'Accedi':'Registrati';
+  $('loginOverlay').querySelector('.login-footer').firstChild.textContent = isReg?'Hai già un account? ':'Non hai un account? ';
+  $('loginError').classList.remove('show');
+};
+$('loginPassword').onkeydown = e=>{ if(e.key==='Enter') $('btnLogin').click(); };
+$('loginEmail').onkeydown = e=>{ if(e.key==='Enter') $('loginPassword').focus(); };
+$('btnLogin').onclick = async () => {
+  const email=$('loginEmail').value.trim(), pass=$('loginPassword').value;
+  const errEl=$('loginError'); errEl.classList.remove('show');
   if(!email||!pass){errEl.textContent='Compila tutti i campi.';errEl.classList.add('show');return;}
-  btn.disabled=true; btn.textContent=isReg?'Registrazione…':'Accesso…';
-  const{error}=isReg?await supa.auth.signUp({email,password:pass}):await supa.auth.signInWithPassword({email,password:pass});
-  btn.disabled=false; btn.textContent=isReg?'Registrati':'Accedi';
+  $('btnLogin').disabled=true; $('btnLogin').textContent=isReg?'Registrazione…':'Accesso…';
+  const {error} = isReg ? await supa.auth.signUp({email,password:pass}) : await supa.auth.signInWithPassword({email,password:pass});
+  $('btnLogin').disabled=false; $('btnLogin').textContent=isReg?'Registrati':'Accedi';
   if(error){errEl.textContent=error.message;errEl.classList.add('show');}
-});
-['btnLogout','btnLogout2'].forEach(id=>document.getElementById(id).addEventListener('click',async()=>{ await supa.auth.signOut(); }));
+};
+['btnLogout','btnLogout2'].forEach(id=>$(id).onclick=async()=>await supa.auth.signOut());
 
-/* ════════════════════ SETTINGS ════════════════════ */
-document.getElementById('btnSettings').addEventListener('click',()=>showScreen('settings'));
-document.getElementById('btnSaveApiKey').addEventListener('click',()=>{
-  const v=document.getElementById('cfgAnthropicKey').value.trim();
-  if(v){localStorage.setItem('cdl_anthropic_key',v);showToast('Chiave salvata ✓','success');}
-  else{localStorage.removeItem('cdl_anthropic_key');showToast('Chiave rimossa');}
-});
+/* ═══════════════════ SETTINGS ═══════════════════ */
+$('btnSettings').onclick = () => showScreen('settings');
+$('btnSaveKey').onclick = () => {
+  const v=$('cfgKey').value.trim();
+  if(v){localStorage.setItem('cdl_anthropic_key',v);toast('Chiave salvata ✓','ok');}
+  else{localStorage.removeItem('cdl_anthropic_key');toast('Chiave rimossa');}
+};
 
-/* ════════════════════ BREADCRUMB / NAV ════════════════════ */
-document.getElementById('bcHome').addEventListener('click',()=>tornaHome());
-function tornaHome(){
-  ST.currentAz=null; ST.dipendenti=[]; ST.datiMese={};
-  document.getElementById('bcSep').style.display='none';
-  document.getElementById('bcAz').style.display='none';
-  showScreen('home');
-  renderAziende();
+/* ═══════════════════ SCREENS ═══════════════════ */
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(`screen-${id}`).classList.add('active');
 }
-function apriAzienda(az){
-  ST.currentAz=az;
-  document.getElementById('bcSep').style.display='';
-  document.getElementById('bcAz').style.display='';
-  document.getElementById('bcAz').textContent=az.nome;
+$('bcHome').onclick = () => goHome();
+
+function goHome() {
+  S.currentAz=null; S.dipendenti=[]; S.datiMese={};
+  $('bcChev').style.display='none'; $('bcCurrent').style.display='none';
+  showScreen('home'); renderHome();
+}
+
+function openAzienda(az) {
+  S.currentAz=az;
+  $('bcChev').style.display=''; $('bcCurrent').style.display='';
+  $('bcCurrent').textContent=az.nome;
   showScreen('az');
-  // Reset tab to stipendi
-  document.querySelectorAll('.az-tab').forEach(t=>t.classList.remove('active'));
-  document.querySelector('[data-aztab="stipendi"]').classList.add('active');
-  document.querySelectorAll('.az-tab-content').forEach(c=>c.style.display='none');
-  document.getElementById('aztab-stipendi').style.display='flex';
-  loadAziendaData();
+  // reset to stipendi tab
+  document.querySelectorAll('.az-tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.az-pane').forEach(p=>p.classList.remove('on'));
+  document.querySelector('[data-tab="stipendi"]').classList.add('on');
+  $('pane-stipendi').classList.add('on');
+  loadAzData();
 }
 
-/* az tabs */
 document.querySelectorAll('.az-tab').forEach(tab=>{
-  tab.addEventListener('click',()=>{
-    document.querySelectorAll('.az-tab').forEach(t=>t.classList.remove('active'));
-    tab.classList.add('active');
-    document.querySelectorAll('.az-tab-content').forEach(c=>c.style.display='none');
-    const id='aztab-'+tab.dataset.aztab;
-    document.getElementById(id).style.display='flex';
-    if(tab.dataset.aztab==='documenti') renderDocModule();
-  });
+  tab.onclick = () => {
+    document.querySelectorAll('.az-tab').forEach(t=>t.classList.remove('on'));
+    document.querySelectorAll('.az-pane').forEach(p=>p.classList.remove('on'));
+    tab.classList.add('on');
+    $(`pane-${tab.dataset.tab}`).classList.add('on');
+    if(tab.dataset.tab==='documenti') renderDocModule();
+  };
 });
 
-/* ════════════════════ INIT ════════════════════ */
-async function init(){
-  syncStatus('syncing','Caricamento…');
-  try{
-    await loadAziende();
-    renderAziende();
-    syncStatus('synced','Sincronizzato ✓');
-  }catch(err){
-    console.error(err);
-    syncStatus('error','Errore connessione');
-    showToast('Errore: '+err.message,'error');
+/* ═══════════════════ BOOT ═══════════════════ */
+async function boot() {
+  sync('loading','Caricamento…');
+  try {
+    await loadAziende(); renderHome(); sync('ok','Sincronizzato ✓');
+  } catch(e) {
+    console.error(e); sync('error','Errore'); toast('Errore connessione: '+e.message,'err');
   }
 }
 
-async function loadAziendaData(){
-  if(!ST.currentAz) return;
-  syncStatus('syncing','Caricamento…');
-  try{
+async function loadAzData() {
+  if(!S.currentAz) return;
+  sync('loading','Caricamento…');
+  try {
     await loadDipendenti();
-    const lastMese=localStorage.getItem('sp_lastMese_'+ST.currentAz.id)||meseNow();
-    ST.meseSel=lastMese;
-    document.getElementById('selMese').value=lastMese;
-    document.getElementById('toolbarMonth').textContent=formatMese(lastMese);
-    await loadMese();
-    renderStipendi();
-    syncStatus('synced','Sincronizzato ✓');
-  }catch(err){
-    console.error(err); syncStatus('error','Errore'); showToast('Errore: '+err.message,'error');
+    const lastMese = localStorage.getItem('sp_mese_'+S.currentAz.id) || nowMonth();
+    S.meseSel=lastMese; $('selMese').value=lastMese; $('stipMonth').textContent=fmtMonth(lastMese);
+    await loadMese(); renderStipendi(); sync('ok','Sincronizzato ✓');
+  } catch(e) {
+    console.error(e); sync('error','Errore'); toast('Errore: '+e.message,'err');
   }
 }
 
-/* ════════════════════ AZIENDE ════════════════════ */
-async function loadAziende(){
-  const{data,error}=await supa.from('aziende').select('*').eq('user_id',currentUser.id).order('nome');
+/* ═══════════════════ AZIENDE ═══════════════════ */
+async function loadAziende() {
+  const {data,error} = await supa.from('aziende').select('*').eq('user_id',ME.id).order('nome');
   if(error) throw error;
-  ST.aziende=data||[];
+  S.aziende = data||[];
 }
 
-function renderAziende(){
-  const grid=document.getElementById('aziendeGrid');
-  grid.innerHTML='';
-  ST.aziende.forEach(az=>{
-    const dipCount=0; // calcolato dopo se necessario
-    const card=document.createElement('div');
-    card.className='az-card';
-    card.innerHTML=`
+function renderHome() {
+  const grid=$('homeGrid'); grid.innerHTML='';
+  S.aziende.forEach(az=>{
+    const c=document.createElement('div'); c.className='az-card';
+    c.innerHTML=`
       <div class="az-card-top">
         <div class="az-icon">🏢</div>
-        <div class="az-card-actions">
+        <div class="az-actions">
           <button class="btn-icon" data-edit="${az.id}" title="Modifica">✏️</button>
-          <button class="btn-icon del" data-del="${az.id}" title="Elimina">✕</button>
+          <button class="btn-icon danger" data-del="${az.id}" title="Elimina">✕</button>
         </div>
       </div>
       <div class="az-name">${esc(az.nome)}</div>
-      ${az.sede?`<div class="az-sede">📍 ${esc(az.sede)}</div>`:''}
-      <div class="az-footer">
-        ${az.piva?`<div class="az-stat"><div class="az-stat-label">P. IVA</div><div class="az-stat-val" style="font-size:11px">${esc(az.piva)}</div></div>`:''}
-        ${az.referente?`<div class="az-stat"><div class="az-stat-label">Referente</div><div class="az-stat-val" style="font-size:11px">${esc(az.referente)}</div></div>`:''}
+      ${az.sede?`<div class="az-meta">📍 ${esc(az.sede)}</div>`:''}
+      <div class="az-stats">
+        ${az.piva?`<div class="az-stat"><label>P. IVA</label><span style="font-size:11px">${esc(az.piva)}</span></div>`:''}
+        ${az.referente?`<div class="az-stat"><label>Ref.</label><span style="font-size:11px">${esc(az.referente)}</span></div>`:''}
       </div>`;
-    card.addEventListener('click',e=>{
-      if(e.target.closest('[data-edit],[data-del]')) return;
-      apriAzienda(az);
-    });
-    card.querySelector('[data-edit]').addEventListener('click',e=>{ e.stopPropagation(); editAzienda(az.id); });
-    card.querySelector('[data-del]').addEventListener('click',e=>{ e.stopPropagation(); deleteAzienda(az.id); });
-    grid.appendChild(card);
+    c.addEventListener('click',e=>{ if(e.target.closest('[data-edit],[data-del]'))return; openAzienda(az); });
+    c.querySelector('[data-edit]').addEventListener('click',e=>{ e.stopPropagation(); editAz(az.id); });
+    c.querySelector('[data-del]').addEventListener('click',e=>{ e.stopPropagation(); delAz(az.id); });
+    grid.appendChild(c);
   });
-  // Card "nuova azienda"
-  const newCard=document.createElement('div');
-  newCard.className='az-card az-card-new';
-  newCard.innerHTML=`<div class="az-card-new-icon">＋</div><span>Nuova azienda</span>`;
-  newCard.addEventListener('click',()=>apriModalNuovaAz());
-  grid.appendChild(newCard);
+  const add=document.createElement('div'); add.className='az-card az-new';
+  add.innerHTML='<div class="az-new-icon">＋</div><span>Nuova azienda</span>';
+  add.onclick=()=>openNewAz(); grid.appendChild(add);
 }
 
-function apriModalNuovaAz(){
-  ST.editAzId=null;
-  document.getElementById('modalAzTitle').textContent='Nuova azienda';
-  ['azNome','azSede','azPiva','azRef','azNote'].forEach(id=>document.getElementById(id).value='');
-  openModal('modalAzienda');
-}
-document.getElementById('btnNuovaAz').addEventListener('click',apriModalNuovaAz);
+function openNewAz(){S.editAzId=null;$('mAzTitle').textContent='Nuova azienda';['azNome','azSede','azPiva','azRef','azNote'].forEach(id=>$(id).value='');openM('mAzienda');}
+$('btnNewAz').onclick=openNewAz;
 
-document.getElementById('btnConfirmAz').addEventListener('click',async()=>{
-  const nome=document.getElementById('azNome').value.trim();
-  if(!nome){showToast('Inserisci il nome','error');return;}
-  const az={nome,sede:document.getElementById('azSede').value.trim(),piva:document.getElementById('azPiva').value.trim(),referente:document.getElementById('azRef').value.trim(),note:document.getElementById('azNote').value.trim(),user_id:currentUser.id};
-  syncStatus('syncing','Salvataggio…');
-  if(ST.editAzId){
-    const{error}=await supa.from('aziende').update(az).eq('id',ST.editAzId).eq('user_id',currentUser.id);
-    if(error){showToast('Errore','error');return;}
-    // aggiorna currentAz se aperta
-    if(ST.currentAz?.id===ST.editAzId){ ST.currentAz={...ST.currentAz,...az}; document.getElementById('bcAz').textContent=az.nome; }
+$('btnSaveAz').onclick = async()=>{
+  const nome=$('azNome').value.trim(); if(!nome){toast('Inserisci il nome','err');return;}
+  const az={nome,sede:$('azSede').value.trim(),piva:$('azPiva').value.trim(),referente:$('azRef').value.trim(),note:$('azNote').value.trim(),user_id:ME.id};
+  sync('loading','Salvataggio…');
+  if(S.editAzId){
+    const{error}=await supa.from('aziende').update(az).eq('id',S.editAzId).eq('user_id',ME.id);
+    if(error){toast('Errore','err');sync('error','Errore');return;}
+    if(S.currentAz?.id===S.editAzId){S.currentAz={...S.currentAz,...az};$('bcCurrent').textContent=az.nome;}
   }else{
     const{error}=await supa.from('aziende').insert(az);
-    if(error){showToast('Errore','error');return;}
+    if(error){toast('Errore','err');sync('error','Errore');return;}
   }
-  await loadAziende(); closeModal('modalAzienda'); renderAziende();
-  showToast(ST.editAzId?'Azienda aggiornata ✓':'Azienda aggiunta ✓','success');
-  syncStatus('synced','Sincronizzato ✓');
-});
+  await loadAziende(); closeM('mAzienda'); renderHome();
+  toast(S.editAzId?'Azienda aggiornata ✓':'Azienda creata ✓','ok'); sync('ok','Sincronizzato ✓');
+};
 
-async function editAzienda(id){
-  const az=ST.aziende.find(a=>a.id===id); if(!az) return;
-  ST.editAzId=id;
-  document.getElementById('modalAzTitle').textContent='Modifica azienda';
-  document.getElementById('azNome').value=az.nome||'';
-  document.getElementById('azSede').value=az.sede||'';
-  document.getElementById('azPiva').value=az.piva||'';
-  document.getElementById('azRef').value=az.referente||'';
-  document.getElementById('azNote').value=az.note||'';
-  openModal('modalAzienda');
+function editAz(id){
+  const az=S.aziende.find(a=>a.id===id); if(!az)return;
+  S.editAzId=id; $('mAzTitle').textContent='Modifica azienda';
+  $('azNome').value=az.nome||''; $('azSede').value=az.sede||''; $('azPiva').value=az.piva||''; $('azRef').value=az.referente||''; $('azNote').value=az.note||'';
+  openM('mAzienda');
+}
+async function delAz(id){
+  const az=S.aziende.find(a=>a.id===id); if(!az)return;
+  if(!confirm(`Eliminare "${az.nome}"? Tutti i dati saranno persi.`))return;
+  await supa.from('aziende').delete().eq('id',id).eq('user_id',ME.id);
+  await loadAziende(); renderHome(); if(S.currentAz?.id===id) goHome();
+  toast('Azienda eliminata');
 }
 
-async function deleteAzienda(id){
-  const az=ST.aziende.find(a=>a.id===id); if(!az) return;
-  if(!confirm(`Eliminare "${az.nome}"? Tutti i dati verranno persi.`)) return;
-  await supa.from('aziende').delete().eq('id',id).eq('user_id',currentUser.id);
-  await loadAziende(); renderAziende();
-  if(ST.currentAz?.id===id) tornaHome();
-  showToast('Azienda eliminata');
-}
-
-/* ════════════════════ DIPENDENTI (anagrafico unificato) ════════════════════ */
+/* ═══════════════════ DIPENDENTI ═══════════════════ */
 async function loadDipendenti(){
-  if(!ST.currentAz) return;
-  const{data,error}=await supa.from('dipendenti').select('*').eq('azienda_id',ST.currentAz.id).eq('user_id',currentUser.id).order('nome');
-  if(error) throw error;
-  ST.dipendenti=data||[];
+  const{data,error}=await supa.from('dipendenti').select('*').eq('azienda_id',S.currentAz.id).eq('user_id',ME.id).order('nome');
+  if(error)throw error; S.dipendenti=data||[];
 }
 
-document.getElementById('btnAddDip').addEventListener('click',()=>{
-  ST.editDipId=null;
-  document.getElementById('modalDipTitle').textContent='Aggiungi dipendente';
-  document.getElementById('dipNome').value='';
-  document.getElementById('dipMansione').value='';
-  document.getElementById('dipStato').value='attivo';
-  document.getElementById('dipAssunzione').value='';
-  document.getElementById('dipNote').value='';
-  document.getElementById('btnConfirmDip').textContent='Aggiungi';
-  openModal('modalDip');
-});
-
-document.getElementById('btnConfirmDip').addEventListener('click',async()=>{
-  const nome=document.getElementById('dipNome').value.trim();
-  if(!nome){showToast('Inserisci il nome','error');return;}
-  const dip={
-    nome, mansione:document.getElementById('dipMansione').value.trim(),
-    stato:document.getElementById('dipStato').value,
-    data_assunzione:document.getElementById('dipAssunzione').value||null,
-    note:document.getElementById('dipNote').value.trim(),
-    azienda_id:ST.currentAz.id, user_id:currentUser.id,
-  };
-  syncStatus('syncing','Salvataggio…');
-  if(ST.editDipId){
-    const{error}=await supa.from('dipendenti').update(dip).eq('id',ST.editDipId).eq('user_id',currentUser.id);
-    if(error){showToast('Errore','error');return;}
-    const idx=ST.dipendenti.findIndex(d=>d.id===ST.editDipId);
-    if(idx>=0) ST.dipendenti[idx]={...ST.dipendenti[idx],...dip};
-    showToast('Dipendente aggiornato ✓','success');
+$('btnAddDip').onclick=()=>{
+  S.editDipId=null; $('mDipTitle').textContent='Aggiungi dipendente';
+  ['dipNome','dipMansione','dipNote'].forEach(id=>$(id).value='');
+  $('dipStato').value='attivo'; $('dipAssunzione').value='';
+  $('btnSaveDip').textContent='Aggiungi'; openM('mDip');
+};
+$('btnSaveDip').onclick=async()=>{
+  const nome=$('dipNome').value.trim(); if(!nome){toast('Inserisci il nome','err');return;}
+  const dip={nome,mansione:$('dipMansione').value.trim(),stato:$('dipStato').value,data_assunzione:$('dipAssunzione').value||null,note:$('dipNote').value.trim(),azienda_id:S.currentAz.id,user_id:ME.id};
+  sync('loading','Salvataggio…');
+  if(S.editDipId){
+    const{error}=await supa.from('dipendenti').update(dip).eq('id',S.editDipId).eq('user_id',ME.id);
+    if(error){toast('Errore','err');return;}
+    const idx=S.dipendenti.findIndex(d=>d.id===S.editDipId);
+    if(idx>=0) S.dipendenti[idx]={...S.dipendenti[idx],...dip};
+    toast('Dipendente aggiornato ✓','ok');
   }else{
     const{data,error}=await supa.from('dipendenti').insert(dip).select().single();
-    if(error){showToast('Errore: '+error.message,'error');return;}
-    ST.dipendenti.push(data);
-    showToast(`"${nome}" aggiunto ✓`,'success');
+    if(error){toast('Errore: '+error.message,'err');return;}
+    S.dipendenti.push(data); toast(`"${nome}" aggiunto ✓`,'ok');
   }
-  closeModal('modalDip'); renderStipendi(); renderDocModule(); syncStatus('synced','Sincronizzato ✓');
-});
-
-async function eliminaDipendente(id){
-  const d=ST.dipendenti.find(d=>d.id===id); if(!d) return;
-  if(!confirm(`Eliminare "${d.nome}"? Verranno persi tutti i dati.`)) return;
-  await supa.from('dipendenti').delete().eq('id',id).eq('user_id',currentUser.id);
-  ST.dipendenti=ST.dipendenti.filter(d=>d.id!==id);
-  delete ST.datiMese[id];
-  renderStipendi(); renderDocModule(); scheduleSave();
-  showToast('Dipendente eliminato');
+  closeM('mDip'); renderStipendi(); renderDocModule(); sync('ok','Sincronizzato ✓');
+};
+async function delDip(id){
+  const d=S.dipendenti.find(d=>d.id===id); if(!d)return;
+  if(!confirm(`Eliminare "${d.nome}"?`))return;
+  await supa.from('dipendenti').delete().eq('id',id).eq('user_id',ME.id);
+  S.dipendenti=S.dipendenti.filter(d=>d.id!==id); delete S.datiMese[id];
+  renderStipendi(); renderDocModule(); scheduleSave(); toast('Dipendente eliminato');
+}
+function editDip(id){
+  const d=S.dipendenti.find(d=>d.id===id); if(!d)return;
+  S.editDipId=id; $('mDipTitle').textContent='Modifica dipendente';
+  $('dipNome').value=d.nome||''; $('dipMansione').value=d.mansione||'';
+  $('dipStato').value=d.stato||'attivo'; $('dipAssunzione').value=d.data_assunzione||'';
+  $('dipNote').value=d.note||''; $('btnSaveDip').textContent='Salva'; openM('mDip');
 }
 
-function editDipendente(id){
-  const d=ST.dipendenti.find(d=>d.id===id); if(!d) return;
-  ST.editDipId=id;
-  document.getElementById('modalDipTitle').textContent='Modifica dipendente';
-  document.getElementById('dipNome').value=d.nome||'';
-  document.getElementById('dipMansione').value=d.mansione||'';
-  document.getElementById('dipStato').value=d.stato||'attivo';
-  document.getElementById('dipAssunzione').value=d.data_assunzione||'';
-  document.getElementById('dipNote').value=d.note||'';
-  document.getElementById('btnConfirmDip').textContent='Salva';
-  openModal('modalDip');
-}
-
-/* ════════════════════ STIPENDI ════════════════════ */
-document.getElementById('selMese').addEventListener('change',e=>{
-  ST.meseSel=e.target.value;
-  localStorage.setItem('sp_lastMese_'+(ST.currentAz?.id||''),ST.meseSel);
-  document.getElementById('toolbarMonth').textContent=formatMese(ST.meseSel);
-  if(ST.currentAz) loadMese().then(()=>renderStipendi());
-});
+/* ═══════════════════ STIPENDI ═══════════════════ */
+$('selMese').onchange = e=>{
+  S.meseSel=e.target.value; localStorage.setItem('sp_mese_'+(S.currentAz?.id||''),S.meseSel);
+  $('stipMonth').textContent=fmtMonth(S.meseSel);
+  if(S.currentAz) loadMese().then(()=>renderStipendi());
+};
 
 async function loadMese(){
-  if(!ST.currentAz||!ST.meseSel) return;
-  const mkey=ST.meseSel.replace('-','_');
-  const{data}=await supa.from('mesi_stipendi').select('*').eq('azienda_id',ST.currentAz.id).eq('mese',mkey).eq('user_id',currentUser.id).maybeSingle();
-  ST.datiMese={};
-  if(data?.dati){
-    try{ const p=typeof data.dati==='string'?JSON.parse(data.dati):data.dati; Object.assign(ST.datiMese,p); }catch(e){}
-  }
+  if(!S.currentAz||!S.meseSel)return;
+  const mkey=S.meseSel.replace('-','_');
+  const{data}=await supa.from('mesi_stipendi').select('dati').eq('azienda_id',S.currentAz.id).eq('mese',mkey).eq('user_id',ME.id).maybeSingle();
+  S.datiMese={};
+  if(data?.dati){try{const p=typeof data.dati==='string'?JSON.parse(data.dati):data.dati;Object.assign(S.datiMese,p);}catch(e){}}
 }
 
-function scheduleSave(){ clearTimeout(ST.saveTimer); ST.saveTimer=setTimeout(salvaMese,1500); }
-
+const scheduleSave=()=>{clearTimeout(S.saveTimer);S.saveTimer=setTimeout(salvaMese,1500);};
 async function salvaMese(){
-  if(!ST.currentAz||!ST.meseSel) return;
-  syncStatus('syncing','Salvataggio…');
-  const mkey=ST.meseSel.replace('-','_');
-  const datiSave={};
-  ST.dipendenti.forEach(d=>{
-    const dm=getDati(d.id); if(!dm.attivo) return;
-    const bm=calcBonus(dm.bonus_malus); const lt=(parseFloat(dm.lordo_base)||0)+bm;
-    datiSave[d.id]={...dm,lordo_totale:lt,differenza:lt-(parseFloat(dm.busta_paga)||0)};
+  if(!S.currentAz||!S.meseSel)return;
+  sync('loading','Salvataggio…');
+  const mkey=S.meseSel.replace('-','_'); const save={};
+  S.dipendenti.forEach(d=>{
+    const m=getDati(d.id); if(!m.attivo)return;
+    const bm=sumBonus(m.bonus_malus); const lt=(parseFloat(m.lordo_base)||0)+bm;
+    save[d.id]={...m,lordo_totale:lt,differenza:lt-(parseFloat(m.busta_paga)||0)};
   });
-  const{error}=await supa.from('mesi_stipendi').upsert({azienda_id:ST.currentAz.id,mese:mkey,user_id:currentUser.id,dati:datiSave,updated_at:new Date().toISOString()},{onConflict:'azienda_id,mese,user_id'});
-  if(error){syncStatus('error','Errore salvataggio');return;}
-  syncStatus('synced','Sincronizzato ✓');
+  const{error}=await supa.from('mesi_stipendi').upsert({azienda_id:S.currentAz.id,mese:mkey,user_id:ME.id,dati:save,updated_at:new Date().toISOString()},{onConflict:'azienda_id,mese,user_id'});
+  if(error){sync('error','Errore salvataggio');console.error(error);return;}
+  sync('ok','Sincronizzato ✓');
 }
+$('btnSalva').onclick=async()=>{await salvaMese();toast(`${fmtMonth(S.meseSel)} salvato ✓`,'ok');};
 
-document.getElementById('btnSalvaMese').addEventListener('click',async()=>{ await salvaMese(); showToast(`${formatMese(ST.meseSel)} salvato ✓`,'success'); });
+const getDati=id=>{if(!S.datiMese[id])S.datiMese[id]={attivo:false,lordo_base:0,bonus_malus:[],busta_paga:0};return S.datiMese[id];};
+const sumBonus=bm=>(bm||[]).reduce((a,v)=>a+(parseFloat(v)||0),0);
 
-const getDati=id=>{ if(!ST.datiMese[id]) ST.datiMese[id]={attivo:false,lordo_base:0,bonus_malus:[],busta_paga:0}; return ST.datiMese[id]; };
-const calcBonus=bm=>(bm||[]).reduce((a,v)=>a+(parseFloat(v)||0),0);
-
-function renderStipendi(){ renderSbList(); renderCards(); aggiornaRiepilogo(); }
+function renderStipendi(){renderSbList();renderCards();renderSummary();}
 
 function renderSbList(){
-  const list=document.getElementById('sbList');
-  const count=document.getElementById('sbCount');
-  const attivi=ST.dipendenti.filter(d=>d.stato!=='terminato');
-  count.textContent=attivi.length;
+  const list=$('sbList'); const attivi=S.dipendenti.filter(d=>d.stato!=='terminato');
+  $('sbList').parentElement.querySelector('.sb-mese')&&null; // already in DOM
   list.innerHTML='';
-  if(!attivi.length){
-    list.innerHTML=`<li style="padding:16px 8px;text-align:center;color:var(--text3);font-size:12px">Nessun dipendente.<br>Clicca "Aggiungi dipendente".</li>`;
-    return;
-  }
+  if(!attivi.length){list.innerHTML='<li style="padding:16px 8px;text-align:center;color:var(--text3);font-size:12px;line-height:1.8">Nessun dipendente.<br>Clicca "Aggiungi dipendente".</li>';return;}
   attivi.forEach(dip=>{
-    const d=getDati(dip.id);
-    const li=document.createElement('li');
-    li.className='sb-item'; li.dataset.id=dip.id;
-    li.innerHTML=`
-      <input type="checkbox" ${d.attivo?'checked':''}/>
-      <div class="sb-item-info">
-        <div class="sb-item-name">${esc(dip.nome)}</div>
-        ${dip.mansione?`<div class="sb-item-role">${esc(dip.mansione)}</div>`:''}
-      </div>
-      <div class="sb-item-act">
+    const d=getDati(dip.id); const li=document.createElement('li'); li.className='sb-dip';
+    li.innerHTML=`<input type="checkbox" ${d.attivo?'checked':''}/>
+      <div class="sb-dip-info"><div class="sb-dip-name">${esc(dip.nome)}</div>${dip.mansione?`<div class="sb-dip-role">${esc(dip.mansione)}</div>`:''}</div>
+      <div class="sb-dip-act">
         <button class="btn-icon" data-st="${dip.id}" title="Storico">⏱</button>
         <button class="btn-icon" data-ed="${dip.id}" title="Modifica">✏️</button>
-        <button class="btn-icon del" data-dl="${dip.id}" title="Elimina">✕</button>
+        <button class="btn-icon danger" data-dl="${dip.id}" title="Elimina">✕</button>
       </div>`;
-    li.querySelector('input').addEventListener('change',e=>{ getDati(dip.id).attivo=e.target.checked; scheduleSave(); renderStipendi(); });
-    li.querySelector('[data-st]').addEventListener('click',e=>{ e.stopPropagation(); mostraStorico(dip.id); });
-    li.querySelector('[data-ed]').addEventListener('click',e=>{ e.stopPropagation(); editDipendente(dip.id); });
-    li.querySelector('[data-dl]').addEventListener('click',e=>{ e.stopPropagation(); eliminaDipendente(dip.id); });
+    li.querySelector('input').onchange=e=>{getDati(dip.id).attivo=e.target.checked;scheduleSave();renderStipendi();};
+    li.querySelector('[data-st]').onclick=e=>{e.stopPropagation();mostraStorico(dip.id);};
+    li.querySelector('[data-ed]').onclick=e=>{e.stopPropagation();editDip(dip.id);};
+    li.querySelector('[data-dl]').onclick=e=>{e.stopPropagation();delDip(dip.id);};
     list.appendChild(li);
   });
 }
 
 function renderCards(){
-  const area=document.getElementById('cardsArea');
-  const empty=document.getElementById('emptyStip');
-  const attivi=ST.dipendenti.filter(d=>getDati(d.id).attivo);
-  if(!attivi.length){ area.innerHTML=''; area.appendChild(empty); empty.style.display=''; return; }
+  const scroll=$('cardsScroll'); const empty=$('emptyStip');
+  const attivi=S.dipendenti.filter(d=>getDati(d.id).attivo);
+  if(!attivi.length){scroll.innerHTML='';scroll.appendChild(empty);empty.style.display='flex';return;}
   empty.style.display='none';
-  const existIds=new Set([...area.querySelectorAll('.emp-card')].map(el=>el.dataset.id));
-  const attiviIds=new Set(attivi.map(d=>d.id));
-  existIds.forEach(id=>{ if(!attiviIds.has(id)) area.querySelector(`[data-id="${id}"]`)?.remove(); });
-  attivi.forEach((dip,i)=>{ if(!existIds.has(dip.id)) area.appendChild(creaCard(dip,i+1)); aggiornaCalcolati(dip.id); });
+  const existing=new Set([...scroll.querySelectorAll('.emp-card')].map(el=>el.dataset.id));
+  const activeSet=new Set(attivi.map(d=>d.id));
+  existing.forEach(id=>{if(!activeSet.has(id))scroll.querySelector(`[data-id="${id}"]`)?.remove();});
+  attivi.forEach((dip,i)=>{if(!existing.has(dip.id))scroll.appendChild(buildEmpCard(dip,i+1));updateCalc(dip.id);});
 }
 
-function creaCard(dip,num){
-  const d=getDati(dip.id);
-  const card=document.createElement('div');
+function buildEmpCard(dip,num){
+  const d=getDati(dip.id); const card=document.createElement('div');
   card.className='emp-card'; card.dataset.id=dip.id;
   card.innerHTML=`
-    <div class="card-head">
-      <span class="card-num">#${String(num).padStart(2,'0')}</span>
-      <span class="card-name">${esc(dip.nome)}</span>
-      ${dip.mansione?`<span class="card-role">${esc(dip.mansione)}</span>`:''}
-      <span class="diff-badge diff-zero" data-badge="${dip.id}">€ 0,00</span>
+    <div class="emp-card-header">
+      <span class="emp-num">#${String(num).padStart(2,'0')}</span>
+      <span class="emp-name">${esc(dip.nome)}</span>
+      ${dip.mansione?`<span class="emp-role">${esc(dip.mansione)}</span>`:''}
+      <span class="diff-pill diff-zero" data-badge="${dip.id}">€ 0,00</span>
     </div>
-    <div class="card-body">
-      <div class="card-sec">
-        <div class="sec-title">Lordo base mensile</div>
+    <div class="emp-card-grid">
+      <div class="emp-col">
+        <div class="col-label">Lordo base mensile</div>
         <input type="number" min="0" step="0.01" placeholder="0,00" data-field="lordo_base" data-id="${dip.id}" value="${d.lordo_base||''}"/>
-        <div class="calc-label">Importo mensile concordato</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:4px">Importo mensile concordato</div>
       </div>
-      <div class="card-sec">
-        <div class="sec-title">Bonus / Malus <button class="btn-add-bonus" data-add="${dip.id}">+ Aggiungi</button></div>
-        <div class="bonus-list" data-bl="${dip.id}">${renderBonusList(dip.id)}</div>
-        <div class="bonus-total">Totale: <strong data-bt="${dip.id}">€ ${euro(calcBonus(d.bonus_malus))}</strong></div>
+      <div class="emp-col">
+        <div class="col-label">Bonus / Malus <button class="btn-add-bonus" data-add="${dip.id}" style="font-size:10px;padding:2px 6px">+ Aggiungi</button></div>
+        <div class="bonus-list" data-bl="${dip.id}">${buildBonusList(dip.id)}</div>
+        <div class="bonus-total">Totale: <strong data-bt="${dip.id}">€ ${euro(sumBonus(d.bonus_malus))}</strong></div>
       </div>
-      <div class="card-sec">
-        <div class="sec-title">Riepilogo</div>
-        <div style="display:flex;flex-direction:column;gap:6px">
-          <div><div class="calc-label">Lordo totale</div><div class="calc-field" data-lt="${dip.id}">€ ${euro((parseFloat(d.lordo_base)||0)+calcBonus(d.bonus_malus))}</div></div>
-          <div class="field-group"><label>Busta paga effettiva</label>
-            <input type="number" min="0" step="0.01" placeholder="0,00" data-field="busta_paga" data-id="${dip.id}" value="${d.busta_paga||''}"/></div>
-          <div><div class="calc-label">Differenza</div><div class="calc-field" data-df="${dip.id}">€ 0,00</div></div>
+      <div class="emp-col">
+        <div class="col-label">Riepilogo</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div>
+            <div class="input-label">Lordo totale</div>
+            <div class="calc-box" data-lt="${dip.id}">€ ${euro((parseFloat(d.lordo_base)||0)+sumBonus(d.bonus_malus))}</div>
+          </div>
+          <div>
+            <div class="input-label">Busta paga effettiva</div>
+            <input type="number" min="0" step="0.01" placeholder="0,00" data-field="busta_paga" data-id="${dip.id}" value="${d.busta_paga||''}"/>
+          </div>
+          <div>
+            <div class="input-label">Differenza</div>
+            <div class="calc-box" data-df="${dip.id}">€ 0,00</div>
+          </div>
         </div>
       </div>
     </div>`;
   card.querySelectorAll('input[data-field]').forEach(inp=>{
-    inp.addEventListener('input',()=>{ getDati(inp.dataset.id)[inp.dataset.field]=parseFloat(inp.value)||0; aggiornaCalcolati(inp.dataset.id); aggiornaRiepilogo(); scheduleSave(); });
+    inp.oninput=()=>{getDati(inp.dataset.id)[inp.dataset.field]=parseFloat(inp.value)||0;updateCalc(inp.dataset.id);renderSummary();scheduleSave();};
   });
-  card.querySelector(`[data-add="${dip.id}"]`).addEventListener('click',()=>aggiungiBonus(dip.id));
-  rebuildBonusEvents(dip.id,card);
+  card.querySelector(`[data-add="${dip.id}"]`).onclick=()=>addBonus(dip.id);
+  attachBonusEvents(dip.id);
   return card;
 }
 
-function renderBonusList(id){ return getDati(id).bonus_malus.map((v,i)=>`<div class="bonus-row"><input type="number" step="0.01" placeholder="+/- importo" value="${v||''}" data-bv="${id}" data-idx="${i}"/><button class="btn-rm" data-rb="${id}" data-idx="${i}">✕</button></div>`).join(''); }
+function buildBonusList(id){
+  return getDati(id).bonus_malus.map((v,i)=>`
+    <div class="bonus-row">
+      <input type="number" step="0.01" placeholder="+/- importo" value="${v||''}" data-bv="${id}" data-idx="${i}"/>
+      <button class="btn-rm-bonus" data-rb="${id}" data-idx="${i}">✕</button>
+    </div>`).join('');
+}
 
-function rebuildBonusEvents(id,container){
-  const el=container||document.querySelector(`[data-bl="${id}"]`);
-  if(!el) return;
-  const target=container?container.querySelector(`[data-bl="${id}"]`):el;
-  if(!target) return;
-  target.querySelectorAll('input[data-bv]').forEach(inp=>{
-    inp.addEventListener('input',()=>{ getDati(id).bonus_malus[+inp.dataset.idx]=parseFloat(inp.value)||0; aggiornaCalcolati(id); aggiornaRiepilogo(); scheduleSave(); });
+function attachBonusEvents(id){
+  const el=document.querySelector(`[data-bl="${id}"]`); if(!el)return;
+  el.querySelectorAll('[data-bv]').forEach(inp=>{
+    inp.oninput=()=>{getDati(id).bonus_malus[+inp.dataset.idx]=parseFloat(inp.value)||0;updateCalc(id);renderSummary();scheduleSave();};
   });
-  target.querySelectorAll('[data-rb]').forEach(btn=>{
-    btn.addEventListener('click',()=>{ getDati(id).bonus_malus.splice(+btn.dataset.idx,1); rebuildBonus(id); aggiornaCalcolati(id); aggiornaRiepilogo(); scheduleSave(); });
+  el.querySelectorAll('[data-rb]').forEach(btn=>{
+    btn.onclick=()=>{getDati(id).bonus_malus.splice(+btn.dataset.idx,1);rebuildBonus(id);updateCalc(id);renderSummary();scheduleSave();};
   });
 }
 
-window._SP_REBUILD_BONUS = rebuildBonus;
+window._REBUILD_BONUS=rebuildBonus;
 function rebuildBonus(id){
-  const el=document.querySelector(`[data-bl="${id}"]`); if(!el) return;
-  el.innerHTML=renderBonusList(id); rebuildBonusEvents(id);
+  const el=document.querySelector(`[data-bl="${id}"]`); if(!el)return;
+  el.innerHTML=buildBonusList(id); attachBonusEvents(id);
+}
+function addBonus(id){getDati(id).bonus_malus.push(0);rebuildBonus(id);updateCalc(id);renderSummary();scheduleSave();}
+
+window._UPDATE_CALC=updateCalc;
+function updateCalc(id){
+  const d=getDati(id); const tb=sumBonus(d.bonus_malus); const lt=(parseFloat(d.lordo_base)||0)+tb; const df=lt-(parseFloat(d.busta_paga)||0);
+  const q=s=>document.querySelector(s);
+  const set=(sel,v)=>{const e=q(sel);if(e)e.textContent=v;};
+  set(`[data-bt="${id}"]`,`€ ${euro(tb)}`);
+  set(`[data-lt="${id}"]`,`€ ${euro(lt)}`);
+  const dfEl=q(`[data-df="${id}"]`); if(dfEl){dfEl.textContent=`€ ${euro(df)}`;dfEl.className=`calc-box${df>0?' pos':df<0?' neg':''}`;}
+  const bdEl=q(`[data-badge="${id}"]`); if(bdEl){bdEl.textContent=`€ ${euro(df)}`;bdEl.className=`diff-pill${df>0?' diff-pos':df<0?' diff-neg':' diff-zero'}`;}
 }
 
-function aggiungiBonus(id){ getDati(id).bonus_malus.push(0); rebuildBonus(id); aggiornaCalcolati(id); aggiornaRiepilogo(); scheduleSave(); }
-
-window._SP_AGGIORNA_CALCOLATI = aggiornaCalcolati;
-function aggiornaCalcolati(id){
-  const d=getDati(id); const tb=calcBonus(d.bonus_malus); const lt=(parseFloat(d.lordo_base)||0)+tb; const df=lt-(parseFloat(d.busta_paga)||0);
-  const q=s=>document.querySelector(s); const s=(sel,v)=>{ const e=q(sel); if(e) e.textContent=v; };
-  s(`[data-bt="${id}"]`,`€ ${euro(tb)}`); s(`[data-lt="${id}"]`,`€ ${euro(lt)}`);
-  const dfEl=q(`[data-df="${id}"]`); const bdEl=q(`[data-badge="${id}"]`);
-  if(dfEl){ dfEl.textContent=`€ ${euro(df)}`; dfEl.className=`calc-field${df>0?' positive':df<0?' negative':''}`; }
-  if(bdEl){ bdEl.textContent=`€ ${euro(df)}`; bdEl.className=`diff-badge${df>0?' diff-pos':df<0?' diff-neg':' diff-zero'}`; }
-}
-
-window._SP_AGGIORNA_RIEPILOGO = aggiornaRiepilogo;
-function aggiornaRiepilogo(){
+window._RENDER_SUMMARY=renderSummary;
+function renderSummary(){
   let tl=0,tb=0,td=0,cnt=0;
-  ST.dipendenti.forEach(dip=>{ const d=getDati(dip.id); if(!d.attivo) return; cnt++; const lt=(parseFloat(d.lordo_base)||0)+calcBonus(d.bonus_malus); tl+=lt; tb+=parseFloat(d.busta_paga)||0; td+=lt-(parseFloat(d.busta_paga)||0); });
-  document.getElementById('totAttivi').textContent=cnt;
-  document.getElementById('totLordo').textContent=`€ ${euro(tl)}`;
-  document.getElementById('totBuste').textContent=`€ ${euro(tb)}`;
-  const el=document.getElementById('totDiff'); el.textContent=`€ ${euro(td)}`;
-  el.style.color=td>0?'var(--green)':td<0?'var(--red)':'var(--text)';
+  S.dipendenti.forEach(dip=>{
+    const d=getDati(dip.id); if(!d.attivo)return; cnt++;
+    const lt=(parseFloat(d.lordo_base)||0)+sumBonus(d.bonus_malus); tl+=lt; tb+=parseFloat(d.busta_paga)||0; td+=lt-(parseFloat(d.busta_paga)||0);
+  });
+  $('sumAttivi').textContent=cnt; $('sumLordo').textContent=`€ ${euro(tl)}`; $('sumBuste').textContent=`€ ${euro(tb)}`;
+  const el=$('sumDiff'); el.textContent=`€ ${euro(td)}`; el.style.color=td>0?'var(--green)':td<0?'var(--red)':'var(--text)';
 }
 
-/* duplica mese */
-document.getElementById('btnDuplicaMese').addEventListener('click',async()=>{
-  if(!ST.currentAz){showToast('Nessuna azienda aperta','error');return;}
-  syncStatus('syncing','Ricerca mese precedente…');
-  const{data}=await supa.from('mesi_stipendi').select('mese,dati').eq('azienda_id',ST.currentAz.id).eq('user_id',currentUser.id);
-  const chiavi=(data||[]).map(r=>r.mese.replace('_','-')).sort();
-  if(!chiavi.length){showToast('Nessun mese precedente salvato','error');syncStatus('synced','Sincronizzato ✓');return;}
-  const prec=chiavi.filter(k=>k<ST.meseSel).pop()||chiavi[chiavi.length-1];
+/* Duplica mese */
+$('btnDuplica').onclick=async()=>{
+  if(!S.currentAz)return;
+  sync('loading','Ricerca mese precedente…');
+  const{data}=await supa.from('mesi_stipendi').select('mese,dati').eq('azienda_id',S.currentAz.id).eq('user_id',ME.id);
+  const keys=(data||[]).map(r=>r.mese.replace('_','-')).sort();
+  if(!keys.length){toast('Nessun mese precedente','err');sync('ok','Sincronizzato ✓');return;}
+  const prec=keys.filter(k=>k<S.meseSel).pop()||keys[keys.length-1];
   const snap=(data||[]).find(r=>r.mese===prec.replace('-','_'));
-  if(!snap?.dati){showToast('Dati non trovati','error');return;}
-  if(!confirm(`Duplicare i dati di ${formatMese(prec)} nel mese corrente?`)){syncStatus('synced','Sincronizzato ✓');return;}
-  const parsed=typeof snap.dati==='string'?JSON.parse(snap.dati):snap.dati;
-  ST.datiMese={};
-  Object.entries(parsed).forEach(([id,d])=>{ if(!ST.dipendenti.find(dip=>dip.id===id)) return; ST.datiMese[id]={attivo:true,lordo_base:d.lordo_base,bonus_malus:[...(d.bonus_malus||[])],busta_paga:0}; });
-  await salvaMese(); renderStipendi();
-  showToast(`Duplicato da ${formatMese(prec)} ✓`,'success');
-});
+  if(!snap?.dati){toast('Dati non trovati','err');return;}
+  if(!confirm(`Duplicare i dati di ${fmtMonth(prec)} nel mese corrente?`)){sync('ok','Sincronizzato ✓');return;}
+  const p=typeof snap.dati==='string'?JSON.parse(snap.dati):snap.dati;
+  S.datiMese={};
+  Object.entries(p).forEach(([id,d])=>{if(!S.dipendenti.find(dip=>dip.id===id))return;S.datiMese[id]={attivo:true,lordo_base:d.lordo_base,bonus_malus:[...(d.bonus_malus||[])],busta_paga:0};});
+  await salvaMese(); renderStipendi(); toast(`Duplicato da ${fmtMonth(prec)} ✓`,'ok');
+};
 
-/* storico */
+/* Storico */
 async function mostraStorico(id){
-  const dip=ST.dipendenti.find(d=>d.id===id);
-  const panel=document.getElementById('storicoPanel');
-  const cont=document.getElementById('storicoContent');
-  const{data}=await supa.from('mesi_stipendi').select('mese,dati').eq('azienda_id',ST.currentAz.id).eq('user_id',currentUser.id);
-  const voci=(data||[]).filter(r=>{ const d=(typeof r.dati==='string'?JSON.parse(r.dati):r.dati)||{}; return d[id]; }).sort((a,b)=>b.mese.localeCompare(a.mese));
-  if(!voci.length){
-    cont.innerHTML=`<div class="storico-nome">${esc(dip?.nome||'')}</div><div style="font-size:11px;color:var(--text3);padding:6px 0">Nessuno storico disponibile.</div>`;
-  }else{
-    cont.innerHTML=`<div class="storico-nome">${esc(dip?.nome||'')}</div>`+voci.map(r=>{
+  const dip=S.dipendenti.find(d=>d.id===id);
+  const{data}=await supa.from('mesi_stipendi').select('mese,dati').eq('azienda_id',S.currentAz.id).eq('user_id',ME.id);
+  const voci=(data||[]).filter(r=>{const d=(typeof r.dati==='string'?JSON.parse(r.dati):r.dati)||{};return d[id];}).sort((a,b)=>b.mese.localeCompare(a.mese));
+  const body=$('storicoBody');
+  if(!voci.length){body.innerHTML=`<div style="font-size:11px;color:var(--text3);padding:6px 0">${esc(dip?.nome||'')} — nessuno storico.</div>`;}
+  else{
+    body.innerHTML=`<div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:6px">${esc(dip?.nome||'')}</div>`+
+    voci.map(r=>{
       const d=(typeof r.dati==='string'?JSON.parse(r.dati):r.dati)[id];
       const cls=(d.differenza||0)>0?'color:var(--green)':(d.differenza||0)<0?'color:var(--red)':'';
-      return `<div class="storico-entry"><div class="storico-mese">${formatMese(r.mese.replace('_','-'))}</div>
-        <div class="storico-row"><span>Lordo base</span><span>€ ${euro(d.lordo_base)}</span></div>
+      return `<div class="storico-entry"><div class="storico-month">${fmtMonth(r.mese.replace('_','-'))}</div>
         <div class="storico-row"><span>Lordo totale</span><span>€ ${euro(d.lordo_totale)}</span></div>
         <div class="storico-row"><span>Busta paga</span><span>€ ${euro(d.busta_paga)}</span></div>
         <div class="storico-row"><span>Differenza</span><span style="${cls}">€ ${euro(d.differenza)}</span></div>
       </div>`;
     }).join('');
   }
-  panel.style.display='';
+  $('storicoWrap').style.display='';
 }
-document.getElementById('btnCloseStorico').addEventListener('click',()=>document.getElementById('storicoPanel').style.display='none');
+$('btnChiudiStorico').onclick=()=>$('storicoWrap').style.display='none';
 
-/* report */
-document.getElementById('btnReport').addEventListener('click',()=>{
-  if(!ST.currentAz){showToast('Nessuna azienda aperta','error');return;}
-  const attivi=ST.dipendenti.filter(d=>getDati(d.id).attivo);
-  if(!attivi.length){showToast('Nessun dipendente attivo','error');return;}
+/* Report */
+$('btnReport').onclick=()=>{
+  if(!S.currentAz)return;
+  const attivi=S.dipendenti.filter(d=>getDati(d.id).attivo);
+  if(!attivi.length){toast('Nessun dipendente attivo','err');return;}
   let tl=0,tb=0,td=0,tm=0;
-  const righe=attivi.map(dip=>{
-    const d=getDati(dip.id); const bm=calcBonus(d.bonus_malus); const lt=(parseFloat(d.lordo_base)||0)+bm; const bp=parseFloat(d.busta_paga)||0; const df=lt-bp;
+  const rows=attivi.map(dip=>{
+    const d=getDati(dip.id); const bm=sumBonus(d.bonus_malus); const lt=(parseFloat(d.lordo_base)||0)+bm; const bp=parseFloat(d.busta_paga)||0; const df=lt-bp;
     tl+=lt;tb+=bp;td+=df;tm+=bm;
-    const cls=df>0?'report-td-pos':df<0?'report-td-neg':'';
-    return `<tr><td style="text-align:left">${esc(dip.nome)}${dip.mansione?`<br><small style="color:#888">${esc(dip.mansione)}</small>`:''}</td><td>€ ${euro(d.lordo_base)}</td><td>${bm>=0?'+':''}€ ${euro(bm)}</td><td><strong>€ ${euro(lt)}</strong></td><td>€ ${euro(bp)}</td><td class="${cls}"><strong>${df>=0?'+':''}€ ${euro(df)}</strong></td></tr>`;
+    const mansioneHtml = dip.mansione ? '<br><small style="color:#888">'+esc(dip.mansione)+'</small>' : '';
+    const diffClass = df>0?'td-pos':df<0?'td-neg':'';
+    return '<tr><td style="text-align:left">'+esc(dip.nome)+mansioneHtml+'</td><td>€ '+euro(d.lordo_base)+'</td><td>'+(bm>=0?'+':'')+'€ '+euro(bm)+'</td><td><strong>€ '+euro(lt)+'</strong></td><td>€ '+euro(bp)+'</td><td class="'+diffClass+'">'+(df>=0?'+':'')+'€ '+euro(df)+'</td></tr>';
   }).join('');
-  const ora=new Date().toLocaleDateString('it-IT'); const tcls=td>0?'report-td-pos':td<0?'report-td-neg':'';
-  document.getElementById('reportContent').innerHTML=`
-    <div style="margin-bottom:16px"><div class="report-az-name">${esc(ST.currentAz.nome)}</div>
-    <div class="report-meta">${ST.currentAz.sede?`<span><strong>Sede:</strong> ${esc(ST.currentAz.sede)}</span>`:''}<span><strong>Stampato il:</strong> ${ora}</span></div>
-    <div class="report-mese-badge">${formatMese(ST.meseSel)}</div></div>
+  const ora=new Date().toLocaleDateString('it-IT');
+  $('reportContent').innerHTML=`
+    <h2>${esc(S.currentAz.nome)}</h2>
+    <div class="report-meta">${S.currentAz.sede?'<span>📍 '+esc(S.currentAz.sede)+'</span>':''}<span>Stampato il ${ora}</span></div>
+    <div class="report-month">${fmtMonth(S.meseSel)}</div>
     <table class="report-table">
       <thead><tr><th style="text-align:left">Dipendente</th><th>Lordo base</th><th>Bonus/Malus</th><th>Lordo totale</th><th>Busta paga</th><th>Differenza</th></tr></thead>
-      <tbody>${righe}</tbody>
-      <tfoot><tr><td>TOTALI (${attivi.length} dip.)</td><td>—</td><td>${tm>=0?'+':''}€ ${euro(tm)}</td><td>€ ${euro(tl)}</td><td>€ ${euro(tb)}</td><td class="${tcls}">${td>=0?'+':''}€ ${euro(td)}</td></tr></tfoot>
+      <tbody>${rows}</tbody>
+      <tfoot><tr><td>TOTALI (${attivi.length})</td><td>—</td><td>${tm>=0?'+':''}€ ${euro(tm)}</td><td>€ ${euro(tl)}</td><td>€ ${euro(tb)}</td><td class="${td>0?'td-pos':td<0?'td-neg':''}">${td>=0?'+':''}€ ${euro(td)}</td></tr></tfoot>
     </table>
-    <div class="report-footer"><span>CDL StipendiPro – by Carlo De Luca</span><span>${ora}</span></div>`;
-  openModal('modalReport');
-});
-document.getElementById('btnStampa').addEventListener('click',()=>window.print());
+    <div class="report-footer"><span>CDL StipendiPro — by Carlo De Luca</span><span>${ora}</span></div>`;
+  openM('mReport');
+};
+$('btnPrint').onclick=()=>window.print();
 
-window._SP_STATE=ST; window._SP_SCHEDULE_SAVE=scheduleSave;
+window._S=S; window._SCHEDULE_SAVE=scheduleSave;
 
-/* ════════════════════ PDF + AI ════════════════════ */
-let pdfFile=null; let aiRisultati=[];
+/* ═══════════════════ PDF + AI ═══════════════════ */
+let pdfFile=null, aiResults=[];
 
-document.getElementById('btnImportPDF').addEventListener('click',()=>{
-  if(!ST.currentAz){showToast('Nessuna azienda aperta','error');return;}
-  resetPDF(); openModal('modalPDF');
-});
-function resetPDF(){
-  pdfFile=null;aiRisultati=[];
-  document.getElementById('pdfDrop').style.display='';
-  document.getElementById('pdfFileInfo').style.display='none';
-  document.getElementById('aiStatusBox').style.display='none';
-  document.getElementById('aiResultsBox').style.display='none';
-  document.getElementById('btnAnalizzaPDF').style.display='none';
-  document.getElementById('btnApplicaRisultati').style.display='none';
-  document.getElementById('pdfFileInput').value='';
+$('btnImportPdf').onclick=()=>{if(!S.currentAz)return;resetPdf();openM('mPdf');};
+function resetPdf(){
+  pdfFile=null;aiResults=[];
+  $('pdfDrop').style.display=''; $('pdfFileSel').style.display='none';
+  $('pdfAiStatus').style.display='none'; $('pdfResults').style.display='none';
+  $('btnAnalizza').style.display='none'; $('btnApplica').style.display='none';
+  $('pdfInput').value='';
 }
-document.getElementById('pdfFileInput').addEventListener('change',e=>{ if(e.target.files[0]) selPdf(e.target.files[0]); });
-document.getElementById('pdfFileClear').addEventListener('click',resetPDF);
-const pdz=document.getElementById('pdfDrop');
-pdz.addEventListener('dragover',e=>{ e.preventDefault(); pdz.classList.add('drag-over'); });
-pdz.addEventListener('dragleave',()=>pdz.classList.remove('drag-over'));
-pdz.addEventListener('drop',e=>{ e.preventDefault(); pdz.classList.remove('drag-over'); const f=e.dataTransfer.files[0]; if(f&&f.type==='application/pdf') selPdf(f); else showToast('Seleziona un PDF','error'); });
-function selPdf(file){
-  pdfFile=file;
-  document.getElementById('pdfDrop').style.display='none';
-  document.getElementById('pdfFileInfo').style.display='';
-  document.getElementById('pdfFileName').textContent=file.name;
-  document.getElementById('btnAnalizzaPDF').style.display='';
-}
-function toBase64(file){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result.split(',')[1]); r.onerror=()=>rej(new Error('Errore lettura')); r.readAsDataURL(file); }); }
+$('pdfInput').onchange=e=>{if(e.target.files[0])pickPdf(e.target.files[0]);};
+$('pdfClear').onclick=resetPdf;
+const pdz=$('pdfDrop');
+pdz.addEventListener('dragover',e=>{e.preventDefault();pdz.classList.add('over');});
+pdz.addEventListener('dragleave',()=>pdz.classList.remove('over'));
+pdz.addEventListener('drop',e=>{e.preventDefault();pdz.classList.remove('over');const f=e.dataTransfer.files[0];if(f?.type==='application/pdf')pickPdf(f);else toast('Seleziona un PDF','err');});
+function pickPdf(f){pdfFile=f;$('pdfDrop').style.display='none';$('pdfFileSel').style.display='';$('pdfFileName').textContent=f.name;$('btnAnalizza').style.display='';}
+const toB64=f=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=()=>rej();r.readAsDataURL(f);});
 
-document.getElementById('btnAnalizzaPDF').addEventListener('click',async()=>{
-  if(!pdfFile) return;
-  const operaiAttivi=ST.dipendenti.filter(d=>getDati(d.id).attivo);
-  if(!operaiAttivi.length){showToast('Nessun dipendente attivo','error');return;}
+$('btnAnalizza').onclick=async()=>{
+  if(!pdfFile)return;
+  const attivi=S.dipendenti.filter(d=>getDati(d.id).attivo);
+  if(!attivi.length){toast('Nessun dipendente attivo','err');return;}
   const KEY=localStorage.getItem('cdl_anthropic_key')||'';
-  if(!KEY){showToast('Imposta la chiave Anthropic nelle Impostazioni','error');return;}
-  const nomi=operaiAttivi.map((op,i)=>`${i+1}. ${op.nome}`).join('\n');
-  setAiStatus('loading','L\'AI sta leggendo il PDF…');
-  document.getElementById('btnAnalizzaPDF').style.display='none';
-  document.getElementById('btnApplicaRisultati').style.display='none';
-  document.getElementById('aiResultsBox').style.display='none';
+  if(!KEY){toast('Imposta la chiave Anthropic nelle Impostazioni','err');return;}
+  const nomi=attivi.map((op,i)=>`${i+1}. ${op.nome}`).join('\n');
+  setAiSt('loading','L\'AI sta leggendo il PDF…');
+  $('btnAnalizza').style.display='none'; $('btnApplica').style.display='none'; $('pdfResults').style.display='none';
   try{
-    const b64=await toBase64(pdfFile);
-    const prompt=`Sei un assistente contabile esperto. Analizza questo PDF di buste paga italiane.
-
-FORMATO A — "Cedolini Laser": Netto = "RETRIBUZIONE NETTA", Bonus1 = codice C7403, Bonus2 = codice C7425
-FORMATO B — "TeamSystem": Netto = "NETTO BUSTA", Bonus1 = codice 8992, Bonus2 = codice 9824
-
-Per ciascuno di questi dipendenti estrai i dati:
-${nomi}
-
-Rispondi SOLO con JSON valido, zero testo aggiuntivo, zero backtick:
-{"formato":"A oppure B","risultati":[{"nome_dipendente":"nome dalla lista","nome_nel_pdf":"come appare nel PDF","trovato":true,"retribuzione_netta":815.00,"bonus1":92.05,"bonus2":38.36,"bonus1_desc":"desc","bonus2_desc":"desc"}]}
-
-Se non trovato: trovato:false, valori null. Usa punto come separatore decimale.`;
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-opus-4-5',max_tokens:1024,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:b64}},{type:'text',text:prompt}]}]})});
-    if(!resp.ok){const err=await resp.json().catch(()=>({}));throw new Error(err.error?.message||`HTTP ${resp.status}`);}
-    const data=await resp.json();
-    const raw=data.content.map(c=>c.text||'').join('');
-    let parsed; try{parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());}catch(e){throw new Error('Risposta AI non interpretabile.');}
+    const b64=await toB64(pdfFile);
+    const prompt=`Analizza questo PDF di buste paga italiane.
+FORMATO A (Cedolini Laser): Netto="RETRIBUZIONE NETTA", Bonus1=C7403, Bonus2=C7425
+FORMATO B (TeamSystem): Netto="NETTO BUSTA", Bonus1=8992, Bonus2=9824
+Dipendenti da trovare:\n${nomi}
+Rispondi SOLO JSON:\n{"formato":"A","risultati":[{"nome_dipendente":"...","nome_nel_pdf":"...","trovato":true,"retribuzione_netta":0.00,"bonus1":null,"bonus2":null,"bonus1_desc":"...","bonus2_desc":"..."}]}`;
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-opus-4-5',max_tokens:1024,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:b64}},{type:'text',text:prompt}]}]})});
+    if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.error?.message||`HTTP ${r.status}`);}
+    const data=await r.json(); const raw=data.content.map(c=>c.text||'').join('');
+    let parsed;try{parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());}catch(e){throw new Error('Risposta AI non interpretabile.');}
     const fmt=parsed.formato||'A';
-    aiRisultati=parsed.risultati.map(r=>{
-      const op=operaiAttivi.find(o=>{ const on=o.nome.toLowerCase().trim(); const rn=(r.nome_dipendente||'').toLowerCase().trim(); const rnp=(r.nome_nel_pdf||'').toLowerCase().trim(); return on===rn||on===rnp||on.split(' ').some(p=>p.length>2&&rn.includes(p))||rn.split(' ').some(p=>p.length>2&&on.includes(p)); });
-      return{nomeDip:r.nome_dipendente,nomeInPDF:r.nome_nel_pdf||r.nome_dipendente,operaioId:op?.id||null,trovato:!!(r.trovato&&op&&r.retribuzione_netta!=null),retribuzione_netta:r.retribuzione_netta||null,bonus1:r.bonus1||null,bonus1_desc:r.bonus1_desc||(fmt==='B'?'Tratt. Int. DL 3/20':'Tratt. Integr. L.21/2020'),bonus2:r.bonus2||null,bonus2_desc:r.bonus2_desc||(fmt==='B'?'Somma Art.1 L.207/24':'Somma Integr. L.207/2024'),formato:fmt};
+    aiResults=parsed.risultati.map(res=>{
+      const op=attivi.find(o=>{const on=o.nome.toLowerCase().trim();const rn=(res.nome_dipendente||'').toLowerCase().trim();const rp=(res.nome_nel_pdf||'').toLowerCase().trim();return on===rn||on===rp||on.split(' ').some(p=>p.length>2&&rn.includes(p))||rn.split(' ').some(p=>p.length>2&&on.includes(p));});
+      return{nomeDip:res.nome_dipendente,nomeInPdf:res.nome_nel_pdf||res.nome_dipendente,opId:op?.id||null,trovato:!!(res.trovato&&op&&res.retribuzione_netta!=null),netto:res.retribuzione_netta||null,bonus1:res.bonus1||null,bonus1_desc:res.bonus1_desc||(fmt==='B'?'Tratt. Int. DL 3/20':'Tratt. Integr. L.21/2020'),bonus2:res.bonus2||null,bonus2_desc:res.bonus2_desc||(fmt==='B'?'Somma L.207/24':'Somma Integr. L.207/2024')};
     });
-    const trovati=aiRisultati.filter(r=>r.trovato).length;
-    setAiStatus('success',trovati===aiRisultati.length?`Tutti i ${trovati} dipendenti trovati ✓`:`${trovati} trovati · ${aiRisultati.length-trovati} non trovati`);
-    mostraRisultatiPDF();
-  }catch(err){setAiStatus('error',err.message);document.getElementById('btnAnalizzaPDF').style.display='';}
-});
-function setAiStatus(tipo,testo){
-  const box=document.getElementById('aiStatusBox'); box.style.display='';
-  box.innerHTML={loading:`<div class="ai-status loading"><div class="ai-spinner"></div><span>${testo}</span></div>`,success:`<div class="ai-status success">✓ ${testo}</div>`,error:`<div class="ai-status error">⚠ ${testo}</div>`}[tipo]||'';
+    const found=aiResults.filter(r=>r.trovato).length;
+    setAiSt('ok',found===aiResults.length?`Tutti i ${found} dipendenti trovati ✓`:`${found} trovati · ${aiResults.length-found} non trovati`);
+    renderPdfResults();
+  }catch(e){setAiSt('error',e.message);$('btnAnalizza').style.display='';}
+};
+function setAiSt(type,text){
+  const box=$('pdfAiStatus'); box.style.display='';
+  box.innerHTML={loading:`<div class="ai-status loading"><div class="ai-spin"></div><span>${text}</span></div>`,ok:`<div class="ai-status ok">✓ ${text}</div>`,error:`<div class="ai-status error">⚠ ${text}</div>`}[type]||'';
 }
-function mostraRisultatiPDF(){
-  const list=document.getElementById('aiResultsList'); document.getElementById('aiResultsBox').style.display='';
-  list.innerHTML=aiRisultati.map(r=>{
-    if(!r.trovato) return `<div class="ai-result-row" style="opacity:.6"><span style="font-size:16px">⚠️</span><div class="ai-result-info"><div class="ai-result-name">${esc(r.nomeDip)}</div><div class="ai-result-detail">Non trovato nel PDF</div></div><span class="ai-result-amount" style="color:var(--text3)">—</span></div>`;
-    const bonus=[]; if(r.bonus1) bonus.push(`${r.bonus1_desc}: +€ ${euro(r.bonus1)}`); if(r.bonus2) bonus.push(`${r.bonus2_desc}: +€ ${euro(r.bonus2)}`);
-    return `<div class="ai-result-row" style="flex-direction:column;align-items:flex-start;gap:5px">
-      <div style="display:flex;align-items:center;gap:10px;width:100%"><span style="font-size:16px">✅</span><div class="ai-result-info"><div class="ai-result-name">${esc(r.nomeDip)}</div><div class="ai-result-detail">trovato come "${esc(r.nomeInPDF)}"</div></div></div>
-      <div style="padding-left:26px;display:flex;flex-direction:column;gap:2px;width:100%">
-        <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--text3)">💼 Busta paga effettiva</span><span class="ai-result-amount">€ ${euro(r.retribuzione_netta)}</span></div>
-        ${bonus.map(b=>`<div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--green)">＋ ${esc(b.split(':')[0])}</span><span style="font-family:var(--mono);font-size:13px;font-weight:600;color:var(--green)">${b.split(':')[1].trim()}</span></div>`).join('')}
-        ${!bonus.length?'<div style="font-size:11px;color:var(--text3)">Nessun bonus trovato</div>':''}
-      </div>
-    </div>`;
+function renderPdfResults(){
+  const list=$('pdfResultsList'); $('pdfResults').style.display='';
+  list.innerHTML=aiResults.map(r=>{
+    if(!r.trovato)return`<div class="ai-result" style="opacity:.6"><div class="ai-result-row"><span>⚠️</span><div class="ai-result-info"><div class="ai-result-name">${esc(r.nomeDip)}</div><div class="ai-result-sub">Non trovato nel PDF</div></div><span class="ai-result-amount" style="color:var(--text3)">—</span></div></div>`;
+    const bonusRows=[];
+    if(r.bonus1)bonusRows.push(`<div class="ai-bonus-row"><span style="color:var(--green)">＋ ${esc(r.bonus1_desc)}</span><span style="font-family:var(--mono);font-weight:600;color:var(--green)">+€ ${euro(r.bonus1)}</span></div>`);
+    if(r.bonus2)bonusRows.push(`<div class="ai-bonus-row"><span style="color:var(--green)">＋ ${esc(r.bonus2_desc)}</span><span style="font-family:var(--mono);font-weight:600;color:var(--green)">+€ ${euro(r.bonus2)}</span></div>`);
+    return`<div class="ai-result"><div class="ai-result-row"><span>✅</span><div class="ai-result-info"><div class="ai-result-name">${esc(r.nomeDip)}</div><div class="ai-result-sub">trovato come "${esc(r.nomeInPdf)}"</div></div><span class="ai-result-amount">€ ${euro(r.netto)}</span></div>${bonusRows.join('')}</div>`;
   }).join('');
-  if(aiRisultati.some(r=>r.trovato)) document.getElementById('btnApplicaRisultati').style.display='';
+  if(aiResults.some(r=>r.trovato))$('btnApplica').style.display='';
 }
-document.getElementById('btnApplicaRisultati').addEventListener('click',()=>{
+$('btnApplica').onclick=()=>{
   let cnt=0;
-  aiRisultati.forEach(r=>{
-    if(!r.trovato||!r.operaioId) return;
-    const stato=ST.datiMese[r.operaioId];
-    if(r.retribuzione_netta!=null){ if(stato) stato.busta_paga=r.retribuzione_netta; const inp=document.querySelector(`input[data-field="busta_paga"][data-id="${r.operaioId}"]`); if(inp){inp.value=r.retribuzione_netta;inp.dispatchEvent(new Event('input',{bubbles:true}));inp.style.boxShadow='0 0 0 3px rgba(34,197,94,.4)';setTimeout(()=>inp.style.boxShadow='',1400);} }
-    const nb=[]; if(r.bonus1!=null) nb.push(r.bonus1); if(r.bonus2!=null) nb.push(r.bonus2);
-    if(nb.length&&stato){stato.bonus_malus=nb;rebuildBonus(r.operaioId);aggiornaCalcolati(r.operaioId);}
+  aiResults.forEach(r=>{
+    if(!r.trovato||!r.opId)return;
+    const st=S.datiMese[r.opId];
+    if(r.netto!=null){if(st)st.busta_paga=r.netto;const inp=document.querySelector(`input[data-field="busta_paga"][data-id="${r.opId}"]`);if(inp){inp.value=r.netto;inp.dispatchEvent(new Event('input',{bubbles:true}));inp.style.boxShadow='0 0 0 3px rgba(34,197,94,.4)';setTimeout(()=>inp.style.boxShadow='',1400);}}
+    const nb=[];if(r.bonus1!=null)nb.push(r.bonus1);if(r.bonus2!=null)nb.push(r.bonus2);
+    if(nb.length&&st){st.bonus_malus=nb;rebuildBonus(r.opId);updateCalc(r.opId);}
     cnt++;
   });
-  aggiornaRiepilogo(); scheduleSave(); closeModal('modalPDF'); showToast(`${cnt} dipendenti aggiornati ✓`,'success');
-});
+  renderSummary();scheduleSave();closeM('mPdf');toast(`${cnt} dipendenti aggiornati ✓`,'ok');
+};
 
-/* ════════════════════ DOCUMENTI ════════════════════ */
-const DOC_KEYS = [
-  { key:'documento_identita', label:'Documento identità',    section:'Documenti personali', icon:'🪪', hasExpiry:true  },
-  { key:'permesso_soggiorno', label:'Permesso di soggiorno', section:'Documenti personali', icon:'📋', hasExpiry:true  },
-  { key:'iban',               label:'IBAN',                  section:'Documenti personali', icon:'🏦', hasExpiry:false },
-  { key:'contratto_firmato',  label:'Contratto firmato',     section:'Contratto & Unilav',  icon:'📝', hasExpiry:false },
-  { key:'unilav',             label:'Unilav',                section:'Contratto & Unilav',  icon:'📄', hasExpiry:false },
-  { key:'sicurezza_lavoro',   label:'Sicurezza sul lavoro',  section:'Formazione',          icon:'🦺', hasExpiry:true  },
-  { key:'haccp',              label:'HACCP',                 section:'Formazione',          icon:'🍽', hasExpiry:true  },
-  { key:'visita_medica',      label:'Visita medica',         section:'Formazione',          icon:'🏥', hasExpiry:true  },
+/* ═══════════════════ DOCUMENTI ═══════════════════ */
+const DOCS=[
+  {key:'documento_identita', label:'Documento identità',    icon:'🪪', group:'Documenti personali', expiry:true},
+  {key:'permesso_soggiorno', label:'Permesso di soggiorno', icon:'📋', group:'Documenti personali', expiry:true},
+  {key:'iban',               label:'IBAN',                  icon:'🏦', group:'Documenti personali', expiry:false},
+  {key:'contratto_firmato',  label:'Contratto firmato',     icon:'📝', group:'Contratto & Unilav',  expiry:false},
+  {key:'unilav',             label:'Unilav',                icon:'📄', group:'Contratto & Unilav',  expiry:false},
+  {key:'sicurezza_lavoro',   label:'Sicurezza sul lavoro',  icon:'🦺', group:'Formazione',          expiry:true},
+  {key:'haccp',              label:'HACCP',                 icon:'🍽', group:'Formazione',          expiry:true},
+  {key:'visita_medica',      label:'Visita medica',         icon:'🏥', group:'Formazione',          expiry:true},
 ];
 
-let ddFilters = { stato:'', alert:'', search:'' };
+let docFilters={stato:'',alert:'',search:''};
+let selectedDipId = null;
 
-const expiryClass = d => {
-  if(!d) return '';
-  const diff = (new Date(d) - new Date()) / 86400000;
-  return diff < 0 ? 'expiry-expired' : diff < 30 ? 'expiry-warn' : 'expiry-ok';
-};
+const expClass=d=>{if(!d)return'';const diff=(new Date(d)-new Date())/86400000;return diff<0?'crit':diff<30?'warn':'ok';};
+const expLabel=d=>{if(!d)return'';const diff=Math.round((new Date(d)-new Date())/86400000);if(diff<0)return`Scaduta ${Math.abs(diff)}gg fa`;if(diff===0)return'Scade oggi';if(diff<30)return`Scade tra ${diff}gg`;return'';};
 
-const expiryLabel = d => {
-  if(!d) return '';
-  const diff = Math.round((new Date(d) - new Date()) / 86400000);
-  if(diff < 0) return `scaduta ${Math.abs(diff)}gg fa`;
-  if(diff === 0) return 'scade oggi';
-  if(diff < 30) return `scade in ${diff}gg`;
-  return '';
-};
-
-function calcolaBadges(docs, dip) {
-  let ok=0, warn=0, err=0, na=0;
-  DOC_KEYS.forEach(({key, hasExpiry}) => {
-    const d = (docs||{})[key] || {};
-    if(d.status==='na') { na++; return; }
-    if(!d.status || d.status==='missing') { err++; return; }
-    if(hasExpiry && d.expiry) {
-      const c = expiryClass(d.expiry);
-      if(c==='expiry-expired') err++;
-      else if(c==='expiry-warn') warn++;
-      else ok++;
-    } else ok++;
-  });
-  // contratto
-  if(dip?.tipo_contratto==='determinato' && dip?.scadenza_contratto) {
-    const c = expiryClass(dip.scadenza_contratto);
-    if(c==='expiry-expired') err++;
-    else if(c==='expiry-warn') warn++;
-  }
-  const p = [];
-  if(ok)   p.push(`<span class="badge-ok">✓ ${ok}</span>`);
-  if(warn) p.push(`<span class="badge-warn">⚠ ${warn}</span>`);
-  if(err)  p.push(`<span class="badge-err">✕ ${err}</span>`);
-  if(na)   p.push(`<span class="badge-na">— ${na}</span>`);
-  return p.join('') || '<span class="badge-na">Non configurato</span>';
+function calcScore(dip){
+  const docs=dip.documenti||{};let err=0,warn=0;
+  DOCS.forEach(({key,expiry})=>{const d=docs[key]||{};if(d.status==='na')return;if(!d.status||d.status==='missing'){err++;return;}if(expiry&&d.expiry){const c=expClass(d.expiry);if(c==='crit')err++;else if(c==='warn')warn++;}});
+  if(dip.tipo_contratto==='determinato'&&dip.scadenza_contratto){const c=expClass(dip.scadenza_contratto);if(c==='crit')err++;else if(c==='warn')warn++;}
+  return {err,warn};
 }
 
-function hasAlert(dip, tipo) {
-  const docs = dip.documenti || {};
-  if(tipo==='expired' && dip.tipo_contratto==='determinato' && dip.scadenza_contratto && expiryClass(dip.scadenza_contratto)==='expiry-expired') return true;
-  if(tipo==='expiring' && dip.tipo_contratto==='determinato' && dip.scadenza_contratto && expiryClass(dip.scadenza_contratto)==='expiry-warn') return true;
-  return DOC_KEYS.some(({key, hasExpiry}) => {
-    const d = docs[key] || {};
-    if(tipo==='missing')  return !d.status || d.status==='missing';
-    if(tipo==='expired')  return d.status==='ok' && hasExpiry && d.expiry && expiryClass(d.expiry)==='expiry-expired';
-    if(tipo==='expiring') return d.status==='ok' && hasExpiry && d.expiry && expiryClass(d.expiry)==='expiry-warn';
+function dipHasAlert(dip,tipo){
+  const docs=dip.documenti||{};
+  if(tipo==='expired'&&dip.tipo_contratto==='determinato'&&dip.scadenza_contratto&&expClass(dip.scadenza_contratto)==='crit')return true;
+  if(tipo==='expiring'&&dip.tipo_contratto==='determinato'&&dip.scadenza_contratto&&expClass(dip.scadenza_contratto)==='warn')return true;
+  return DOCS.some(({key,expiry})=>{
+    const d=docs[key]||{};
+    if(tipo==='missing')  return !d.status||d.status==='missing';
+    if(tipo==='expired')  return d.status==='ok'&&expiry&&d.expiry&&expClass(d.expiry)==='crit';
+    if(tipo==='expiring') return d.status==='ok'&&expiry&&d.expiry&&expClass(d.expiry)==='warn';
     return false;
   });
 }
 
-function renderDocModule() {
-  const list  = document.getElementById('docList');
-  const empty = document.getElementById('emptyDoc');
-  let filtered = ST.dipendenti.filter(d => d.stato !== 'terminato');
-  if(ddFilters.stato)  filtered = filtered.filter(d => d.stato === ddFilters.stato);
-  if(ddFilters.alert)  filtered = filtered.filter(d => hasAlert(d, ddFilters.alert));
-  if(ddFilters.search) { const q = ddFilters.search.toLowerCase(); filtered = filtered.filter(d => (d.nome||'').toLowerCase().includes(q)); }
-
-  // KPI
-  let ok2=0, warn2=0, err2=0;
-  filtered.forEach(d => {
-    const docs = d.documenti||{}; let hasErr=false, hasWarn=false, allOk=true;
-    DOC_KEYS.forEach(({key,hasExpiry}) => {
-      const doc = docs[key]||{};
-      if(doc.status==='na') return;
-      if(!doc.status||doc.status==='missing') { hasErr=true; allOk=false; return; }
-      if(hasExpiry && doc.expiry) { const c=expiryClass(doc.expiry); if(c==='expiry-expired'){hasErr=true;allOk=false;} else if(c==='expiry-warn'){hasWarn=true;allOk=false;} }
-    });
-    if(d.tipo_contratto==='determinato'&&d.scadenza_contratto) {
-      const c=expiryClass(d.scadenza_contratto);
-      if(c==='expiry-expired'){hasErr=true;allOk=false;} else if(c==='expiry-warn'){hasWarn=true;allOk=false;}
-    }
-    if(hasErr) err2++; else if(hasWarn) warn2++; else if(allOk) ok2++;
-  });
-  document.getElementById('kpiTot').textContent  = filtered.length;
-  document.getElementById('kpiOk').textContent   = ok2;
-  document.getElementById('kpiWarn').textContent = warn2;
-  document.getElementById('kpiErr').textContent  = err2;
-
-  list.querySelectorAll('.emp-doc-card').forEach(el => el.remove());
-  if(!filtered.length) { empty.style.display=''; return; }
-  empty.style.display = 'none';
-  filtered.forEach(dip => list.appendChild(creaDocCard(dip)));
+function renderDocModule(){
+  let filtered=S.dipendenti.filter(d=>d.stato!=='terminato');
+  if(docFilters.stato)  filtered=filtered.filter(d=>d.stato===docFilters.stato);
+  if(docFilters.alert)  filtered=filtered.filter(d=>dipHasAlert(d,docFilters.alert));
+  if(docFilters.search){const q=docFilters.search.toLowerCase();filtered=filtered.filter(d=>(d.nome||'').toLowerCase().includes(q));}
+  updateDocKpi(filtered);
+  renderDocDipList(filtered);
+  // Refresh detail panel if someone is selected
+  if(selectedDipId){
+    const dip=S.dipendenti.find(d=>d.id===selectedDipId);
+    if(dip) renderDocDetail(dip);
+  }
 }
 
-/* ── Crea card dipendente documenti ── */
-function creaDocCard(dip) {
-  const card = document.createElement('div');
-  card.className = 'emp-doc-card';
-  card.dataset.id = dip.id;
-  const docs = dip.documenti || {};
+function updateDocKpi(filtered){
+  let ok2=0,warn2=0,crit2=0;
+  filtered.forEach(d=>{const{err,warn}=calcScore(d);if(err)crit2++;else if(warn)warn2++;else ok2++;});
+  $('kpiTot').textContent=filtered.length;
+  $('kpiOk').textContent=ok2;
+  $('kpiWarn').textContent=warn2;
+  $('kpiCrit').textContent=crit2;
+}
 
-  // Alert banners
-  const alerts = [];
-  DOC_KEYS.forEach(({key, label, hasExpiry}) => {
-    const d = docs[key]||{};
-    if(!d.status || d.status==='missing') alerts.push({type:'red', msg:`❌ ${label} — mancante`});
-    else if(hasExpiry && d.expiry) {
-      const c = expiryClass(d.expiry);
-      if(c==='expiry-expired') alerts.push({type:'red', msg:`❌ ${label} — scaduta il ${d.expiry} (${expiryLabel(d.expiry)})`});
-      else if(c==='expiry-warn') alerts.push({type:'yellow', msg:`⚠ ${label} — scade il ${d.expiry} (${expiryLabel(d.expiry)})`});
-    }
+function renderDocDipList(filtered){
+  const list=$('docDipList'); list.innerHTML='';
+  if(!filtered.length){
+    list.innerHTML='<div style="padding:16px 8px;text-align:center;color:var(--text3);font-size:12px">Nessun dipendente trovato.</div>';
+    return;
+  }
+  filtered.forEach(dip=>{
+    const {err,warn}=calcScore(dip);
+    const statusColor = err?'var(--red)':warn?'var(--yellow)':'var(--green)';
+    const statusIcon  = err?'✕':warn?'⚠':'✓';
+    const isSelected  = selectedDipId===dip.id;
+    const item=document.createElement('div');
+    item.style.cssText=`display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;margin-bottom:2px;transition:background .12s;background:${isSelected?'var(--surface3)':'transparent'};border:1px solid ${isSelected?'var(--border2)':'transparent'}`;
+    item.innerHTML=`
+      <div style="width:32px;height:32px;border-radius:8px;background:var(--accent);color:#fff;font-family:var(--mono);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">${esc(initials(dip.nome))}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(dip.nome)}</div>
+        ${dip.mansione?`<div style="font-size:11px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(dip.mansione)}</div>`:''}
+      </div>
+      <div style="font-size:12px;font-weight:700;color:${statusColor};flex-shrink:0">${statusIcon}</div>`;
+    item.onmouseenter=()=>{ if(!isSelected) item.style.background='var(--surface2)'; };
+    item.onmouseleave=()=>{ if(!isSelected) item.style.background='transparent'; };
+    item.onclick=()=>{ selectedDipId=dip.id; renderDocModule(); };
+    list.appendChild(item);
   });
-  if(dip.tipo_contratto==='determinato' && dip.scadenza_contratto) {
-    const c = expiryClass(dip.scadenza_contratto);
-    if(c==='expiry-expired') alerts.push({type:'red', msg:`❌ Contratto a termine — SCADUTO il ${dip.scadenza_contratto}`});
-    else if(c==='expiry-warn') alerts.push({type:'yellow', msg:`⚠ Contratto a termine — scade il ${dip.scadenza_contratto} (${expiryLabel(dip.scadenza_contratto)})`});
+}
+
+function renderDocDetail(dip){
+  const panel=$('docDetailPanel');
+  const docs=dip.documenti||{};
+
+  // Group docs
+  const groups={};
+  DOCS.forEach(dk=>{if(!groups[dk.group])groups[dk.group]=[];groups[dk.group].push(dk);});
+
+  // Build alerts
+  const alerts=[];
+  DOCS.forEach(({key,label,expiry})=>{
+    const d=docs[key]||{};
+    if(!d.status||d.status==='missing'){alerts.push({c:'crit',m:`❌ ${label} — mancante`});return;}
+    if(expiry&&d.expiry){const c=expClass(d.expiry);const lb=expLabel(d.expiry);
+      if(c==='crit')alerts.push({c:'crit',m:`❌ ${label} — ${lb}`});
+      else if(c==='warn')alerts.push({c:'warn',m:`⚠ ${label} — ${lb}`});}
+  });
+  if(dip.tipo_contratto==='determinato'&&dip.scadenza_contratto){
+    const c=expClass(dip.scadenza_contratto);const lb=expLabel(dip.scadenza_contratto);
+    if(c==='crit')alerts.push({c:'crit',m:`❌ Contratto — ${lb}`});
+    else if(c==='warn')alerts.push({c:'warn',m:`⚠ Contratto — ${lb}`});
   }
 
-  // Raggruppa DOC_KEYS per sezione
-  const sections = {};
-  DOC_KEYS.forEach(dk => {
-    if(!sections[dk.section]) sections[dk.section] = [];
-    sections[dk.section].push(dk);
-  });
+  panel.innerHTML='';
+  const wrap=document.createElement('div');
+  wrap.style.cssText='padding:20px;display:flex;flex-direction:column;gap:16px;max-width:900px';
 
-  const sectionsHtml = Object.entries(sections).map(([sTitle, keys]) => `
-    <div class="doc-section-card">
-      <div class="doc-section-title">${sTitle}</div>
-      ${keys.map(({key, label, icon, hasExpiry}) => {
-        const doc = docs[key]||{status:'missing'};
-        const files = doc.files||[];
-        const eCls = hasExpiry && doc.expiry ? expiryClass(doc.expiry) : '';
-        const eLabel = hasExpiry && doc.expiry ? expiryLabel(doc.expiry) : '';
-        return `
-        <div class="doc-field-row">
-          <span class="doc-field-label">${icon} ${label}</span>
-          <div class="doc-field-actions">
-            ${hasExpiry ? `
-              <div style="display:flex;flex-direction:column;gap:2px;align-items:flex-end">
-                <input type="date" class="expiry-input ${eCls}" value="${doc.expiry||''}" data-dip="${dip.id}" data-key="${key}" data-field="expiry" title="Scadenza"/>
-                ${eLabel ? `<span style="font-size:10px;color:${eCls==='expiry-expired'?'var(--red)':eCls==='expiry-warn'?'var(--yellow)':'var(--green)'}">${eLabel}</span>` : ''}
-              </div>` : ''}
-            <select class="expiry-input" data-dip="${dip.id}" data-key="${key}" data-field="status" style="min-width:110px">
-              <option value="missing" ${(!doc.status||doc.status==='missing')?'selected':''}>❌ Mancante</option>
-              <option value="ok"      ${doc.status==='ok'?'selected':''}>✅ Presente</option>
-              <option value="na"      ${doc.status==='na'?'selected':''}>— N/A</option>
-            </select>
-            <label class="btn btn-ghost btn-sm" style="cursor:pointer;padding:5px 8px;position:relative" title="Carica file">
-              📎
-              <input type="file" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%" multiple accept=".pdf,.jpg,.jpeg,.png" data-dip="${dip.id}" data-key="${key}" data-field="upload"/>
-            </label>
-          </div>
-        </div>
-        ${files.length ? `<div class="file-list">${files.map((f,fi) => `
-          <div class="file-item">
-            <span>${f.type==='pdf'?'📄':'🖼'}</span>
-            <a href="${f.url}" target="_blank" class="file-link">${esc(f.name)}</a>
-            <span class="file-size">${f.size ? Math.round(f.size/1024)+'KB' : ''}</span>
-            ${f.ai_data ? `<span style="font-size:10px;background:var(--green-dim);color:var(--green);padding:1px 6px;border-radius:99px;border:1px solid rgba(34,197,94,.2)">AI ✓</span>` : ''}
-            <button class="file-del" data-dip="${dip.id}" data-key="${key}" data-fi="${fi}" data-field="delfile">✕</button>
-          </div>`).join('')}</div>` : ''}`;
-      }).join('')}
-    </div>`).join('');
-
-  card.innerHTML = `
-    <div class="emp-doc-head">
-      <div class="emp-avatar">${esc(iniziali(dip.nome))}</div>
-      <div class="emp-doc-info">
-        <div class="emp-doc-name">${esc(dip.nome)}</div>
-        <div class="emp-doc-meta">
-          ${dip.mansione ? `<span>💼 ${esc(dip.mansione)}</span>` : ''}
-          <span class="badge-${dip.stato==='attivo'?'ok':dip.stato==='sospeso'?'warn':'na'}">${dip.stato||'attivo'}</span>
-          ${dip.tipo_contratto ? `<span style="font-size:10px;color:var(--text3)">${dip.tipo_contratto}</span>` : ''}
-        </div>
+  // Header
+  const header=document.createElement('div');
+  header.style.cssText='display:flex;align-items:center;gap:12px;padding-bottom:16px;border-bottom:1px solid var(--border)';
+  header.innerHTML=`
+    <div style="width:44px;height:44px;border-radius:10px;background:var(--accent);color:#fff;font-family:var(--mono);font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">${esc(initials(dip.nome))}</div>
+    <div style="flex:1">
+      <div style="font-size:17px;font-weight:700">${esc(dip.nome)}</div>
+      <div style="font-size:12px;color:var(--text3);display:flex;gap:10px;margin-top:3px">
+        ${dip.mansione?`<span>💼 ${esc(dip.mansione)}</span>`:''}
+        <span class="label ${dip.stato==='attivo'?'label-green':dip.stato==='sospeso'?'label-yellow':'label-gray'}" style="font-size:10px">${dip.stato||'attivo'}</span>
+        ${dip.tipo_contratto?`<span class="label label-blue" style="font-size:10px">${dip.tipo_contratto}</span>`:''}
+        ${dip.data_assunzione?`<span>📅 Dal ${dip.data_assunzione}</span>`:''}
       </div>
-      <div class="emp-doc-badges">${calcolaBadges(docs, dip)}</div>
-      <button class="btn-icon" data-ed="${dip.id}" title="Modifica anagrafica" style="flex-shrink:0">✏️</button>
-      <span class="chevron" style="flex-shrink:0">▼</span>
     </div>
-    ${alerts.length ? `<div style="padding:6px 14px 8px;display:flex;flex-direction:column;gap:3px;border-bottom:1px solid var(--border)">${alerts.map(a=>`<div class="alert-banner ${a.type}">${a.msg}</div>`).join('')}</div>` : ''}
-    <div class="emp-doc-body" style="display:none">
-      ${sectionsHtml}
-      <div class="contract-full">
-        <div class="doc-section-title">📋 Dati contratto</div>
-        <div class="contract-grid">
-          <div class="field-group"><label>Tipo contratto</label>
-            <select data-dip="${dip.id}" data-contract="tipo_contratto">
-              <option value="">Non specificato</option>
-              <option value="indeterminato"  ${dip.tipo_contratto==='indeterminato'?'selected':''}>Indeterminato</option>
-              <option value="determinato"    ${dip.tipo_contratto==='determinato'?'selected':''}>Determinato</option>
-              <option value="apprendistato"  ${dip.tipo_contratto==='apprendistato'?'selected':''}>Apprendistato</option>
-              <option value="part_time"      ${dip.tipo_contratto==='part_time'?'selected':''}>Part-time</option>
-              <option value="stagionale"     ${dip.tipo_contratto==='stagionale'?'selected':''}>Stagionale</option>
-            </select>
-          </div>
-          <div class="field-group"><label>Scadenza contratto</label>
-            <input type="date" class="${expiryClass(dip.scadenza_contratto)}" value="${dip.scadenza_contratto||''}" data-dip="${dip.id}" data-contract="scadenza_contratto"/>
-          </div>
-          <div class="field-group"><label>Data assunzione</label>
-            <input type="date" value="${dip.data_assunzione||''}" data-dip="${dip.id}" data-contract="data_assunzione"/>
-          </div>
-        </div>
-      </div>
-    </div>`;
+    <button class="btn btn-ghost btn-sm" id="btnEditDipDoc">✏️ Modifica</button>`;
+  header.querySelector('#btnEditDipDoc').onclick=()=>editDip(dip.id);
+  wrap.appendChild(header);
 
-  /* ── Toggle apri/chiudi ── */
-  card.querySelector('.emp-doc-head').addEventListener('click', e => {
-    if(e.target.closest('[data-ed]')) return;
-    const body = card.querySelector('.emp-doc-body');
-    const isOpen = body.style.display !== 'none';
-    body.style.display = isOpen ? 'none' : 'grid';
-    card.querySelector('.chevron').style.transform = isOpen ? '' : 'rotate(180deg)';
-  });
-
-  card.querySelector('[data-ed]')?.addEventListener('click', e => {
-    e.stopPropagation(); editDipendente(dip.id);
-  });
-
-  /* ── Dati contratto ── */
-  card.querySelectorAll('[data-contract]').forEach(el => {
-    el.addEventListener('change', async () => {
-      dip[el.dataset.contract] = el.value || null;
-      if(el.type==='date') el.className = expiryClass(el.value);
-      await salvaDip(dip);
-      sostituisciCard(card, dip);
+  // Alerts
+  if(alerts.length){
+    const alertsDiv=document.createElement('div');
+    alertsDiv.style.cssText='display:flex;flex-direction:column;gap:4px';
+    alerts.forEach(a=>{
+      const row=document.createElement('div');
+      row.className=`alert-row ${a.c}`;
+      row.textContent=a.m;
+      alertsDiv.appendChild(row);
     });
-  });
-
-  /* ── Doc fields: status + expiry ── */
-  card.querySelectorAll('[data-field="status"],[data-field="expiry"]').forEach(el => {
-    el.addEventListener('change', async () => {
-      const key = el.dataset.key;
-      if(!dip.documenti) dip.documenti = {};
-      if(!dip.documenti[key]) dip.documenti[key] = {};
-      if(el.dataset.field==='status') dip.documenti[key].status = el.value;
-      if(el.dataset.field==='expiry') {
-        dip.documenti[key].expiry = el.value || null;
-        el.className = 'expiry-input ' + expiryClass(el.value);
-      }
-      await salvaDip(dip);
-      sostituisciCard(card, dip);
-    });
-  });
-
-  /* ── Upload file + AI ── */
-  card.querySelectorAll('[data-field="upload"]').forEach(inp => {
-    inp.addEventListener('change', async () => {
-      if(!inp.files.length) return;
-      const key = inp.dataset.key;
-      const dk = DOC_KEYS.find(d => d.key===key);
-      if(!dip.documenti) dip.documenti = {};
-      if(!dip.documenti[key]) dip.documenti[key] = { status:'ok', files:[] };
-      if(!dip.documenti[key].files) dip.documenti[key].files = [];
-
-      for(const file of inp.files) {
-        showToast(`Caricamento ${file.name}…`);
-        const res = await uploadFile(dip.id, key, file);
-        if(!res) continue;
-        const ext = file.name.split('.').pop().toLowerCase();
-        const fileObj = { ...res, type: ext==='pdf'?'pdf':'img' };
-
-        // AI: analizza il documento se è PDF o immagine
-        const AKEY = localStorage.getItem('cdl_anthropic_key')||'';
-        if(AKEY && (ext==='pdf'||['jpg','jpeg','png'].includes(ext))) {
-          showToast(`AI sta leggendo ${file.name}…`);
-          try {
-            const aiData = await analizzaDocumentoAI(file, dk, AKEY);
-            if(aiData) {
-              fileObj.ai_data = aiData;
-              // Applica automaticamente i dati estratti
-              if(aiData.expiry && dk.hasExpiry && !dip.documenti[key].expiry) {
-                dip.documenti[key].expiry = aiData.expiry;
-              }
-              if(aiData.status) dip.documenti[key].status = aiData.status;
-              showToast(`AI: dati estratti da ${file.name} ✓`, 'success');
-            }
-          } catch(e) {
-            console.warn('AI doc error:', e);
-          }
-        }
-
-        dip.documenti[key].files.push(fileObj);
-        if(dip.documenti[key].status==='missing') dip.documenti[key].status='ok';
-      }
-
-      await salvaDip(dip);
-      sostituisciCard(card, dip, true);
-    });
-  });
-
-  /* ── Elimina file ── */
-  card.querySelectorAll('[data-field="delfile"]').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const key = btn.dataset.key; const fi = parseInt(btn.dataset.fi);
-      if(!dip.documenti?.[key]?.files) return;
-      const f = dip.documenti[key].files[fi];
-      if(f?.path) await deleteFile(f.path);
-      dip.documenti[key].files.splice(fi, 1);
-      if(!dip.documenti[key].files.length) dip.documenti[key].status = 'missing';
-      await salvaDip(dip);
-      sostituisciCard(card, dip, true);
-      showToast('File eliminato');
-    });
-  });
-
-  return card;
-}
-
-/* ── Sostituisce la card mantenendo lo stato aperto/chiuso ── */
-function sostituisciCard(oldCard, dip, keepOpen=false) {
-  const wasOpen = oldCard.querySelector('.emp-doc-body')?.style.display !== 'none';
-  const nc = creaDocCard(dip);
-  if(wasOpen || keepOpen) {
-    const body = nc.querySelector('.emp-doc-body');
-    if(body) { body.style.display='grid'; nc.querySelector('.chevron').style.transform='rotate(180deg)'; }
+    wrap.appendChild(alertsDiv);
   }
-  oldCard.replaceWith(nc);
-  renderDocKpi();
-}
 
-function renderDocKpi() {
-  let ok2=0,warn2=0,err2=0;
-  const filtered = getDocFiltered();
-  filtered.forEach(d => {
-    const docs=d.documenti||{}; let hasErr=false,hasWarn=false,allOk=true;
-    DOC_KEYS.forEach(({key,hasExpiry})=>{ const doc=docs[key]||{}; if(doc.status==='na')return; if(!doc.status||doc.status==='missing'){hasErr=true;allOk=false;return;} if(hasExpiry&&doc.expiry){const c=expiryClass(doc.expiry);if(c==='expiry-expired'){hasErr=true;allOk=false;}else if(c==='expiry-warn'){hasWarn=true;allOk=false;}} });
-    if(d.tipo_contratto==='determinato'&&d.scadenza_contratto){const c=expiryClass(d.scadenza_contratto);if(c==='expiry-expired'){hasErr=true;allOk=false;}else if(c==='expiry-warn'){hasWarn=true;allOk=false;}}
-    if(hasErr)err2++;else if(hasWarn)warn2++;else if(allOk)ok2++;
-  });
-  document.getElementById('kpiTot').textContent  = filtered.length;
-  document.getElementById('kpiOk').textContent   = ok2;
-  document.getElementById('kpiWarn').textContent = warn2;
-  document.getElementById('kpiErr').textContent  = err2;
-}
-
-function getDocFiltered() {
-  let f = ST.dipendenti.filter(d=>d.stato!=='terminato');
-  if(ddFilters.stato)  f = f.filter(d=>d.stato===ddFilters.stato);
-  if(ddFilters.alert)  f = f.filter(d=>hasAlert(d,ddFilters.alert));
-  if(ddFilters.search) { const q=ddFilters.search.toLowerCase(); f=f.filter(d=>(d.nome||'').toLowerCase().includes(q)); }
-  return f;
-}
-
-/* ════════ AI ANALISI DOCUMENTO ════════ */
-async function analizzaDocumentoAI(file, dk, apiKey) {
-  const ext = file.name.split('.').pop().toLowerCase();
-  const isPdf = ext === 'pdf';
-  const isImg = ['jpg','jpeg','png'].includes(ext);
-  if(!isPdf && !isImg) return null;
-
-  // Converti in base64
-  const b64 = await new Promise((res,rej) => {
-    const r = new FileReader();
-    r.onload = () => res(r.result.split(',')[1]);
-    r.onerror = () => rej(new Error('Errore lettura'));
-    r.readAsDataURL(file);
-  });
-
-  const mediaType = isPdf ? 'application/pdf' : (ext==='png'?'image/png':'image/jpeg');
-
-  const prompt = `Analizza questo documento italiano "${dk.label}".
-Estrai le seguenti informazioni se presenti:
-- tipo_documento: che tipo di documento è (es. "carta identità", "permesso soggiorno", "certificato HACCP", "visita medica", "contratto di lavoro", "unilav", ecc.)
-- nome_intestatario: nome della persona a cui è intestato il documento
-- data_scadenza: data di scadenza nel formato YYYY-MM-DD (null se non c'è o non scade)
-- data_rilascio: data di rilascio nel formato YYYY-MM-DD (null se non presente)
-- ente_rilascio: chi ha rilasciato il documento (null se non presente)
-- note: qualsiasi informazione utile aggiuntiva (null se nessuna)
-
-Rispondi SOLO con JSON valido, nessun testo extra, nessun backtick:
-{"tipo_documento":"...","nome_intestatario":"...","data_scadenza":"YYYY-MM-DD","data_rilascio":"YYYY-MM-DD","ente_rilascio":"...","note":"..."}
-
-Se un campo non è determinabile usa null.`;
-
-  const content_part = isPdf
-    ? { type:'document', source:{ type:'base64', media_type:mediaType, data:b64 } }
-    : { type:'image',    source:{ type:'base64', media_type:mediaType, data:b64 } };
-
-  const resp = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true',
-    },
-    body: JSON.stringify({
-      model: 'claude-opus-4-5',
-      max_tokens: 512,
-      messages: [{ role:'user', content:[ content_part, { type:'text', text:prompt } ] }]
-    })
+  // Document sections as tables
+  Object.entries(groups).forEach(([gTitle,keys])=>{
+    const section=document.createElement('div');
+    section.innerHTML=`<div style="font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:10px">${gTitle}</div>`;
+    const table=document.createElement('div');
+    table.style.cssText='background:var(--surface2);border:1px solid var(--border);border-radius:10px;overflow:hidden';
+    keys.forEach((dk,idx)=>{
+      const doc=docs[dk.key]||{status:'missing'};
+      const files=doc.files||[];
+      const ec=dk.expiry&&doc.expiry?expClass(doc.expiry):'';
+      const el=dk.expiry&&doc.expiry?expLabel(doc.expiry):'';
+      const row=document.createElement('div');
+      row.style.cssText=`display:flex;align-items:flex-start;gap:12px;padding:12px 14px;${idx>0?'border-top:1px solid var(--border)':''}`;
+      row.innerHTML=`
+        <div style="width:28px;text-align:center;font-size:16px;flex-shrink:0;padding-top:1px">${dk.icon}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13px;font-weight:500;margin-bottom:${files.length?'6px':'0'}">${dk.label}</div>
+          ${files.length?`<div style="display:flex;flex-direction:column;gap:3px">${files.map((f,fi)=>`
+            <div style="display:flex;align-items:center;gap:8px;padding:4px 8px;background:var(--surface3);border-radius:6px">
+              <span>${f.type==='pdf'?'📄':'🖼'}</span>
+              <a href="${f.url}" target="_blank" style="flex:1;font-size:11px;color:var(--text2);text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text2)'">${esc(f.name)}</a>
+              ${f.size?`<span style="font-size:10px;color:var(--text3);font-family:var(--mono)">${Math.round(f.size/1024)}KB</span>`:''}
+              ${f.ai_data?`<span style="font-size:9px;background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);padding:1px 6px;border-radius:99px;font-weight:600">AI ✓</span>`:''}
+              <button style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:11px;padding:1px 4px" data-dip="${dip.id}" data-key="${dk.key}" data-fi="${fi}" data-act="del">✕</button>
+            </div>`).join('')}</div>`:``}
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0">
+          ${dk.expiry?`<div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
+            <input type="date" style="width:135px;font-size:11px;padding:5px 8px;border-color:${ec==='crit'?'var(--red-border)':ec==='warn'?'var(--yellow-border)':ec==='ok'?'var(--green-border)':'var(--border)'};color:${ec==='crit'?'var(--red)':ec==='warn'?'var(--yellow)':ec==='ok'?'var(--green)':'var(--text)'}" value="${doc.expiry||''}" data-dip="${dip.id}" data-key="${dk.key}" data-act="expiry"/>
+            ${el?`<span style="font-size:10px;color:${ec==='crit'?'var(--red)':ec==='warn'?'var(--yellow)':'var(--green)'}">${el}</span>`:''}
+          </div>`:''}
+          <select style="width:120px;font-size:11px;padding:5px 8px" data-dip="${dip.id}" data-key="${dk.key}" data-act="status">
+            <option value="missing" ${(!doc.status||doc.status==='missing')?'selected':''}>❌ Mancante</option>
+            <option value="ok"      ${doc.status==='ok'?'selected':''}>✅ Presente</option>
+            <option value="na"      ${doc.status==='na'?'selected':''}>— N/A</option>
+          </select>
+          <label style="cursor:pointer;position:relative;display:inline-flex;align-items:center;gap:4px;padding:5px 8px;background:var(--surface3);border:1px solid var(--border);border-radius:6px;font-size:11px;color:var(--text2)" title="Carica file">
+            📎 Carica
+            <input type="file" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%" multiple accept=".pdf,.jpg,.jpeg,.png" data-dip="${dip.id}" data-key="${dk.key}" data-act="upload"/>
+          </label>
+        </div>`;
+      table.appendChild(row);
+    });
+    section.appendChild(table);
+    wrap.appendChild(section);
   });
 
-  if(!resp.ok) return null;
-  const data = await resp.json();
-  const raw = data.content.map(c=>c.text||'').join('');
-  try {
-    const parsed = JSON.parse(raw.replace(/```json|```/g,'').trim());
-    // Rinomina data_scadenza → expiry per compatibilità interna
-    return { ...parsed, expiry: parsed.data_scadenza || null };
-  } catch(e) { return null; }
+  // Contract section
+  const contractSec=document.createElement('div');
+  contractSec.innerHTML=`<div style="font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:10px">📋 Dati contratto</div>`;
+  const contractTable=document.createElement('div');
+  contractTable.style.cssText='background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px';
+  contractTable.innerHTML=`
+    <div class="field"><label>Tipo contratto</label>
+      <select data-dip="${dip.id}" data-contract="tipo_contratto">
+        <option value="">Non specificato</option>
+        <option value="indeterminato"  ${dip.tipo_contratto==='indeterminato'?'selected':''}>Indeterminato</option>
+        <option value="determinato"    ${dip.tipo_contratto==='determinato'?'selected':''}>Determinato</option>
+        <option value="apprendistato"  ${dip.tipo_contratto==='apprendistato'?'selected':''}>Apprendistato</option>
+        <option value="part_time"      ${dip.tipo_contratto==='part_time'?'selected':''}>Part-time</option>
+        <option value="stagionale"     ${dip.tipo_contratto==='stagionale'?'selected':''}>Stagionale</option>
+      </select>
+    </div>
+    <div class="field"><label>Scadenza contratto</label>
+      <input type="date" value="${dip.scadenza_contratto||''}" data-dip="${dip.id}" data-contract="scadenza_contratto" style="font-size:12px;padding:6px 8px"/>
+    </div>
+    <div class="field"><label>Data assunzione</label>
+      <input type="date" value="${dip.data_assunzione||''}" data-dip="${dip.id}" data-contract="data_assunzione" style="font-size:12px;padding:6px 8px"/>
+    </div>`;
+  contractSec.appendChild(contractTable);
+  wrap.appendChild(contractSec);
+
+  // Attach events
+  wrap.querySelectorAll('[data-act="status"]').forEach(el=>{
+    el.onchange=async()=>{
+      const key=el.dataset.key;
+      if(!dip.documenti)dip.documenti={};
+      if(!dip.documenti[key])dip.documenti[key]={};
+      dip.documenti[key].status=el.value;
+      await saveDip(dip); renderDocModule();
+    };
+  });
+  wrap.querySelectorAll('[data-act="expiry"]').forEach(el=>{
+    el.onchange=async()=>{
+      const key=el.dataset.key;
+      if(!dip.documenti)dip.documenti={};
+      if(!dip.documenti[key])dip.documenti[key]={};
+      dip.documenti[key].expiry=el.value||null;
+      await saveDip(dip); renderDocModule();
+    };
+  });
+  wrap.querySelectorAll('[data-act="upload"]').forEach(inp=>{
+    inp.onchange=async()=>{
+      if(!inp.files.length)return;
+      const key=inp.dataset.key; const dk=DOCS.find(d=>d.key===key);
+      if(!dip.documenti)dip.documenti={};
+      if(!dip.documenti[key])dip.documenti[key]={status:'ok',files:[]};
+      if(!dip.documenti[key].files)dip.documenti[key].files=[];
+      for(const file of inp.files){
+        toast(`Caricamento ${file.name}…`);
+        const res=await uploadFile(dip.id,key,file); if(!res)continue;
+        const ext=file.name.split('.').pop().toLowerCase();
+        const fobj={...res,type:ext==='pdf'?'pdf':'img'};
+        const KEY=localStorage.getItem('cdl_anthropic_key')||'';
+        if(KEY&&(ext==='pdf'||['jpg','jpeg','png'].includes(ext))){
+          toast(`AI analizza ${file.name}…`);
+          try{
+            const aiData=await analyzeDocAI(file,dk,KEY);
+            if(aiData){fobj.ai_data=aiData;if(aiData.expiry&&dk.expiry&&!dip.documenti[key].expiry)dip.documenti[key].expiry=aiData.expiry;toast('AI: dati estratti ✓','ok');}
+          }catch(e){console.warn(e);}
+        }
+        dip.documenti[key].files.push(fobj);
+        if(dip.documenti[key].status==='missing')dip.documenti[key].status='ok';
+      }
+      await saveDip(dip); renderDocModule(); toast('File caricato ✓','ok');
+    };
+  });
+  wrap.querySelectorAll('[data-act="del"]').forEach(btn=>{
+    btn.onclick=async()=>{
+      const key=btn.dataset.key; const fi=parseInt(btn.dataset.fi);
+      if(!dip.documenti?.[key]?.files)return;
+      const f=dip.documenti[key].files[fi]; if(f?.path)await delFile(f.path);
+      dip.documenti[key].files.splice(fi,1);
+      if(!dip.documenti[key].files.length)dip.documenti[key].status='missing';
+      await saveDip(dip); renderDocModule(); toast('File eliminato');
+    };
+  });
+  wrap.querySelectorAll('[data-contract]').forEach(el=>{
+    el.onchange=async()=>{
+      dip[el.dataset.contract]=el.value||null;
+      await saveDip(dip); renderDocModule();
+    };
+  });
+
+  panel.appendChild(wrap);
 }
 
-/* ── Storage ── */
-async function salvaDip(dip) {
-  const { error } = await supa.from('dipendenti').update({
-    documenti:         dip.documenti         || {},
-    tipo_contratto:    dip.tipo_contratto    || null,
-    scadenza_contratto:dip.scadenza_contratto|| null,
-    data_assunzione:   dip.data_assunzione   || null,
-    stato:             dip.stato             || 'attivo',
-    mansione:          dip.mansione          || null,
-  }).eq('id', dip.id).eq('user_id', currentUser.id);
-  if(error) { console.error(error); showToast('Errore salvataggio', 'error'); return false; }
+/* AI analisi documento */
+async function analyzeDocAI(file,dk,apiKey){
+  const ext=file.name.split('.').pop().toLowerCase();
+  const isPdf=ext==='pdf'; const isImg=['jpg','jpeg','png'].includes(ext);
+  if(!isPdf&&!isImg)return null;
+  const b64=await toB64(file);
+  const mt=isPdf?'application/pdf':ext==='png'?'image/png':'image/jpeg';
+  const prompt='Analizza questo documento italiano "'+dk.label+'". Estrai: tipo_documento, nome_intestatario, data_scadenza (YYYY-MM-DD o null), data_rilascio (YYYY-MM-DD o null), ente_rilascio. Rispondi SOLO JSON: {"tipo_documento":"...","nome_intestatario":"...","data_scadenza":"YYYY-MM-DD","data_rilascio":"YYYY-MM-DD","ente_rilascio":"..."}';
+  const part=isPdf?{type:'document',source:{type:'base64',media_type:mt,data:b64}}:{type:'image',source:{type:'base64',media_type:mt,data:b64}};
+  const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-opus-4-5',max_tokens:512,messages:[{role:'user',content:[part,{type:'text',text:prompt}]}]})});
+  if(!r.ok)return null;
+  const data=await r.json(); const raw=data.content.map(c=>c.text||'').join('');
+  try{const p=JSON.parse(raw.replace(/```json|```/g,'').trim());return{...p,expiry:p.data_scadenza||null};}catch(e){return null;}
+}
+
+async function saveDip(dip){
+  const{error}=await supa.from('dipendenti').update({documenti:dip.documenti||{},tipo_contratto:dip.tipo_contratto||null,scadenza_contratto:dip.scadenza_contratto||null,data_assunzione:dip.data_assunzione||null,stato:dip.stato||'attivo',mansione:dip.mansione||null}).eq('id',dip.id).eq('user_id',ME.id);
+  if(error){console.error(error);toast('Errore salvataggio','err');return false;}
   return true;
 }
-
-async function uploadFile(dipId, key, file) {
-  const path = `${currentUser.id}/${dipId}/${key}/${Date.now()}_${file.name}`;
-  const { error } = await supa.storage.from(BUCKET).upload(path, file, { upsert:true });
-  if(error) { showToast('Errore upload: '+error.message, 'error'); return null; }
-  const { data } = supa.storage.from(BUCKET).getPublicUrl(path);
-  return { name:file.name, url:data.publicUrl, path, size:file.size };
+async function uploadFile(dipId,key,file){
+  const path=ME.id+'/'+dipId+'/'+key+'/'+Date.now()+'_'+file.name;
+  const{error}=await supa.storage.from(BUCKET).upload(path,file,{upsert:true});
+  if(error){toast('Errore upload: '+error.message,'err');return null;}
+  const{data}=supa.storage.from(BUCKET).getPublicUrl(path);
+  return{name:file.name,url:data.publicUrl,path,size:file.size};
 }
+async function delFile(path){await supa.storage.from(BUCKET).remove([path]);}
 
-async function deleteFile(path) {
-  await supa.storage.from(BUCKET).remove([path]);
-}
+$('docFiltroStato').onchange=e=>{docFilters.stato=e.target.value;renderDocModule();};
+$('docFiltroAlert').onchange=e=>{docFilters.alert=e.target.value;renderDocModule();};
+$('docSearch').oninput=e=>{docFilters.search=e.target.value;renderDocModule();};
 
-/* ── Filtri ── */
-document.getElementById('docFiltroStato').addEventListener('change', e => { ddFilters.stato=e.target.value; renderDocModule(); });
-document.getElementById('docFiltroAlert').addEventListener('change', e => { ddFilters.alert=e.target.value; renderDocModule(); });
-document.getElementById('docSearch').addEventListener('input',       e => { ddFilters.search=e.target.value; renderDocModule(); });
 
 </script>
 </body>
